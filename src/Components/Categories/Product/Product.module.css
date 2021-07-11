@@ -1,0 +1,135 @@
+.productItem {
+    display: flex;    
+    width: 30%;
+    margin-top: 80px;
+    color: #1D1F22;
+}
+
+.chooseColor {
+    list-style: none;
+    width: 80px;
+    margin-bottom: 35px;
+}
+
+.imgChooseColor {
+    width: 100%;
+}
+
+.imgProd {
+    margin-left: 40px;
+    margin-right: 100px;
+    min-width: 610px;
+    max-height: 510px;
+}
+
+.prodWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    display: block;
+    font-weight: 600;
+    font-size: 30px;   
+    margin-bottom: 5px; 
+}
+
+.subtitle {
+    display: block;
+    font-weight: normal;
+    font-size: 30px;
+    margin-bottom: 45px;
+}
+
+.sizeTitle {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.prodName {
+    display: block;
+    font-weight: 300;
+    font-size: 18px;    
+    margin-top: 25px;
+}
+
+.chooseSize {
+    width: 295px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.size {
+    width: 65px;
+    height: 45px;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    background-color: #fff;
+    border: 1px solid #1D1F22;
+    cursor: pointer;
+}
+
+.sizeActive {
+    width: 65px;
+    height: 45px;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    background-color: #1D1F22;
+    color: #fff;
+    border: 1px solid #1D1F22;    
+}
+
+.priceTitle {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.prodPrice {
+    font-weight: bold;
+    font-size: 24px;
+    padding-left: 12px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.prodPrice > span {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+.add {
+    /* margin-bottom: 40px; */
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+    background-color: #5ECE7B;
+    width: 295px;
+    padding: 10px 0;
+    border: none;
+    cursor: pointer;
+}
+
+.prodDescription {
+    margin-top: auto;
+    display: block;
+    font-size: 16px;
+    line-height: 26px;
+}

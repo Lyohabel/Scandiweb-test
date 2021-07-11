@@ -1,0 +1,139 @@
+.nav {
+    position: relative;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;    
+}
+
+.menuItem {
+    display: block;
+    padding: 30px 10px;    
+    border-bottom: 2px solid #fff;
+}
+
+.menuItem:hover {
+    background-color:  #e8f8ec;
+}
+
+.active {
+    display: block;
+    padding: 30px 10px;    
+    border-bottom: 2px solid #5ECE7B;
+}
+
+.active .link {
+    color: #5ECE7B;
+}
+
+.link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #1D1F22;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.cartWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.currency {
+    display: block;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1D1F22;
+    margin-right: 10px;   
+}
+
+.chooseCurrency {
+    background-image: url(../../Images/vector.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    margin-right: 10px;
+    cursor: pointer; 
+}
+
+.chooseCurrency > ul {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: -25px;
+    padding-top: 20px;
+    padding-left: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);  
+}
+
+.chooseCurrency > ul > li {
+    display: block;
+    width: 60px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1D1F22;
+    margin-bottom: 10px;
+}
+
+.chooseCurrency:hover > ul {
+    display: block;   
+}
+
+.cartLink {    
+    background-image: url(../../Images/empty-cart.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+.cartLinkIcon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #1D1F22;
+    position: absolute;
+    top: -10px;
+    left: 19px;
+    color: #fff;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+
+.hidden {
+    /* visibility: hidden; */
+    display: none;   
+}
+
+.popUp {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(206, 209, 202, 0.3);
+}
+
+.innerPopUp {
+    /* visibility: inherit; */
+    display: inherit;
+}
