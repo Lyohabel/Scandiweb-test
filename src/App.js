@@ -16,7 +16,9 @@ class App extends React.Component {
     this.state = {
       currency: '$',
       countCart: 0,
-      display: 'none'     
+      display: 'none',
+      products: '',
+      currencies: ''   
   }
 
     this.changeCountCart = this.changeCountCart.bind(this);
@@ -29,9 +31,7 @@ class App extends React.Component {
     newCount++;
     this.setState({
       countCart: newCount,
-      display: 'flex',
-      products: '',
-      currencies: ''
+      display: 'flex'      
     })    
   }
 
@@ -43,24 +43,20 @@ class App extends React.Component {
   componentDidMount() {
     client.setEndpoint("http://localhost:4000/graphql");
 
-    const query = new Query("category", true)
-    .addField("name")
-    .addField(new Field("products", true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
-      // .addField(new Field("products {id, name, inStock, gallery, description, category, attributes {items {value}}, prices {currency,amount }}"))
-
-
+    // const query = new Query("category", true)
+    // .addField("name")
+    // .addField(new Field("products", true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+    //   // .addField(new Field("products {id, name, inStock, gallery, description, category, attributes {items {value}}, prices {currency,amount }}"))
       
 
-      
-
-      client.post(query).then(result => {this.setState({
-        ...this.state,
-        products: result.category.products,
-        // countCart: newCount,
-        // display: 'flex',
-      });
-      console.log(this.state.products);
-    });
+    //   client.post(query).then(result => {this.setState({
+    //     ...this.state,
+    //     products: result.category.products,
+    //     // countCart: newCount,
+    //     // display: 'flex',
+    //   });
+    //   console.log(this.state.products);
+    // });
 
     const queryCurrencies = new Query("currencies", true)
 
