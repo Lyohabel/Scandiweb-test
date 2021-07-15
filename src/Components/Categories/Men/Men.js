@@ -7,56 +7,28 @@ import imgProd3 from '../../../ImagesTemp/beige.png';
 import imgProd4 from '../../../ImagesTemp/grey.png';
 import imgProd5 from '../../../ImagesTemp/white.png'
 import * as styles from './Men.module.css'
-
 class Men extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      list: '',
+    this.state = {     
       products: ''
     }
 
-    this.showList = this.showList.bind(this)
-    this.createList = this.createList.bind(this)
-	
+    this.createList = this.createList.bind(this)	
   }
 
-  createList = () => {
-    console.log(this.state.products);
-    console.log(this.state.list);   
-    let htmlList = []
-    htmlList = this.state.products.map((product, index) => {
-      return (<div>"XXXXXXX"</div>
-        // <li className={styles.productItem} key={index} id={index}>
-        //   <NavLink className={styles.prodLink} to="/product">
-        //     <img className={styles.imgProd} src={imgProd1} alt="#"/>
-        //   </NavLink>               
-        //   <span className={styles.prodName}>Apollo Running Short</span>
-        //   <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-        // </li>
-      )
-    })
+  createList() {
+    return this.state.products && this.state.products.map(item =>
+      <li className={styles.productItem} id={item.id}>
+        <NavLink className={styles.prodLink} to="/product">
+          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
+        </NavLink>
 
-    console.log(htmlList);
-    //return htmlList.length > 0 ? htmlList : ''
+        <span className={styles.prodName}>{item.name}</span>
 
-    this.setState({
-      ...this.state,
-      list: (htmlList.length > 0 ? htmlList : '')
-    })    
-     
-  }
-
-
-
-  showList() {
-    console.log(this.state.products);   
-    this.createList()
-    // this.setState({
-    //   ...this.state,
-    //   list: newList
-    // })
-    console.log(this.state.list);
+        <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>{item.prices[0].amount}</span></div>        
+      </li>
+    )
   }
   
   componentDidMount() {
@@ -71,7 +43,7 @@ class Men extends React.Component {
       products: result.category.products        
       });
 
-      console.log(this.state.products);      
+      console.log(this.state.products[1]);      
     });    
   }
 
@@ -81,9 +53,9 @@ class Men extends React.Component {
           <div className="container">
             <h3 className={styles.title}>Men</h3>
             <ul className={styles.products}>
-             {"MEN"}
-             <button onClick={() => this.showList()}>show</button>
-              {/* <li className={styles.productItem}>
+             {this.createList()}
+             {/* <button onClick={() => this.showList()}>show</button> */}
+              {/* <li >
                 <NavLink className={styles.prodLink} to="/product">
                   <img className={styles.imgProd} src={imgProd1} alt="#"/>
                 </NavLink>
@@ -92,31 +64,7 @@ class Men extends React.Component {
                 <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
                 <button onClick={() => this.showList()}>show</button>
               </li>
-              <li className={styles.productItem}>               
-                <img className={styles.imgProd} src={imgProd2} alt="#"/>                               
-                <span className={styles.prodName}>Apollo Running Short</span>
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-              </li>
-              <li className={styles.productItem}>
-                <img className={styles.imgProd} src={imgProd3} alt="#"/>
-                <span className={styles.prodName}>Apollo Running Short</span>
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-              </li>
-              <li className={styles.productItem}>
-                <img className={styles.imgProd} src={imgProd4} alt="#"/>
-                <span className={styles.prodName}>Apollo Running Short</span>
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-              </li>
-              <li className={styles.productItem}>
-                <img className={styles.imgProd} src={imgProd1} alt="#"/>
-                <span className={styles.prodName}>Apollo Running Short</span>
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-              </li>
-              <li className={styles.productItem}>
-                <img className={styles.imgProd} src={imgProd5} alt="#"/>
-                <span className={styles.prodName}>Apollo Running Short</span>
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
-              </li> */}
+               */}
             </ul>
           </div>
       </section>

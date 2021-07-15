@@ -19,6 +19,11 @@
     margin-bottom: 130px;
 }
 
+.priceNumber {
+    display: block;
+    padding-left: 3px;
+}
+
 .prodLink > img {
     width: 100%;
 }
