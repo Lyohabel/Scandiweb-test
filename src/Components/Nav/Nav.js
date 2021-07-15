@@ -13,7 +13,7 @@ class Nav extends React.Component {
       men: styles.menuItem,
       kids: styles.menuItem,
       count: this.props.countCart,
-      cartCountIcon:  styles.hidden,
+      //cartCountIcon:  styles.hidden,
       popUp: styles.hidden
     }
 
@@ -22,13 +22,13 @@ class Nav extends React.Component {
   }  
 
   componentDidMount() {    
-    console.log(this.context.currency)
+    //console.log(this.context.currency)
   }
 
   showCartMini() {    
     this.setState({
       popUp: styles.popUp,
-      cartCountIcon:  styles.cartLinkIcon     
+      //cartCountIcon:  styles.cartLinkIcon     
     }) 
   }
 
@@ -111,7 +111,7 @@ class Nav extends React.Component {
                 </div>
 
                 <div onClick={() => this.showCartMini()} className={styles.cartLink}>
-                  <span className={this.state.cartCountIcon}>{this.props.countCart}</span>
+                  <span className={styles.cartLinkIcon} style={{display: this.props.display}}>{this.props.countCart}</span>
                 </div>
               </div>
             </div>

@@ -16,6 +16,33 @@ class Men extends React.Component {
 	
   }
 
+  // createList = () => {
+  //   let htmlList = []
+  //   htmlList = products.map((product, index) => {
+  //     return (
+  //       <li key={index} id={index}>
+  //         <div>
+  //           <NavLink to={"/product/" + index} className="image">
+  //             <img src={product.image} alt="#"/>
+  //           </NavLink> 
+  //           <div className="description">
+  //             <h3 className="prod-name">{product.title}</h3>
+  //             <span className="prod-inf">{product.category}</span>
+  //             <div className="price-and-button">
+  //               <span className="prod-price">{product.price} $</span>
+  //               <button onClick={addToCart} className="button-add">
+  //                 <img src={add} alt="#"/>
+  //                 </button>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </li>
+  //     )
+  //   })
+
+  //   return htmlList.length > 0 ? htmlList : ''    
+  // }
+
   componentDidMount() {
 
   }
