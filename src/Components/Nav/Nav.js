@@ -9,9 +9,9 @@ class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      women: styles.active,
-      men: styles.menuItem,
-      kids: styles.menuItem,
+      test: styles.menuItem,
+      tech: styles.menuItem,
+      women: styles.menuItem,
       count: this.props.countCart,
       //cartCountIcon:  styles.hidden,
       popUp: styles.hidden
@@ -42,23 +42,27 @@ class Nav extends React.Component {
     let categ = event.target.innerHTML.toLowerCase();
     if (categ === 'women') {
       this.setState({
+        ...this.state,
         women: styles.active,
-        men: styles.menuItem,
-        kids: styles.menuItem
+        tech: styles.menuItem,
+        test: styles.menuItem
       })     
-    } else if (categ === 'men') {
+    } else if (categ === 'tech') {
         this.setState({
+          ...this.state,
           women: styles.menuItem,
-          men: styles.active,
-          kids: styles.menuItem
+          tech: styles.active,
+          test: styles.menuItem
         })
-      } else if (categ === 'kids') {
+      } else if (categ === 'test') {
         this.setState({
+          ...this.state,
           women: styles.menuItem,
-          men: styles.menuItem,
-          kids: styles.active
+          test: styles.active,
+          tech: styles.menuItem
         })
-      }    
+      } 
+
   }
 
   // showMenu(event) {}
@@ -76,23 +80,23 @@ class Nav extends React.Component {
                 {/* <li className={styles.menuItem}>
                     <button onClick= {() => this.closeMenu()} className={styles.closeMenu}>Close</button>
                 </li> */}
+                <li onClick={(event) => this.markActive(event)} className={this.state.tech}>
+                  <NavLink className={styles.link} to="/tech">
+                    TECH
+                  </NavLink>
+                </li>
+
                 <li onClick={(event) => this.markActive(event)} className={this.state.women}>
-                  <NavLink className={styles.link} to="/">
+                  <NavLink className={styles.link} to="/women">
                     WOMEN
                   </NavLink>
-                </li>
+                </li> 
 
-                <li onClick={(event) => this.markActive(event)} className={this.state.men}>
-                  <NavLink className={styles.link} to="/men">
-                    MEN
+                <li onClick={(event) => this.markActive(event)} className={this.state.test}>
+                  <NavLink className={styles.link} to="/test">
+                    TEST
                   </NavLink>
-                </li>
-
-                <li onClick={(event) => this.markActive(event)} className={this.state.kids}>
-                  <NavLink className={styles.link} to="/kids">
-                    KIDS
-                  </NavLink>
-                </li>                       
+                </li>                   
               </ul>
 
               <div className={styles.logo}>
@@ -100,13 +104,15 @@ class Nav extends React.Component {
               </div>
 
               <div className={styles.cartWrapper}>
-                <span className={styles.currency}>{this.context.currency}</span>
+                <span className={styles.currency}>{this.context.currencySimbol}</span>
 
                 <div className={styles.chooseCurrency}>
                   <ul>
                     <li onClick={(event) => this.props.changeCurrency(event)}>$ USD</li>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>&#8364; EUR </li>
+                    <li onClick={(event) => this.props.changeCurrency(event)}>&pound; GBP</li>
+                    <li onClick={(event) => this.props.changeCurrency(event)}>A$ AUD</li>
                     <li onClick={(event) => this.props.changeCurrency(event)}>&#165; JPY</li>
+                    <li onClick={(event) => this.props.changeCurrency(event)}>&#8381; RUB</li>
                   </ul>
                 </div>
 

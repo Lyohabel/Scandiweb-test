@@ -24,7 +24,7 @@ class Women extends React.Component {
     return (
       <section className="men">
           <div className="container">
-            <h3 className={styles.title}>Men</h3>
+            <h3 className={styles.title}>Women</h3>
             <ul className={styles.products}>
               <li className={styles.productItem}>
                 <NavLink className={styles.prodLink} to="/product">

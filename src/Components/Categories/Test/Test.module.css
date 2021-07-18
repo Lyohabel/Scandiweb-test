@@ -1,0 +1,11 @@
+.link {
+    display: block;
+    margin-bottom: 30px;
+}
+
+.test {
+    width: 70px;
+    padding: 10px;
+    background-color: aquamarine;
+    cursor: pointer;
+}

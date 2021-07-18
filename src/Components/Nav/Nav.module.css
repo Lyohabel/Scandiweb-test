@@ -1,5 +1,7 @@
 .nav {
     position: relative;
+    margin-bottom: 80px;
+    z-index: 1;
 }
 
 .wrapper {
@@ -82,7 +84,7 @@
 
 .chooseCurrency > ul > li {
     display: block;
-    width: 60px;
+    width: 70px;
     font-weight: 500;
     font-size: 18px;
     color: #1D1F22;

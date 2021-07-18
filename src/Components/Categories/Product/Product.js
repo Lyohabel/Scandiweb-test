@@ -1,4 +1,5 @@
 import React from 'react';
+import { client, Query, Field } from "@tilework/opus";
 import imgProd1 from '../../../ImagesTemp/black.png';
 import * as styles from './Product.module.css'
 
@@ -6,10 +7,11 @@ class Product extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      product: 5,
       xs: styles.size,
       s: styles.sizeActive,
       m: styles.size,
-      l: styles.size 
+      l: styles.size      
     }
 
     //this.methodeName = this.methodeName.bind(this)
@@ -18,7 +20,34 @@ class Product extends React.Component {
   }
 
   componentDidMount() {
+    const fromHref = window.location.href.split('/')[4];
+    const categ = fromHref.split(';')[0];
+    const id = fromHref.split(';')[1];
+    console.log(fromHref);
+    console.log(id);
+    console.log(this.state.product);
 
+    client.setEndpoint("http://localhost:4000/graphql");
+
+    const query = new Query("category", true)
+    .addArgument("input", "CategoryInput", {title : categ})
+    .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+
+    client.post(query).then(result => {
+      let inf = result.category.products
+
+      let inf2 = inf.find((element) => {if(element.id === id) return element})
+
+      this.setState({
+      ...this.state,
+      product: inf2        
+      }); 
+      
+      console.log(result.category.products);
+      console.log(inf2); 
+      console.log(this.state.product);      
+     });   
+    
   }
 
   markSize(event) {
@@ -54,18 +83,30 @@ class Product extends React.Component {
           }    
   }
 
+  creatGallery() {
+    const gl = this.state.product.gallery.length;
+    if (gl === 1) {
+      return ''
+    } else {
+      return this.state.product.gallery && this.state.product.gallery.map(item =>
+        <li key={item.index} className={styles.chooseColor}><img className={styles.imgChooseColor} src={item} alt="#"/></li>
+      )
+    }
+  }
+
   render() {
     return (
       <section className="Product">
           <div className="container">                       
             <div className={styles.productItem}>
-              <ul>
+              <ul></ul>
+              {/* <ul>
                 <li className={styles.chooseColor}><img className={styles.imgChooseColor} src={imgProd1} alt="#"/></li>
                 <li className={styles.chooseColor}><img className={styles.imgChooseColor} src={imgProd1} alt="#"/></li>
                 <li className={styles.chooseColor}><img className={styles.imgChooseColor} src={imgProd1} alt="#"/></li>
-              </ul>
+              </ul> */}
 
-              <img className={styles.imgProd} src={imgProd1} alt="#"/>
+              <img className={styles.imgProd} src={this.state.product.gallery} alt="#"/>
 
               <div className={styles.prodWrapper}>
                 <h3 className={styles.title}>Apollo</h3>
@@ -77,6 +118,7 @@ class Product extends React.Component {
                   <button onClick={(event) => this.markSize(event)} className={this.state.s}>S</button>
                   <button onClick={(event) => this.markSize(event)} className={this.state.m}>M</button>
                   <button onClick={(event) => this.markSize(event)} className={this.state.l}>L</button>
+                  {/* <button onClick={() => this.creatGallery()} className={this.state.l}>CG</button> */}
                 </div>
 
                 <h4 className={styles.priceTitle}>Price:</h4>

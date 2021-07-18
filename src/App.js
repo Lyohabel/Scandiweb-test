@@ -4,8 +4,9 @@ import { client, Query, Field } from "@tilework/opus";
 import './App.css';
 import Nav from './Components/Nav/Nav';
 import Women from './Components/Categories/Women/Women';
-import Men from './Components/Categories/Men/Men';
-import Kids from './Components/Categories/Kids/Kids';
+import StartPage from './Components/Categories/StartPage/StartPage';
+import Test from './Components/Categories/Test/Test';
+import Tech from './Components/Categories/Tech/Tech';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context'
@@ -14,11 +15,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: '$',
+      categoriesList: [],
+      categoriesData: '',
+      currencySimbol: '$',
+      currencyNumber: 0,
       countCart: 0,
       display: 'none',
-      products: '',
-      currencies: ''   
+      tech: '',
+      currencies: '',
+      prodData: ''  
   }
 
     this.changeCountCart = this.changeCountCart.bind(this);
@@ -26,36 +31,79 @@ class App extends React.Component {
 	
   }
 
+  makeProdData(event) {
+    let newProdData = event.target.closest('li');
+    // this.setState({
+    //   ...this.state,
+    //   prodData: newProdData
+    // })
+    //console.log(newProdData)    
+  }
+
   changeCountCart() {    
     let newCount = this.state.countCart;
     newCount++;
     this.setState({
+      ...this.state,
       countCart: newCount,
       display: 'flex'      
     })    
   }
 
   changeCurrency(event) {    
-    const newCurrency = event.target.innerHTML.split('', 1);
-    this.setState({currency: newCurrency})    
+    const newCurrencySimbol = event.target.innerHTML.split('', 2);
+    const newCurrency = event.target.innerHTML.split(' ')[1];
+    const newCurrencyNumber = this.state.currencies.indexOf(newCurrency);
+    this.setState({
+      ...this.state,
+      currencySimbol: newCurrencySimbol,
+      currencyNumber: newCurrencyNumber
+    })
+    //console.log(newCurrencyNumber)    
   }
 
   componentDidMount() {
     client.setEndpoint("http://localhost:4000/graphql");
 
-    // const query = new Query("category", true)
-    // .addField("name")
-    // .addField(new Field("products", true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
-    //   // .addField(new Field("products {id, name, inStock, gallery, description, category, attributes {items {value}}, prices {currency,amount }}"))
+    const queryCategoriesList = new Query("category", true)    
+    .addField(new Field("products", true).addFieldList(["category"]))
+    
+    client.post(queryCategoriesList).then(result => {
+      const unique = Array.from(new Set(result.category.products.map(JSON.stringify))).map(JSON.parse);
       
+      this.setState({
+      ...this.state,
+      categoriesList: unique             
+      });
 
-    //   client.post(query).then(result => {this.setState({
-    //     ...this.state,
-    //     products: result.category.products,
-    //     // countCart: newCount,
-    //     // display: 'flex',
+
+      const category1 = unique[0].category
+      console.log(category1);
+
+      const query = new Query("category", true)
+      .addArgument("input", "CategoryInput", { title : category1})
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "attributes {items {value}}", "prices {currency,amount }"]))
+
+      client.post(query).then(result => {this.setState({
+        ...this.state,
+        tech: result.category.products,
+        categoriesData: [{category1: result.category.products}]            
+      });
+
+      console.log(this.state.categoriesData);      
+      });
+    });
+
+    // const query = new Query("category", true)
+    // .addArgument("input", "CategoryInput", { title : "tech"})
+    // .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+
+    // client.post(query).then(result => {this.setState({
+    //   ...this.state,
+    //   tech: result.category.products        
     //   });
-    //   console.log(this.state.products);
+
+    //   //console.log(this.state.tech);      
     // });
 
     const queryCurrencies = new Query("currencies", true)
@@ -64,9 +112,11 @@ class App extends React.Component {
       
       client.post(queryCurrencies).then(result => {this.setState({
         ...this.state,
-        currencies: result             
+        currencies: result.currencies                    
       });
-      //console.log(this.state.currencies);
+      // console.log(this.state.currencySimbol); 
+      // console.log(this.state.currencies); 
+      // console.log(this.state.currencies.indexOf("RUB"));
     });
       
   }
@@ -74,18 +124,25 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter >
-          <OverallData.Provider value={{currency: this.state.currency}}>
+          <OverallData.Provider value={{categoriesList: this.state.categoriesList, categoriesData: this.state.categoriesData, currencySimbol: this.state.currencySimbol, currencyNumber: this.state.currencyNumber}}>
             <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display}/>          
             <Switch>
-              <Route exact path='/'>           
-                <Women products={this.state.products} currencies={this.state.currencies}/>            
+              <Route exact path='/'>
+                <StartPage/>
               </Route>
-              <Route path='/men'>
-                <Men products={this.state.products} currencies={this.state.currencies}/>
+
+              <Route path='/test'>
+                <Test products={this.state.products} currencies={this.state.currencies}/>                
               </Route>
-              <Route path='/kids'>
-                <Kids/>
+
+              <Route path='/women'>
+                <Women products={this.state.products} currencies={this.state.currencies}/>                
               </Route>
+
+              <Route path='/tech'>                
+                <Tech tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart} makeProdData={this.makeProdData}/>                
+              </Route>
+
               <Route path='/product'>
                 <Product changeCountCart={this.changeCountCart}/>
               </Route>

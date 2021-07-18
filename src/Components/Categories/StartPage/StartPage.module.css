@@ -1,0 +1,33 @@
+.startTitle {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.startPointer {
+    display: block;
+    width: 7px;
+    padding: 10px;
+    background-color: rgba(231, 28, 28, 0.6);
+    border-radius: 10px;
+    background-image: url(../../../Images/vector2.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 60%;
+    margin-right: 5px;
+}
+
+.startTitle h3 {   
+    font-size: 22px;
+    font-weight: normal;   
+}
+
+.categoriesList {
+    padding-left: 5px;    
+}
+
+.category {   
+    list-style: square;    
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-left: 5px;
+}
