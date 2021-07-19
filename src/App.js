@@ -7,6 +7,7 @@ import Women from './Components/Categories/Women/Women';
 import StartPage from './Components/Categories/StartPage/StartPage';
 import Test from './Components/Categories/Test/Test';
 import Tech from './Components/Categories/Tech/Tech';
+import CategoryPage from './Components/Categories/CategoryPage/CategoryPage';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context'
@@ -16,6 +17,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       categoriesList: [],
+      currentCategoryData: '',      
       categoriesData: '',
       currencySimbol: '$',
       currencyNumber: 0,
@@ -31,14 +33,26 @@ class App extends React.Component {
 	
   }
 
-  makeProdData(event) {
-    let newProdData = event.target.closest('li');
-    // this.setState({
-    //   ...this.state,
-    //   prodData: newProdData
-    // })
-    //console.log(newProdData)    
-  }
+  // updateCategoryData(event) {
+
+  //   const updateCategory = event.target.innerHTML.toLowerCase()
+
+  //   client.setEndpoint("http://localhost:4000/graphql");    
+
+  //   const query = new Query("category", true)
+  //     .addArgument("input", "CategoryInput", { title : updateCategory})
+  //     .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "attributes {items {value}}", "prices {currency,amount }"]))
+
+  //     client.post(query).then(result => {
+  //       const newData = result.category.products
+  //       this.setState({
+  //       ...this.state,        
+  //       currentCategoryData: newData           
+  //     });
+
+  //     console.log(newData);      
+  //     });
+  // }
 
   changeCountCart() {    
     let newCount = this.state.countCart;
@@ -141,6 +155,10 @@ class App extends React.Component {
 
               <Route path='/tech'>                
                 <Tech tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart} makeProdData={this.makeProdData}/>                
+              </Route>
+
+              <Route path='/categ'>                
+                <CategoryPage tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart} makeProdData={this.makeProdData}/>                
               </Route>
 
               <Route path='/product'>

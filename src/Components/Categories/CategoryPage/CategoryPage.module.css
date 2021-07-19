@@ -1,0 +1,100 @@
+.title {
+    font-weight: normal;
+    font-size: 42px;
+    color: #1D1F22;
+    margin-bottom: 90px; 
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #1D1F22;
+}
+
+.productItem {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    min-height: 500px;
+    margin-bottom: 130px;
+    padding: 10px;
+    position: relative;
+}
+
+.productItem:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.productItem:hover .prodAdd {
+    display: block;
+}
+
+.priceNumber {
+    display: block;
+    padding-left: 3px;
+}
+
+.prodLink > img {
+    width: 100%;
+    background-color: rgb(226, 220, 220);
+}
+
+.prodName {
+    display: block;
+    font-weight: 300;
+    font-size: 18px;    
+    margin-top: auto;
+}
+
+.prodPrice {
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.prodPrice span {
+    min-height: 23px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.prodAdd {
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba(0,0,0,0);
+    border-radius: 50%;
+    background-color: #5ECE7B;
+    position: absolute;
+    top: 70%;
+    left: 80%;
+    display: none;
+}
+
+.prodAdd:hover {
+    border: 2px solid #31a550;
+}
+
+.prodAdd > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url(../../../Images/white-cart.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+/* .productItem > div {
+    font-weight: 500;
+    font-size: 18px;
+    padding-left: 10px;
+    position: relative;
+}
+
+.productItem > div > span {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: -2px;
+} */

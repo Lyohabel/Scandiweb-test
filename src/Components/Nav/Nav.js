@@ -12,6 +12,7 @@ class Nav extends React.Component {
       test: styles.menuItem,
       tech: styles.menuItem,
       women: styles.menuItem,
+      categ: styles.menuItem,
       count: this.props.countCart,
       //cartCountIcon:  styles.hidden,
       popUp: styles.hidden
@@ -43,6 +44,7 @@ class Nav extends React.Component {
     if (categ === 'women') {
       this.setState({
         ...this.state,
+        categ: styles.menuItem,
         women: styles.active,
         tech: styles.menuItem,
         test: styles.menuItem
@@ -50,6 +52,7 @@ class Nav extends React.Component {
     } else if (categ === 'tech') {
         this.setState({
           ...this.state,
+          categ: styles.menuItem,
           women: styles.menuItem,
           tech: styles.active,
           test: styles.menuItem
@@ -57,11 +60,21 @@ class Nav extends React.Component {
       } else if (categ === 'test') {
         this.setState({
           ...this.state,
+          categ: styles.menuItem,
           women: styles.menuItem,
           test: styles.active,
           tech: styles.menuItem
         })
+      } else if (categ === 'categ') {
+        this.setState({
+          ...this.state,
+          categ: styles.active,
+          women: styles.menuItem,
+          test: styles.menuItem,
+          tech: styles.menuItem
+        })
       } 
+
 
   }
 
@@ -83,6 +96,12 @@ class Nav extends React.Component {
                 <li onClick={(event) => this.markActive(event)} className={this.state.tech}>
                   <NavLink className={styles.link} to="/tech">
                     TECH
+                  </NavLink>
+                </li>
+
+                <li onClick={(event) => this.markActive(event)} className={this.state.categ}>
+                  <NavLink className={styles.link} to="/categ">
+                    CATEG
                   </NavLink>
                 </li>
 
