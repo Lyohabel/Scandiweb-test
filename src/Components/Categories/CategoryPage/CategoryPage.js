@@ -1,5 +1,5 @@
 import React from 'react';
-import { client, Query, Field } from "@tilework/opus";
+//import { client, Query, Field } from "@tilework/opus";
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './CategoryPage.module.css';

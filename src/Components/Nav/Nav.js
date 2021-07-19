@@ -10,8 +10,7 @@ class Nav extends React.Component {
     super(props);
     this.state = {
       test: styles.menuItem,
-      tech: styles.menuItem,
-      women: styles.menuItem,
+      tech: styles.menuItem,      
       categ: styles.menuItem,
       count: this.props.countCart,
       //cartCountIcon:  styles.hidden,
@@ -41,19 +40,10 @@ class Nav extends React.Component {
 
   markActive(event) {
     let categ = event.target.innerHTML.toLowerCase();
-    if (categ === 'women') {
-      this.setState({
-        ...this.state,
-        categ: styles.menuItem,
-        women: styles.active,
-        tech: styles.menuItem,
-        test: styles.menuItem
-      })     
-    } else if (categ === 'tech') {
+    if (categ === 'tech') {
         this.setState({
           ...this.state,
           categ: styles.menuItem,
-          women: styles.menuItem,
           tech: styles.active,
           test: styles.menuItem
         })
@@ -61,7 +51,6 @@ class Nav extends React.Component {
         this.setState({
           ...this.state,
           categ: styles.menuItem,
-          women: styles.menuItem,
           test: styles.active,
           tech: styles.menuItem
         })
@@ -69,7 +58,6 @@ class Nav extends React.Component {
         this.setState({
           ...this.state,
           categ: styles.active,
-          women: styles.menuItem,
           test: styles.menuItem,
           tech: styles.menuItem
         })
@@ -104,13 +92,7 @@ class Nav extends React.Component {
                     CATEG
                   </NavLink>
                 </li>
-
-                <li onClick={(event) => this.markActive(event)} className={this.state.women}>
-                  <NavLink className={styles.link} to="/women">
-                    WOMEN
-                  </NavLink>
-                </li> 
-
+                
                 <li onClick={(event) => this.markActive(event)} className={this.state.test}>
                   <NavLink className={styles.link} to="/test">
                     TEST

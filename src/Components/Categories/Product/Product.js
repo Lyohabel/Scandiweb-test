@@ -1,10 +1,10 @@
 import React from 'react';
 import { client, Query, Field } from "@tilework/opus";
-import imgProd1 from '../../../ImagesTemp/black.png';
+//import imgProd1 from '../../../ImagesTemp/black.png';
 import * as styles from './Product.module.css'
 
 class Product extends React.Component {
-  constructor(props) {
+  constructor(props) { // eslint-disable-line
     super(props);
     this.state = {
       product: 5,

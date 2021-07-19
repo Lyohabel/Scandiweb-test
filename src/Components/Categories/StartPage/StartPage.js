@@ -1,11 +1,11 @@
 import React from 'react';
-import { client, Query, Field } from "@tilework/opus";
+//import { client, Query, Field } from "@tilework/opus";
 import OverallData from '../../../Context';
-import {NavLink} from 'react-router-dom';
+//import {NavLink} from 'react-router-dom';
 import * as styles from './StartPage.module.css'
 
 class StartPage extends React.Component {
-  constructor(props) {
+  constructor(props) { // eslint-disable-line
     super(props);
     // this.state = {
       

@@ -1,11 +1,11 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom'; // eslint-disable-line
 import imgProd1 from '../../../ImagesTemp/black.png';
 import imgProd2 from '../../../ImagesTemp/glasses.png';
 import * as styles from './Cart.module.css'
 
 class Cart extends React.Component {
-  constructor(props) {
+  constructor(props) { // eslint-disable-line
     super(props);
     
     //this.methodeName = this.methodeName.bind(this)

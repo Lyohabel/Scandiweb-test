@@ -17,7 +17,7 @@ class Tech extends React.Component {
   createList() {    
     return this.state.currentCategoryData && this.state.currentCategoryData.map(item =>
       <li className={styles.productItem} id={item.id} key={item.id}>
-        <NavLink className={styles.prodLink} to={"/product/" + "tech;" + item.id}>
+        <NavLink className={styles.prodLink} to={"/product/" + "tech;" + item.id}> 
           <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
@@ -37,7 +37,7 @@ class Tech extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : fromHref})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "attributes {items {value}}", "prices {currency,amount }"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
   
       client.post(query).then(result => {
         const newData = result.category.products

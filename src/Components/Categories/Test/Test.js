@@ -1,5 +1,5 @@
 import React from 'react';
-import { client, Query, Field } from "@tilework/opus";
+import { client, Query, Field } from "@tilework/opus"; // eslint-disable-line
 import OverallData from '../../../Context';
 import {NavLink} from 'react-router-dom';
 import * as styles from './Test.module.css'
@@ -10,10 +10,7 @@ class Test extends React.Component {
     this.state = {
       xxx: 'default',
       cur: ''
-    }
-
-    //this.methodeName = this.methodeName.bind(this)
-	
+    }	
   }
 
   testSth() {
@@ -21,19 +18,17 @@ class Test extends React.Component {
       ...this.state,
       xxx: this.context
     })
-    console.log(this.state.xxx)    
+    //console.log(this.state.xxx)    
   }
 
-  componentWillMount() {
-    this.setState({
-          ...this.state,
-          cur: 'ZZZZZZZZ'                    
-          });
+  // componentWillMount() {
+  //   this.setState({
+  //         ...this.state,
+  //         cur: 'ZZZZZZZZ'                    
+  //         });
      
-    // console.log(this.state.xxx)
-    console.log(this.context.categoriesList)
-    // console.log(this.context.categoriesData)
-  }
+  
+  // }
 
   createCategoriesList() {
     const categoriesList = this.context.categoriesList
@@ -44,7 +39,7 @@ class Test extends React.Component {
     )
   }
   componentDidMount() {
-    console.log(this.state.cur)    
+    //console.log(this.state.cur)    
   }
   
   // componentWillReceiveProps() {
@@ -59,9 +54,9 @@ class Test extends React.Component {
   //   console.log('55555')
   // }
   
-  componentWillUnmount() {
+  // componentWillUnmount() {
     
-  }  
+  // }  
 
   render() {
     return (

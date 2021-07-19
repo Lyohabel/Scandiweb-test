@@ -5,7 +5,7 @@ import imgProd2 from '../../../ImagesTemp/glasses.png';
 import * as styles from './CartMini.module.css'
 
 class CartMini extends React.Component {
-  constructor(props) {
+  constructor(props) { // eslint-disable-line
     super(props);
     
     //this.methodeName = this.methodeName.bind(this)
