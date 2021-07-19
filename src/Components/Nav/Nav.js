@@ -22,7 +22,7 @@ class Nav extends React.Component {
   }  
 
   componentDidMount() {    
-    //console.log(this.context.currency)
+    
   }
 
   showCartMini() {    
@@ -62,8 +62,16 @@ class Nav extends React.Component {
           tech: styles.menuItem
         })
       } 
+  }
 
-
+  createLinksList() {    
+    return this.context.categoriesList && this.context.categoriesList.map(item =>
+      <li onClick={(event) => this.markActive(event)} className={this.state.tech} key={item.category}>
+        <NavLink className={styles.link} to={item.category}>
+           {item.category}
+        </NavLink>
+      </li>      
+    )
   }
 
   // showMenu(event) {}
@@ -81,17 +89,7 @@ class Nav extends React.Component {
                 {/* <li className={styles.menuItem}>
                     <button onClick= {() => this.closeMenu()} className={styles.closeMenu}>Close</button>
                 </li> */}
-                <li onClick={(event) => this.markActive(event)} className={this.state.tech}>
-                  <NavLink className={styles.link} to="/tech">
-                    TECH
-                  </NavLink>
-                </li>
-
-                <li onClick={(event) => this.markActive(event)} className={this.state.categ}>
-                  <NavLink className={styles.link} to="/categ">
-                    CATEG
-                  </NavLink>
-                </li>
+                {this.createLinksList()}               
                 
                 <li onClick={(event) => this.markActive(event)} className={this.state.test}>
                   <NavLink className={styles.link} to="/test">

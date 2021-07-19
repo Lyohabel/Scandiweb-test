@@ -33,7 +33,7 @@ class CategoryPage extends React.Component {
         <button onClick={() => this.props.changeCountCart()} className={styles.prodAdd}><span></span></button>       
       </li>
     )
-  }
+  } 
   
   componentDidMount() {    
     // client.setEndpoint("http://localhost:4000/graphql");

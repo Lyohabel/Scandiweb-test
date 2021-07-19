@@ -13,11 +13,7 @@ class StartPage extends React.Component {
 
     //this.methodeName = this.methodeName.bind(this)
 	
-  }  
-
-  componentWillMount() {
-    
-  }
+  } 
 
   createCategoriesList() {
     const categoriesList = this.context.categoriesList
@@ -26,13 +22,6 @@ class StartPage extends React.Component {
         {item.category}     
       </li>
     )
-  }
-  componentDidMount() {
-      
-  }
-
-  componentWillUnmount() {
-    
   }  
 
   render() {

@@ -36,7 +36,7 @@ class Product extends React.Component {
     client.post(query).then(result => {
       let inf = result.category.products
 
-      let inf2 = inf.find((element) => {if(element.id === id) return element})
+      let inf2 = inf.find((element) => {if(element.id === id) return element}) // eslint-disable-line
 
       this.setState({
       ...this.state,

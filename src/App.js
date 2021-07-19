@@ -15,6 +15,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      startData: '',
       categoriesList: [],
       currentCategoryData: '',      
       categoriesData: '',
@@ -65,20 +66,22 @@ class App extends React.Component {
       ...this.state,
       categoriesList: unique             
       });
-
-      const category1 = unique[0].category
-
-      const query = new Query("category", true)
-      .addArgument("input", "CategoryInput", { title : category1})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "attributes {items {value}}", "prices {currency,amount }"]))
-
-      client.post(query).then(result => {this.setState({
-        ...this.state,
-        tech: result.category.products,
-        categoriesData: [{category1: result.category.products}]            
-      });   
     });
-  });
+
+    const queryStartData = new Query("categories", true)     
+      .addField(new Field("name"))
+      .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
+
+      // .addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+  
+      client.post(queryStartData).then(result => {
+        const newData = result.categories
+        // this.setState({
+        // ...this.state,        
+        // startData: newData           
+        // });
+      console.log(newData)     
+    });
 
     const queryCurrencies = new Query("currencies", true)      
       client.post(queryCurrencies).then(result => {this.setState({
