@@ -30,6 +30,10 @@
     display: block;
 }
 
+.productItem:hover .inStockFalse {
+    display: block;
+}
+
 .priceNumber {
     display: block;
     padding-left: 3px;
@@ -70,17 +74,48 @@
     top: 70%;
     left: 80%;
     display: none;
-}
+    cursor: cell;
+    }
 
 .prodAdd:hover {
     border: 2px solid #31a550;
 }
 
-.prodAdd > span {
+.cartIcon {
     display: block;
     width: 100%;
     height: 100%;
     background-image: url(../../../Images/white-cart.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    position: relative;
 }
+
+.redLine {
+    display: none;
+    width: 3px;
+    height: 48px;
+    left: 21px;
+    top: -1px;
+    transform: rotate(45deg);
+    position: absolute;
+    background-color: crimson;
+}
+
+.inStockFalse {
+    width: 50px;
+    height: 50px;
+    border: 2px solid crimson; 
+    border-radius: 50%;
+    background-color: #c8e98c;
+    position: absolute;
+    top: 70%;
+    left: 80%;
+    display: none;
+    cursor: not-allowed;   
+}
+
+.inStockFalse .redLine {
+    display: block;
+}
+

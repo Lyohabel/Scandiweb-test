@@ -65,10 +65,13 @@ class Test extends React.Component {
             <NavLink className={styles.link} to="/">
                     To start page
             </NavLink>
+
+            <button onClick={() => this.props.changeInf()} className={styles.test}>TEST-2</button>
             
             <button onClick={() => this.testSth()} className={styles.test}>TEST</button>
-            <div>{this.context.currencySimbol}</div>
+            <div>{this.props.inf}</div>
             <div>{this.context.startData[0].name}</div>
+            <div>{this.context.inf2}</div>
           </div>
       </section>
     );

@@ -24,11 +24,23 @@ class App extends React.Component {
       display: 'none',
       tech: '',
       currencies: '',
-      prodData: ''  
+      prodData: '',
+      inf: 'XXX',
+      inf2: 'AAA'
   }
 
     this.changeCountCart = this.changeCountCart.bind(this);
-    this.changeCurrency = this.changeCurrency.bind(this);	
+    this.changeCurrency = this.changeCurrency.bind(this);
+    this.changeInf = this.changeInf.bind(this);
+    
+  }
+
+  changeInf() {
+    this.setState({
+      ...this.state,
+      inf: 'ZZZZ',
+      inf2: 'BBBB'     
+    })
   }
 
   changeCountCart(inStock) {
@@ -40,13 +52,13 @@ class App extends React.Component {
         countCart: newCount,
         display: 'flex'      
       })
-    } else {
-      console.log(inStock)
-    }   
+    } // else {
+    //   console.log(inStock)
+    // }   
   }
 
   changeCurrency(event) {    
-    const newCurrencySimbol = event.target.innerHTML.split('', 2);
+    const newCurrencySimbol = event.target.innerHTML.split(' ', 1);
     const newCurrency = event.target.innerHTML.split(' ')[1];
     const newCurrencyNumber = this.state.currencies.indexOf(newCurrency);
     this.setState({
@@ -103,7 +115,8 @@ class App extends React.Component {
             categoriesData: this.state.categoriesData,
             currencySimbol: this.state.currencySimbol,
             currencyNumber: this.state.currencyNumber,
-            currencies: this.state.currencies
+            currencies: this.state.currencies,
+            inf2: this.state.inf2           
             }}>
             <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display}/>          
             <Switch>
@@ -112,7 +125,7 @@ class App extends React.Component {
               </Route>
 
               <Route path='/test'>
-                <Test products={this.state.products} currencies={this.state.currencies}/>                
+                <Test products={this.state.products} currencies={this.state.currencies} changeInf={this.changeInf} inf={this.state.inf}/>                
               </Route>
 
               <Route path='/tech'>                

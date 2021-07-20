@@ -13,11 +13,13 @@ class Product extends React.Component {
       img: '',
       brand: '',
       name: '',
-      price: '',
+      prices: '',
+      instok: '',
       xs: styles.size,
       s: styles.sizeActive,
       m: styles.size,
-      l: styles.size      
+      l: styles.size,
+      add: styles.add     
     }
 
     //this.methodeName = this.methodeName.bind(this)
@@ -40,8 +42,16 @@ class Product extends React.Component {
       const gallery = result.product.gallery
       const brand = result.product.brand
       const name = result.product.name
+      const instock = result.product.inStock
       const img = gallery[0]
-      const price = result.product.prices[this.context.currencyNumber].amount
+      const prices = [
+        result.product.prices[0].amount,
+        result.product.prices[1].amount,
+        result.product.prices[2].amount,
+        result.product.prices[3].amount,
+        result.product.prices[4].amount
+      ]
+
 
       // let inf2 = inf.find((element) => {if(element.id === id) return element}) 
 
@@ -52,7 +62,8 @@ class Product extends React.Component {
       img: img,
       brand: brand,
       name: name,
-      price: price    
+      instock: instock,
+      prices: prices    
       }); 
       
       console.log(this.state.product);      
@@ -130,9 +141,9 @@ class Product extends React.Component {
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 
-                <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span>{this.state.price}</div>
+                <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => this.props.changeCountCart()} className={styles.add}>Add to cart</button>
+                <button onClick={() => this.props.changeCountCart(this.state.instock)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
 
                 <span className={styles.prodDescription}>Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses and party dresses from all your favorite brands.</span>
 

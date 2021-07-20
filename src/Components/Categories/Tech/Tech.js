@@ -17,7 +17,7 @@ class Tech extends React.Component {
   createList() {    
     return this.state.currentCategoryData && this.state.currentCategoryData.map(item =>
       <li className={styles.productItem} id={item.id} key={item.id}>
-        <NavLink className={styles.prodLink} to={"/product/" + "tech;" + item.id}> 
+        <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
           <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
@@ -25,7 +25,7 @@ class Tech extends React.Component {
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.changeCountCart()} className={styles.prodAdd}><span></span></button>       
+        <button onClick={() => this.props.changeCountCart(item.inStock)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
   }
