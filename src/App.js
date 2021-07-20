@@ -6,7 +6,6 @@ import Nav from './Components/Nav/Nav';
 import StartPage from './Components/Categories/StartPage/StartPage';
 import Test from './Components/Categories/Test/Test';
 import Tech from './Components/Categories/Tech/Tech';
-import CategoryPage from './Components/Categories/CategoryPage/CategoryPage';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context'
@@ -32,14 +31,18 @@ class App extends React.Component {
     this.changeCurrency = this.changeCurrency.bind(this);	
   }
 
-  changeCountCart() {    
-    let newCount = this.state.countCart;
-    newCount++;
-    this.setState({
-      ...this.state,
-      countCart: newCount,
-      display: 'flex'      
-    })    
+  changeCountCart(inStock) {
+    if (inStock === true) {   
+      let newCount = this.state.countCart;
+      newCount++;
+      this.setState({
+        ...this.state,
+        countCart: newCount,
+        display: 'flex'      
+      })
+    } else {
+      console.log(inStock)
+    }   
   }
 
   changeCurrency(event) {    
@@ -70,17 +73,17 @@ class App extends React.Component {
 
     const queryStartData = new Query("categories", true)     
       .addField(new Field("name"))
-      .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
+      .addField(new Field("products{id, name, inStock, gallery, prices {currency,amount}, brand }"))
 
-      // .addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+      // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
   
       client.post(queryStartData).then(result => {
         const newData = result.categories
-        // this.setState({
-        // ...this.state,        
-        // startData: newData           
-        // });
-      console.log(newData)     
+        this.setState({
+        ...this.state,        
+        startData: newData           
+        });      
+      console.log(this.state.startData)    
     });
 
     const queryCurrencies = new Query("currencies", true)      
@@ -94,11 +97,18 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter >
-          <OverallData.Provider value={{categoriesList: this.state.categoriesList, categoriesData: this.state.categoriesData, currencySimbol: this.state.currencySimbol, currencyNumber: this.state.currencyNumber}}>
+          <OverallData.Provider value={{
+            startData: this.state.startData,
+            categoriesList: this.state.categoriesList,
+            categoriesData: this.state.categoriesData,
+            currencySimbol: this.state.currencySimbol,
+            currencyNumber: this.state.currencyNumber,
+            currencies: this.state.currencies
+            }}>
             <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage/>
+                <StartPage startData={this.state.startData} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>
               </Route>
 
               <Route path='/test'>
@@ -106,11 +116,7 @@ class App extends React.Component {
               </Route>
 
               <Route path='/tech'>                
-                <Tech tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart} makeProdData={this.makeProdData}/>                
-              </Route>
-
-              <Route path='/categ'>                
-                <CategoryPage tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart} makeProdData={this.makeProdData}/>                
+                <Tech tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
               </Route>
 
               <Route path='/product'>

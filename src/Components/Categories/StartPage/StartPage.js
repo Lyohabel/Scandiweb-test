@@ -1,25 +1,50 @@
 import React from 'react';
-//import { client, Query, Field } from "@tilework/opus";
+import { client, Query, Field } from "@tilework/opus";
+import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
-//import {NavLink} from 'react-router-dom';
 import * as styles from './StartPage.module.css'
 
 class StartPage extends React.Component {
-  constructor(props) { // eslint-disable-line
+  constructor(props) {
     super(props);
-    // this.state = {
-      
-    // }
+    this.state = {
+      startData: '',
+      startTitle: ''
+    }
 
-    //this.methodeName = this.methodeName.bind(this)
-	
-  } 
+    //this.createList = this.createList.bind(this)
+  }
 
-  createCategoriesList() {
-    const categoriesList = this.context.categoriesList
-    return categoriesList && categoriesList.map(item =>
-      <li className={styles.category} id={item.category} key={item.category}>
-        {item.category}     
+  componentDidMount() {    
+    client.setEndpoint("http://localhost:4000/graphql");
+    
+    const queryStartData = new Query("categories", true)     
+      .addField(new Field("name"))
+      .addField(new Field("products{id, name, inStock, gallery, prices {currency,amount}}"))      
+  
+      client.post(queryStartData).then(result => {
+        const newData = result.categories[0].products
+        const newTitle = result.categories[0].name
+        this.setState({               
+        startData: newData,
+        startTitle: newTitle           
+        });      
+      //console.log(this.state.startData)    
+    });
+  }
+
+  createList() {      
+    return this.state.startData && this.state.startData.map(item =>
+      <li className={styles.productItem} id={item.id} key={item.id} instock={item.inStock.value}>
+        <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
+          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
+        </NavLink>
+
+        <span className={styles.prodName}>{item.name}</span>
+
+        <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
+
+        <button onClick={() => this.props.changeCountCart(item.inStock)} className={styles.prodAdd}><span></span></button>       
       </li>
     )
   }  
@@ -27,13 +52,10 @@ class StartPage extends React.Component {
   render() {
     return (
       <section className="men">
-          <div className="container">            
-            <div className={styles.startTitle}>
-              <span className={styles.startPointer}></span>
-              <h3>Select a Product Category from the menu at the top of the page:</h3>              
-            </div>
-            <ul className={styles.categoriesList}>
-              {this.createCategoriesList()}
+          <div className="container">
+            <h3 className={styles.title}>{this.state.startTitle}</h3>
+            <ul className={styles.products}>
+             {this.createList()}             
             </ul>
           </div>
       </section>

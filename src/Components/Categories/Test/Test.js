@@ -14,11 +14,11 @@ class Test extends React.Component {
   }
 
   testSth() {
-    this.setState({
-      ...this.state,
-      xxx: this.context
-    })
-    //console.log(this.state.xxx)    
+    // this.setState({
+    //   ...this.state,
+    //   xxx: this.context.startData
+    // })
+    console.log(this.context.startData[0].name)    
   }
 
   // componentWillMount() {
@@ -68,6 +68,7 @@ class Test extends React.Component {
             
             <button onClick={() => this.testSth()} className={styles.test}>TEST</button>
             <div>{this.context.currencySimbol}</div>
+            <div>{this.context.startData[0].name}</div>
           </div>
       </section>
     );
