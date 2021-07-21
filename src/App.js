@@ -5,10 +5,11 @@ import './App.css';
 import Nav from './Components/Nav/Nav';
 import StartPage from './Components/Categories/StartPage/StartPage';
 import Test from './Components/Categories/Test/Test';
-import Tech from './Components/Categories/Tech/Tech';
+import Categ from './Components/Categories/Categ/Categ';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
-import OverallData from './Context'
+import OverallData from './Context';
+//import HashChange from "react-hashchange";
 
 class App extends React.Component {
   constructor(props) {
@@ -95,7 +96,7 @@ class App extends React.Component {
         ...this.state,        
         startData: newData           
         });      
-      console.log(this.state.startData)    
+      //console.log(this.state.startData)    
     });
 
     const queryCurrencies = new Query("currencies", true)      
@@ -128,8 +129,8 @@ class App extends React.Component {
                 <Test products={this.state.products} currencies={this.state.currencies} changeInf={this.changeInf} inf={this.state.inf}/>                
               </Route>
 
-              <Route path='/tech'>                
-                <Tech tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
+              <Route path='/categ'>                
+                <Categ tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
               </Route>
 
               <Route path='/product'>

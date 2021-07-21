@@ -67,7 +67,7 @@ class Nav extends React.Component {
   createLinksList() {    
     return this.context.categoriesList && this.context.categoriesList.map(item =>
       <li onClick={(event) => this.markActive(event)} className={this.state.tech} key={item.category}>
-        <NavLink className={styles.link} to={item.category}>
+        <NavLink className={styles.link} to={"/categ/" + item.category}>
            {item.category}
         </NavLink>
       </li>      

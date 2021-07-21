@@ -1,5 +1,5 @@
 import React from 'react';
-import { client, Query, Field } from "@tilework/opus";
+import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 //import imgProd1 from '../../../ImagesTemp/black.png';
 import * as styles from './Product.module.css'

@@ -2,9 +2,9 @@ import React from 'react';
 import { client, Query, Field } from "@tilework/opus";
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
-import * as styles from './Tech.module.css';
+import * as styles from './Categ.module.css';
 
-class Tech extends React.Component {
+class Categ extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,9 +29,16 @@ class Tech extends React.Component {
       </li>
     )
   }
+
+  
+
+  changeCategory() {
+
+  }
   
   componentDidMount() {  
-    const fromHref = window.location.href.split('/')[3];
+    const fromHref = window.location.href.split('/')[4];
+    //console.log(fromHref)
         
     client.setEndpoint("http://localhost:4000/graphql");    
   
@@ -63,6 +70,6 @@ class Tech extends React.Component {
   } 
 }
 
-Tech.contextType = OverallData;
+Categ.contextType = OverallData;
 
-export default Tech;
+export default Categ;

@@ -2,6 +2,7 @@ import React from 'react';
 import { client, Query, Field } from "@tilework/opus"; // eslint-disable-line
 import OverallData from '../../../Context';
 import {NavLink} from 'react-router-dom';
+//import HashChange from "react-hashchange";
 import * as styles from './Test.module.css'
 
 class Test extends React.Component {
@@ -60,7 +61,7 @@ class Test extends React.Component {
 
   render() {
     return (
-      <section className="men">
+      <section onChange={({ hash }) => console.log({ hash })} className="men">
           <div className="container">            
             <NavLink className={styles.link} to="/">
                     To start page
