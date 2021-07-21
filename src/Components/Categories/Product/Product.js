@@ -5,7 +5,7 @@ import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 
 class Product extends React.Component {
-  constructor(props) { // eslint-disable-line
+  constructor(props) {
     super(props);
     this.state = {
       product: '',
@@ -29,7 +29,7 @@ class Product extends React.Component {
 
   componentDidMount() {
     const id = window.location.href.split('/')[4];    
-    console.log(id);    
+    //console.log(id);    
 
     client.setEndpoint("http://localhost:4000/graphql");
 

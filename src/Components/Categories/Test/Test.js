@@ -19,7 +19,20 @@ class Test extends React.Component {
     //   ...this.state,
     //   xxx: this.context.startData
     // })
-    console.log(this.context.startData[0].name)    
+    const getCookie = function getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    };
+    const wwww = getCookie('login')
+
+    if (wwww === 'usel') {
+      console.log(wwww)
+    } else {
+      console.log(false) 
+      }
+       
   }
 
   // componentWillMount() {

@@ -44,7 +44,7 @@ class StartPage extends React.Component {
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.changeCountCart(item.inStock)} className={styles.prodAdd}><span></span></button>       
+        <button onClick={() => this.props.changeCountCart(item.inStock, item.id)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
   }  

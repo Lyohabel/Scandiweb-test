@@ -17,7 +17,8 @@ class App extends React.Component {
     this.state = {
       startData: '',
       categoriesList: [],
-      currentCategoryData: '',      
+      currentCategoryData: '',
+      currentCategory: 'tech',      
       categoriesData: '',
       currencySimbol: '$',
       currencyNumber: 0,
@@ -33,6 +34,7 @@ class App extends React.Component {
     this.changeCountCart = this.changeCountCart.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);
     this.changeInf = this.changeInf.bind(this);
+    this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     
   }
 
@@ -44,8 +46,34 @@ class App extends React.Component {
     })
   }
 
-  changeCountCart(inStock) {
-    if (inStock === true) {   
+  changeCurrentCategory(event) {
+    const categ = event.target.innerHTML;
+    this.setState({
+      ...this.state,
+      currentCategory: categ             
+      });
+  }
+
+  changeLocalStorage(id, n) {
+    const cart = window.localStorage.getItem('cart');
+    //const cartItems = cart.split(',');
+    // const length = cartItems.length - 1;
+    // cartItems.splice(length, 1)
+    const jsonCart = JSON.parse(cart);
+    jsonCart.push({id: n, name: id})
+    console.log(jsonCart);
+
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  }
+
+  changeCountCart(inStock, id) {
+    if (inStock === true) {
+      if (window.localStorage.getItem('cart')) {
+        this.changeLocalStorage(id, 1)
+      } else {
+        window.localStorage.setItem('cart', JSON.stringify([{id : 1}]));
+        }      
+       
       let newCount = this.state.countCart;
       newCount++;
       this.setState({
@@ -53,9 +81,7 @@ class App extends React.Component {
         countCart: newCount,
         display: 'flex'      
       })
-    } // else {
-    //   console.log(inStock)
-    // }   
+    }  
   }
 
   changeCurrency(event) {    
@@ -67,6 +93,11 @@ class App extends React.Component {
       currencySimbol: newCurrencySimbol,
       currencyNumber: newCurrencyNumber
     }) 
+  }
+
+  componentWillMount() {
+    document.cookie = 'login=user';
+    console.log(document.cookie)
   }
 
   componentDidMount() {
@@ -119,7 +150,7 @@ class App extends React.Component {
             currencies: this.state.currencies,
             inf2: this.state.inf2           
             }}>
-            <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display}/>          
+            <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
               <Route exact path='/'>
                 <StartPage startData={this.state.startData} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>
@@ -129,8 +160,8 @@ class App extends React.Component {
                 <Test products={this.state.products} currencies={this.state.currencies} changeInf={this.changeInf} inf={this.state.inf}/>                
               </Route>
 
-              <Route path='/categ'>                
-                <Categ tech={this.state.tech} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
+              <Route exact path={`/categ/${this.state.currentCategory}`}>                
+                <Categ currentCategory={this.state.currentCategory} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
               </Route>
 
               <Route path='/product'>
@@ -144,6 +175,6 @@ class App extends React.Component {
       </BrowserRouter >
     );
   } 
-}
+} // {`/categ${}`}
 
 export default App;
