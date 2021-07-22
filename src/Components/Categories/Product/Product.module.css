@@ -91,6 +91,18 @@
     border: 1px solid #1D1F22;    
 }
 
+.color {
+    width: 19%;
+    height: 45px;    
+    border: 1px solid #1D1F22;
+} 
+
+.colorActive {
+    width: 19%;
+    height: 45px;    
+    border: 2px solid #c9380c;   
+} 
+
 .priceTitle {
     display: block;
     font-weight: bold;
@@ -166,8 +178,17 @@
 } 
 
 .prodDescription {
-    margin-top: auto;
+    margin-top: 20px;
     display: block;
     font-size: 16px;
     line-height: 26px;
+}
+
+.prodDescription h1 {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.prodDescription li {    
+    margin-bottom: 2px;
 }

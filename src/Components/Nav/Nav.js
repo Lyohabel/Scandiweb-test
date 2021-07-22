@@ -8,10 +8,11 @@ import OverallData from '../../Context';
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      test: styles.menuItem,
-      tech: styles.menuItem,      
-      categ: styles.menuItem,
+    this.state = {            
+      categ: {
+        a : styles.menuItem,
+        b : styles.active
+      },
       count: this.props.countCart,
       //cartCountIcon:  styles.hidden,
       popUp: styles.hidden
@@ -39,34 +40,18 @@ class Nav extends React.Component {
   }
 
   markActive(event) {
-    let categ = event.target.innerHTML.toLowerCase();
-    if (categ === 'tech') {
-        this.setState({
-          ...this.state,
-          categ: styles.menuItem,
-          tech: styles.active,
-          test: styles.menuItem
-        })
-      } else if (categ === 'test') {
-        this.setState({
-          ...this.state,
-          categ: styles.menuItem,
-          test: styles.active,
-          tech: styles.menuItem
-        })
-      } else if (categ === 'categ') {
-        this.setState({
-          ...this.state,
-          categ: styles.active,
-          test: styles.menuItem,
-          tech: styles.menuItem
-        })
-      } 
+    const carrentLink = event.target.closest('li');
+    const links = [...carrentLink.closest('ul').children];    
+    links.forEach(element => {
+      element.classList.remove(this.state.categ.b)
+      element.classList.add(this.state.categ.a)
+    });
+    carrentLink.classList.add(this.state.categ.b)    
   }
 
   createLinksList() {    
     return this.context.categoriesList && this.context.categoriesList.map(item =>
-      <li onClick={(event) => this.markActive(event)} className={this.state.tech} key={item.category}>
+      <li onClick={(event) => this.markActive(event)} className={this.state.categ.a} key={item.category}>
         <NavLink onClick={(event) => this.props.changeCurrentCategory(event)} className={styles.link} to={"/categ/" + item.category}>
            {item.category}
         </NavLink>

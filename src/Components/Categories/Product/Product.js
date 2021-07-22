@@ -15,10 +15,19 @@ class Product extends React.Component {
       name: '',
       prices: '',
       instok: '',
-      xs: styles.size,
-      s: styles.sizeActive,
-      m: styles.size,
-      l: styles.size,
+      attributes: '',
+      description: '',
+      sizesAndColors: '',
+      colors: '',
+      sizeButton: {
+        a : styles.size,
+        b : styles.sizeActive
+      },
+      colorButton: {
+        a : styles.color,
+        b : styles.colorActive
+      },
+
       add: styles.add     
     }
 
@@ -51,7 +60,10 @@ class Product extends React.Component {
         result.product.prices[3].amount,
         result.product.prices[4].amount
       ]
-
+      const attributes = result.product.attributes
+      const sizesAndColors = result.product.attributes[0] ? result.product.attributes[0].items : ''
+      const colors = result.product.attributes[1] ? result.product.attributes[1].items : ''
+      const description = result.product.description
 
       // let inf2 = inf.find((element) => {if(element.id === id) return element}) 
 
@@ -63,45 +75,37 @@ class Product extends React.Component {
       brand: brand,
       name: name,
       instock: instock,
-      prices: prices    
+      prices: prices,
+      attributes: attributes,
+      sizesAndColors: sizesAndColors,
+      colors: colors,
+      description: description    
       }); 
       
-      console.log(this.state.product);      
+      console.log(this.state.attributes);      
      });   
     
   }
 
   markSize(event) {
-    let categ = event.target.innerHTML.toLowerCase();
-    if (categ === 'xs') {
-      this.setState({
-        xs: styles.sizeActive,
-        s: styles.size,
-        m: styles.size,
-        l: styles.size
-      })     
-    } else if (categ === 's') {
-        this.setState({
-          xs: styles.size,
-          s: styles.sizeActive,
-          m: styles.size,
-          l: styles.size
-        })
-      } else if (categ === 'm') {
-          this.setState({
-            xs: styles.size,
-            s: styles.size,
-            m: styles.sizeActive,
-            l: styles.size
-          })
-        }  else if (categ === 'l') {
-            this.setState({
-              xs: styles.size,
-              s: styles.size,
-              m: styles.size,
-              l: styles.sizeActive
-            })
-          }    
+    //console.log(event.target)
+    const carrentButton = event.target;
+    const buttons = [...carrentButton.closest('div').children];    
+    buttons.forEach(element => {
+      element.classList.remove(this.state.sizeButton.b)
+      element.classList.add(this.state.sizeButton.a)
+    });
+    carrentButton.classList.add(this.state.sizeButton.b)   
+  }
+
+  markColor(event) {    
+    const carrentButton = event.target;
+    const buttons = [...carrentButton.closest('div').children];    
+    buttons.forEach(element => {
+      element.classList.remove(this.state.colorButton.b)
+      element.classList.add(this.state.colorButton.a)
+    });
+    carrentButton.classList.add(this.state.colorButton.b)   
   }
 
   creatGallery() {
@@ -112,6 +116,55 @@ class Product extends React.Component {
       return this.state.gallery && this.state.gallery.map(item =>
         <li key={item} className={styles.chooseColor}><img className={styles.imgChooseColor} src={item} alt="#"/></li>
       )
+    }
+  }
+
+  showAttributeName() {
+    if (this.state.attributes.length === 0) return ''
+      else if (this.state.attributes.length === 1) return 'SIZE:'
+        else if (this.state.attributes.length === 2) return 'COLOR:'
+          else if (this.state.attributes.length > 2) return 'XXX'
+  }
+
+  createSizesButtons(attrs) {
+    return attrs && attrs.map((item, index) =>
+      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a}>{item.value}</button>
+      )
+  }
+
+  createColorsButtons(attrs) {
+    return attrs && attrs.map((item, index) =>
+      <button id={index} key={item.value} onClick={(event) => this.markColor(event)} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value}}></button>
+      )
+  }
+
+  setAttributes() {
+    if (this.state.attributes.length === 0) return ''
+      else if (this.state.attributes.length === 1) {
+         return (
+          <div className={styles.chooseSize}>           {this.createSizesButtons(this.state.sizesAndColors)}           
+          </div> 
+          )} else if (this.state.attributes.length === 2) {
+            const attrLength = this.state.sizesAndColors.length
+            if (attrLength > 2) { return  (
+              <div className={styles.chooseSize}>
+                {this.createColorsButtons(this.state.sizesAndColors)}           
+              </div> 
+            )
+              } else return (
+                <div className={styles.chooseSize}>
+                  {this.createColorsButtons(this.state.colors)}           
+                </div>
+                )
+            } else if (this.state.attributes.length === 3) {
+              return ('ZZZ')
+              } 
+  }
+
+  insertDescriptions() {   
+    const descrWrapper = document.querySelector('.Product_prodDescription__2eZrW');
+    if (descrWrapper) {
+      descrWrapper.innerHTML = this.state.description;
     }
   }
 
@@ -129,15 +182,16 @@ class Product extends React.Component {
               <div className={styles.prodWrapper}>
                 <h3 className={styles.title}>{this.state.brand}</h3>
                 <span className={styles.subtitle}>{this.state.name}</span>
-                <h4 className={styles.sizeTitle}>Size:</h4>
+                <h4 className={styles.sizeTitle}>{this.showAttributeName()}</h4>
 
-                <div className={styles.chooseSize}>
+                {this.setAttributes()}
+
+                {/* <div className={styles.chooseSize}>
                   <button onClick={(event) => this.markSize(event)} className={this.state.xs}>XS</button>
                   <button onClick={(event) => this.markSize(event)} className={this.state.s}>S</button>
                   <button onClick={(event) => this.markSize(event)} className={this.state.m}>M</button>
-                  <button onClick={(event) => this.markSize(event)} className={this.state.l}>L</button>
-                  {/* <button onClick={() => this.creatGallery()} className={this.state.l}>CG</button> */}
-                </div>
+                  <button onClick={(event) => this.markSize(event)} className={this.state.l}>L</button>                 
+                </div> */}
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 
@@ -145,7 +199,7 @@ class Product extends React.Component {
 
                 <button onClick={() => this.props.changeCountCart(this.state.instock)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
 
-                <span className={styles.prodDescription}>Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses and party dresses from all your favorite brands.</span>
+                <span id="dis" className={styles.prodDescription}>{this.insertDescriptions()}</span>
 
               </div>              
             </div>              

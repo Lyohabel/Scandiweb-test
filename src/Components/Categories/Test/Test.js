@@ -19,9 +19,9 @@ class Test extends React.Component {
     //   ...this.state,
     //   xxx: this.context.startData
     // })
-    const getCookie = function getCookie(name) {
-      let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    const getCookie = function getCookie(name) { 
+      let matches = document.cookie.match(new RegExp( 
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)" // eslint-disable-line
       ));
       return matches ? decodeURIComponent(matches[1]) : undefined;
     };
@@ -80,7 +80,7 @@ class Test extends React.Component {
                     To start page
             </NavLink>
 
-            <button onClick={() => this.props.changeInf()} className={styles.test}>TEST-2</button>
+            {/* <button onClick={() => this.props.changeInf()} className={styles.test}>TEST-2</button> */}
             
             <button onClick={() => this.testSth()} className={styles.test}>TEST</button>
             <div>{this.props.inf}</div>

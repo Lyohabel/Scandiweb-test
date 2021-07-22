@@ -17,33 +17,18 @@ class App extends React.Component {
     this.state = {
       startData: '',
       categoriesList: [],
-      currentCategoryData: '',
       currentCategory: 'tech',      
-      categoriesData: '',
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      display: 'none',
-      tech: '',
-      currencies: '',
-      prodData: '',
-      inf: 'XXX',
-      inf2: 'AAA'
+      display: 'none',      
+      currencies: ''           
   }
 
     this.changeCountCart = this.changeCountCart.bind(this);
-    this.changeCurrency = this.changeCurrency.bind(this);
-    this.changeInf = this.changeInf.bind(this);
+    this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     
-  }
-
-  changeInf() {
-    this.setState({
-      ...this.state,
-      inf: 'ZZZZ',
-      inf2: 'BBBB'     
-    })
   }
 
   changeCurrentCategory(event) {
@@ -55,10 +40,7 @@ class App extends React.Component {
   }
 
   changeLocalStorage(id, n) {
-    const cart = window.localStorage.getItem('cart');
-    //const cartItems = cart.split(',');
-    // const length = cartItems.length - 1;
-    // cartItems.splice(length, 1)
+    const cart = window.localStorage.getItem('cart');    
     const jsonCart = JSON.parse(cart);
     jsonCart.push({id: n, name: id})
     console.log(jsonCart);
@@ -95,10 +77,10 @@ class App extends React.Component {
     }) 
   }
 
-  componentWillMount() {
-    document.cookie = 'login=user';
-    console.log(document.cookie)
-  }
+  // componentWillMount() {    // ИМИТАЦИЯ РЕГИСТРАЦИИ ПОЛЬЗОВАТЕЛЯ
+  //   document.cookie = 'login=user';
+  //   console.log(document.cookie)
+  // }
 
   componentDidMount() {
     client.setEndpoint("http://localhost:4000/graphql");
@@ -126,8 +108,7 @@ class App extends React.Component {
         this.setState({
         ...this.state,        
         startData: newData           
-        });      
-      //console.log(this.state.startData)    
+        }); 
     });
 
     const queryCurrencies = new Query("currencies", true)      
@@ -143,12 +124,10 @@ class App extends React.Component {
       <BrowserRouter >
           <OverallData.Provider value={{
             startData: this.state.startData,
-            categoriesList: this.state.categoriesList,
-            categoriesData: this.state.categoriesData,
+            categoriesList: this.state.categoriesList,            
             currencySimbol: this.state.currencySimbol,
             currencyNumber: this.state.currencyNumber,
-            currencies: this.state.currencies,
-            inf2: this.state.inf2           
+            currencies: this.state.currencies                      
             }}>
             <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
@@ -175,6 +154,6 @@ class App extends React.Component {
       </BrowserRouter >
     );
   } 
-} // {`/categ${}`}
+} 
 
 export default App;
