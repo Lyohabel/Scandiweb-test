@@ -8,6 +8,7 @@ class Product extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       product: '',
       gallery: '',
       img: '',
@@ -48,6 +49,7 @@ class Product extends React.Component {
 
     client.post(query).then(result => {
       const product = result.product
+      const id = result.product.id
       const gallery = result.product.gallery
       const brand = result.product.brand
       const name = result.product.name
@@ -70,6 +72,7 @@ class Product extends React.Component {
       this.setState({
       ...this.state,
       product: product,
+      id: id,
       gallery: gallery,
       img: img,
       brand: brand,
@@ -86,6 +89,36 @@ class Product extends React.Component {
       //console.log(this.state.attributes[0].items);      
      });   
     
+  }
+
+  addAttr_1ToCart(id, attr) {
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+    
+    jsonCart.forEach(element => {
+      if (element.name === id) {
+        element.attr_1 = +attr;             
+      }      
+    })
+    console.log(attr)
+    console.log(jsonCart);
+
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  }
+
+  addAttr_2ToCart(id, attr) {
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+    
+    jsonCart.forEach(element => {
+      if (element.name === id) {
+        element.attr_2 = +attr;             
+      }      
+    })
+    console.log(attr)
+    console.log(jsonCart);
+
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
   markSize(event) {
@@ -129,15 +162,15 @@ class Product extends React.Component {
 
   createSizesButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_1ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createColorsButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => this.markColor(event)} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
+      <button id={index} key={item.value} onClick={(event) => {this.markColor(event); this.addAttr_1ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
       )
-  }
+  }  // {() => { func1(); func2();}}
 
   setAttributes() {
     if (this.state.attributes.length === 0) return ''
@@ -170,7 +203,7 @@ class Product extends React.Component {
 
   createOptionButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_2ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
@@ -224,7 +257,7 @@ class Product extends React.Component {
 
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => this.props.addToCart(this.state.instock)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
+                <button onClick={() => this.props.addToCart(this.state.instock, this.state.id)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
 
                 <span id="dis" className={styles.prodDescription}>{this.insertDescriptions()}</span>
 

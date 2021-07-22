@@ -41,8 +41,21 @@ class App extends React.Component {
 
   changeLocalStorage(id, n) {
     const cart = window.localStorage.getItem('cart');    
-    const jsonCart = JSON.parse(cart);
-    jsonCart.push({id: n, name: id})
+    let jsonCart = JSON.parse(cart);
+
+    const indicator = jsonCart.find(item => (item.name === id && item.attr_1 === 0 && item.attr_2 === 0));
+    
+    //jsonCart.splice(0,1)    
+    
+    if (!indicator) {
+      jsonCart.push({id: n, name: id, attr_1: 0, attr_2: 0})
+    } else {
+      jsonCart.forEach(element => {
+        if (element.name === id) {
+          element.id++;             
+        }      
+      })
+    }   
     console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
@@ -53,7 +66,7 @@ class App extends React.Component {
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, 1)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 1}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 1, attr_1: 0, attr_2: 0}]));
         }      
        
       let newCount = this.state.countCart;
