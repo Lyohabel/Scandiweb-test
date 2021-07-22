@@ -17,8 +17,8 @@ class Product extends React.Component {
       instok: '',
       attributes: '',
       description: '',
-      sizesAndColors: '',
-      colors: '',
+      attr_1: '',
+      attr_2: '',
       sizeButton: {
         a : styles.size,
         b : styles.sizeActive
@@ -61,8 +61,8 @@ class Product extends React.Component {
         result.product.prices[4].amount
       ]
       const attributes = result.product.attributes
-      const sizesAndColors = result.product.attributes[0] ? result.product.attributes[0].items : ''
-      const colors = result.product.attributes[1] ? result.product.attributes[1].items : ''
+      const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items : ''
+      const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items : ''
       const description = result.product.description
 
       // let inf2 = inf.find((element) => {if(element.id === id) return element}) 
@@ -77,12 +77,13 @@ class Product extends React.Component {
       instock: instock,
       prices: prices,
       attributes: attributes,
-      sizesAndColors: sizesAndColors,
-      colors: colors,
+      attr_1: attr_1,
+      attr_2: attr_2,
       description: description    
       }); 
       
-      console.log(this.state.attributes);      
+      console.log(this.state.product);
+      //console.log(this.state.attributes[0].items);      
      });   
     
   }
@@ -123,18 +124,18 @@ class Product extends React.Component {
     if (this.state.attributes.length === 0) return ''
       else if (this.state.attributes.length === 1) return 'SIZE:'
         else if (this.state.attributes.length === 2) return 'COLOR:'
-          else if (this.state.attributes.length > 2) return 'XXX'
+          else if (this.state.attributes.length > 2) return ''
   }
 
   createSizesButtons(attrs) {
-    return attrs && attrs.map((item, index) =>
-      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a}>{item.value}</button>
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createColorsButtons(attrs) {
-    return attrs && attrs.map((item, index) =>
-      <button id={index} key={item.value} onClick={(event) => this.markColor(event)} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value}}></button>
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} onClick={(event) => this.markColor(event)} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
       )
   }
 
@@ -142,23 +143,53 @@ class Product extends React.Component {
     if (this.state.attributes.length === 0) return ''
       else if (this.state.attributes.length === 1) {
          return (
-          <div className={styles.chooseSize}>           {this.createSizesButtons(this.state.sizesAndColors)}           
+          <div className={styles.chooseSize}>
+            {this.createSizesButtons(this.state.attr_1)}           
           </div> 
           )} else if (this.state.attributes.length === 2) {
-            const attrLength = this.state.sizesAndColors.length
+            const attrLength = this.state.attr_1.length
             if (attrLength > 2) { return  (
               <div className={styles.chooseSize}>
-                {this.createColorsButtons(this.state.sizesAndColors)}           
+                {this.createColorsButtons(this.state.attr_1)}           
               </div> 
             )
               } else return (
                 <div className={styles.chooseSize}>
-                  {this.createColorsButtons(this.state.colors)}           
+                  {this.createColorsButtons(this.state.attr_2)}           
                 </div>
                 )
             } else if (this.state.attributes.length === 3) {
-              return ('ZZZ')
+              return ('')
               } 
+  }
+
+  showAdditionalAttributeName() {
+    if (this.state.attributes.length === (0 || 1)) return ''
+      else if (this.state.attributes.length > 1) return 'OPTIONS:'        
+  }
+
+  createOptionButtons(attrs) {
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} onClick={(event) => this.markSize(event)} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      )
+  }
+
+  setAdditionalAttributes() {
+    if (this.state.attributes.length === (0 || 1)) return ''
+      else if (this.state.attributes.length > 1) {
+        const attrLength = this.state.attr_1.length
+        if (attrLength > 2) {
+          return (
+            <div className={styles.chooseSize}>
+              {this.createOptionButtons(this.state.attr_2)}           
+            </div> 
+          )
+        } else return (
+          <div className={styles.chooseSize}>
+            {this.createOptionButtons(this.state.attr_1)}           
+          </div>
+          )
+      }
   }
 
   insertDescriptions() {   
@@ -182,22 +213,18 @@ class Product extends React.Component {
               <div className={styles.prodWrapper}>
                 <h3 className={styles.title}>{this.state.brand}</h3>
                 <span className={styles.subtitle}>{this.state.name}</span>
-                <h4 className={styles.sizeTitle}>{this.showAttributeName()}</h4>
 
+                <h4 className={styles.sizeTitle}>{this.showAttributeName()}</h4>
                 {this.setAttributes()}
 
-                {/* <div className={styles.chooseSize}>
-                  <button onClick={(event) => this.markSize(event)} className={this.state.xs}>XS</button>
-                  <button onClick={(event) => this.markSize(event)} className={this.state.s}>S</button>
-                  <button onClick={(event) => this.markSize(event)} className={this.state.m}>M</button>
-                  <button onClick={(event) => this.markSize(event)} className={this.state.l}>L</button>                 
-                </div> */}
+                <h4 className={styles.sizeTitle}>{this.showAdditionalAttributeName()}</h4>
+                {this.setAdditionalAttributes()}                
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => this.props.changeCountCart(this.state.instock)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
+                <button onClick={() => this.props.addToCart(this.state.instock)} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
 
                 <span id="dis" className={styles.prodDescription}>{this.insertDescriptions()}</span>
 
@@ -207,7 +234,7 @@ class Product extends React.Component {
       </section>
     );
   } 
-} //{item.prices[this.context.currencyNumber].amount}
+}
 
 Product.contextType = OverallData;
 

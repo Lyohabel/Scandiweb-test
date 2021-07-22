@@ -25,7 +25,7 @@ class App extends React.Component {
       currencies: ''           
   }
 
-    this.changeCountCart = this.changeCountCart.bind(this);
+    this.addToCart = this.addToCart.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     
@@ -48,7 +48,7 @@ class App extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  changeCountCart(inStock, id) {
+  addToCart(inStock, id) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, 1)
@@ -140,11 +140,11 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>                
+                <Categ currentCategory={this.state.currentCategory} currencies={this.state.currencies} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>
-                <Product changeCountCart={this.changeCountCart}/>
+                <Product addToCart={this.addToCart}/>
               </Route>
               <Route path='/cart'>
                 <Cart/>

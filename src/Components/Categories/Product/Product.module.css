@@ -64,7 +64,7 @@
 }
 
 .size {
-    width: 65px;
+    /* width: 65px; */
     height: 45px;
     font-family: Source Sans Pro;
     font-size: 16px;
@@ -78,7 +78,7 @@
 }
 
 .sizeActive {
-    width: 65px;
+    /* width: 65px; */
     height: 45px;
     font-family: Source Sans Pro;
     font-size: 16px;
@@ -92,13 +92,13 @@
 }
 
 .color {
-    width: 19%;
+    /* width: 19%; */
     height: 45px;    
     border: 1px solid #1D1F22;
 } 
 
 .colorActive {
-    width: 19%;
+    /* width: 19%; */
     height: 45px;    
     border: 2px solid #c9380c;   
 } 
