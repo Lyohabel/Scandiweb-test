@@ -20,6 +20,7 @@ class Product extends React.Component {
       description: '',
       attr_1: '',
       attr_2: '',
+      attr_3: '',
       sizeButton: {
         a : styles.size,
         b : styles.sizeActive
@@ -45,7 +46,9 @@ class Product extends React.Component {
 
     const query = new Query("product", true)
    .addArgument("id", "String!", id)   
-   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {items {value}}", "prices {currency,amount }"])
+   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
+
+   // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
 
     client.post(query).then(result => {
       const product = result.product
@@ -65,6 +68,7 @@ class Product extends React.Component {
       const attributes = result.product.attributes
       const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items : ''
       const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items : ''
+      const attr_3 = result.product.attributes[2] ? result.product.attributes[2].items : ''
       const description = result.product.description
 
       // let inf2 = inf.find((element) => {if(element.id === id) return element}) 
@@ -82,10 +86,15 @@ class Product extends React.Component {
       attributes: attributes,
       attr_1: attr_1,
       attr_2: attr_2,
+      attr_3: attr_3,
       description: description    
       }); 
-      
-      console.log(this.state.product);
+      //console.log(this.state.attributes[0].id);
+      //console.log(this.state.attributes[1].id);
+      //console.log(this.state.attributes[2].id);
+      console.log(this.state.attr_1);
+      console.log(this.state.attr_2);
+      console.log(this.state.attr_3);
       //console.log(this.state.attributes[0].items);      
      });   
     
@@ -153,11 +162,11 @@ class Product extends React.Component {
     }
   }
 
-  showAttributeName() {
-    if (this.state.attributes.length === 0) return ''
-      else if (this.state.attributes.length === 1) return 'SIZE:'
-        else if (this.state.attributes.length === 2) return 'COLOR:'
-          else if (this.state.attributes.length > 2) return ''
+  showAttributeName(ind) {
+    if (this.state.attributes.length === 0) return '';
+      else return `${this.state.attributes[ind].id.toUpperCase()}:`
+        // else if (this.state.attributes[0].id === 'Color' || this.state.attributes[1].id === 'Color') return 'COLOR:'
+        //   else if (this.state.attributes[0].id === 'Capacity') return 'CAPACITY:'
   }
 
   createSizesButtons(attrs) {
@@ -174,31 +183,57 @@ class Product extends React.Component {
 
   setAttributes() {
     if (this.state.attributes.length === 0) return ''
-      else if (this.state.attributes.length === 1) {
+      else if (this.state.attributes[0].id === 'Size') {
          return (
           <div className={styles.chooseSize}>
             {this.createSizesButtons(this.state.attr_1)}           
           </div> 
-          )} else if (this.state.attributes.length === 2) {
-            const attrLength = this.state.attr_1.length
-            if (attrLength > 2) { return  (
+          )} else if (this.state.attributes[0].id === 'Color') {
+            return (
               <div className={styles.chooseSize}>
                 {this.createColorsButtons(this.state.attr_1)}           
               </div> 
-            )
-              } else return (
+            )} else if (this.state.attributes[0].id === 'Capacity') {
+              return (
                 <div className={styles.chooseSize}>
-                  {this.createColorsButtons(this.state.attr_2)}           
-                </div>
-                )
-            } else if (this.state.attributes.length === 3) {
-              return ('')
-              } 
+                  {this.createCapacityButtons(this.state.attr_1)}           
+                </div> 
+              )} 
+  }
+
+  setAttributes_2() {
+    if (this.state.attributes.length < 2) return ''
+      else if (this.state.attributes[1].id === 'Size') {
+         return (
+          <div className={styles.chooseSize}>
+            {this.createSizesButtons(this.state.attr_2)}           
+          </div> 
+          )} else if (this.state.attributes[1].id === 'Color') {
+            return (
+              <div className={styles.chooseSize}>
+                {this.createColorsButtons(this.state.attr_2)}           
+              </div> 
+            )} else if (this.state.attributes[1].id === 'Capacity') {
+              return (
+                <div className={styles.chooseSize}>
+                  {this.createCapacityButtons(this.state.attr_2)}           
+                </div> 
+              )} else { return (
+                  <div className={styles.chooseSize}>
+                    {this.createOptionButtons(this.state.attr_2)}           
+                  </div> 
+                )} 
   }
 
   showAdditionalAttributeName() {
     if (this.state.attributes.length === (0 || 1)) return ''
       else if (this.state.attributes.length > 1) return 'OPTIONS:'        
+  }
+
+  createCapacityButtons(attrs) {
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_2ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      )
   }
 
   createOptionButtons(attrs) {
@@ -247,11 +282,11 @@ class Product extends React.Component {
                 <h3 className={styles.title}>{this.state.brand}</h3>
                 <span className={styles.subtitle}>{this.state.name}</span>
 
-                <h4 className={styles.sizeTitle}>{this.showAttributeName()}</h4>
+                <h4 className={styles.sizeTitle}>{this.showAttributeName(0)}</h4>
                 {this.setAttributes()}
 
-                <h4 className={styles.sizeTitle}>{this.showAdditionalAttributeName()}</h4>
-                {this.setAdditionalAttributes()}                
+                <h4 className={styles.sizeTitle}>{this.state.attributes[1] ? this.showAttributeName(1) : ''}</h4>
+                {this.setAttributes_2()}                
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 

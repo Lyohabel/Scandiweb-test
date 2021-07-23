@@ -21,7 +21,7 @@ class Categ extends React.Component {
           <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
-        <span onClick={(event) => this.props.makeProdData(event)} className={styles.prodName}>{item.name}</span>
+        <h3 className={styles.prodTitle}>{item.brand} <span className={styles.subtitle}>{item.name}</span></h3>                
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
@@ -44,7 +44,7 @@ class Categ extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : fromHref})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
   
       client.post(query).then(result => {
         const newData = result.category.products
@@ -63,7 +63,7 @@ class Categ extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : fromHref})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
   
       client.post(query).then(result => {
         const newData = result.category.products

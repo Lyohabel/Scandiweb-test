@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'; // eslint-disable-line
+import { client, Query, Field } from "@tilework/opus";
 import imgProd1 from '../../../ImagesTemp/black.png';
 import imgProd2 from '../../../ImagesTemp/glasses.png';
 import * as styles from './Cart.module.css'
@@ -13,8 +14,25 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
-
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+    jsonCart.splice(0,1);
+    console.log(jsonCart);
     
+    client.setEndpoint("http://localhost:4000/graphql");
+
+    const query = new Query("category", true)     
+    .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+
+    // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
+  
+      client.post(query).then(result => {
+        const newData = result.category.products
+        this.setState({
+        ...this.state,        
+        currentCategoryData: newData           
+      });     
+    });   
 
   } 
 
