@@ -43,12 +43,10 @@ class App extends React.Component {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
 
-    const indicator = jsonCart.find(item => (item.name === id && item.attr_1 === 0 && item.attr_2 === 0));
-    
-    //jsonCart.splice(0,1)    
+    const indicator = jsonCart.find(item => (item.name === id && item.size === 0 && item.color === 0 && item.capacity === 0 && item.option_1 === 0 && item.option_2 === 0));
     
     if (!indicator) {
-      jsonCart.push({id: n, name: id, attr_1: 0, attr_2: 0})
+      jsonCart.push({id: n, name: id, size: 0, color: 0, capacity: 0, option_1: 0, option_2: 0})
     } else {
       jsonCart.forEach(element => {
         if (element.name === id) {

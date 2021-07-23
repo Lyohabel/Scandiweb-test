@@ -18,6 +18,7 @@ class Product extends React.Component {
       instok: '',
       attributes: '',
       description: '',
+      //attrNames: '',
       attr_1: '',
       attr_2: '',
       attr_3: '',
@@ -65,6 +66,9 @@ class Product extends React.Component {
         result.product.prices[3].amount,
         result.product.prices[4].amount
       ]
+      // const attrNames = [
+
+      // ]
       const attributes = result.product.attributes
       const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items : ''
       const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items : ''
@@ -92,47 +96,69 @@ class Product extends React.Component {
       //console.log(this.state.attributes[0].id);
       //console.log(this.state.attributes[1].id);
       //console.log(this.state.attributes[2].id);
-      console.log(this.state.attr_1);
-      console.log(this.state.attr_2);
+      // console.log(this.state.attr_1);
+      // console.log(this.state.attr_2);
       console.log(this.state.attr_3);
       //console.log(this.state.attributes[0].items);      
      });   
     
   }
 
-  addAttr_1ToCart(id, attr) {
+  addAttrToCart(id, attr, value) {
+    if (!window.localStorage.getItem('cart')) return;
+
     const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
-    
-    jsonCart.forEach(element => {
+    let jsonCart = JSON.parse(cart);    
+
+    jsonCart.forEach(element => {      
       if (element.name === id) {
-        element.attr_1 = +attr;             
+        element[attr] = +value;             
       }      
     })
-    console.log(attr)
+    //console.log(attr)
     console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addAttr_2ToCart(id, attr) {
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
+  // addAttr_2ToCart(id, attr) {
+  //   const cart = window.localStorage.getItem('cart');    
+  //   let jsonCart = JSON.parse(cart);
     
-    jsonCart.forEach(element => {
-      if (element.name === id) {
-        element.attr_2 = +attr;             
-      }      
-    })
-    console.log(attr)
-    console.log(jsonCart);
+  //   jsonCart.forEach(element => {
+  //     if (element.name === id) {
+  //       element.attr_2 = +attr;             
+  //     }      
+  //   })
+  //   //console.log(attr)
+  //   console.log(jsonCart);
 
-    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-  }
+  //   window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  // }
+
+  // addAttr_3ToCart(id, attr) {
+  //   const cart = window.localStorage.getItem('cart');    
+  //   let jsonCart = JSON.parse(cart);
+    
+  //   jsonCart.forEach(element => {
+  //     if (element.name === id) {
+  //       element.attr_3 = +attr;             
+  //     }      
+  //   })
+  //   //console.log(attr)
+  //   console.log(jsonCart);
+
+  //   window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  // }
 
   markSize(event) {
-    //console.log(event.target)
+    //console.log(event.target)    
     const carrentButton = event.target;
+
+    const xxx = carrentButton.closest('.attrWrapper').firstElementChild.innerHTML
+    console.log(xxx)
+
+
     const buttons = [...carrentButton.closest('div').children];    
     buttons.forEach(element => {
       element.classList.remove(this.state.sizeButton.b)
@@ -171,13 +197,13 @@ class Product extends React.Component {
 
   createSizesButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_1ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, "size", event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createColorsButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => {this.markColor(event); this.addAttr_1ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
+      <button id={index} key={item.value} onClick={(event) => {this.markColor(event); this.addAttrToCart(this.state.id, "color", event.target.id)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
       )
   }  // {() => { func1(); func2();}}
 
@@ -225,40 +251,64 @@ class Product extends React.Component {
                 )} 
   }
 
-  showAdditionalAttributeName() {
-    if (this.state.attributes.length === (0 || 1)) return ''
-      else if (this.state.attributes.length > 1) return 'OPTIONS:'        
+  setAttributes_3() {
+    if (this.state.attributes.length < 3) return ''
+      else if (this.state.attributes[1].id === 'Size') {
+         return (
+          <div className={styles.chooseSize}>
+            {this.createSizesButtons(this.state.attr_3)}           
+          </div> 
+          )} else if (this.state.attributes[1].id === 'Color') {
+            return (
+              <div className={styles.chooseSize}>
+                {this.createColorsButtons(this.state.attr_3)}           
+              </div> 
+            )} else if (this.state.attributes[1].id === 'Capacity') {
+              return (
+                <div className={styles.chooseSize}>
+                  {this.createCapacityButtons(this.state.attr_3)}           
+                </div> 
+              )} else { return (
+                  <div className={styles.chooseSize}>
+                    {this.createOptionButtons(this.state.attr_3)}           
+                  </div> 
+                )} 
   }
+
+  // showAdditionalAttributeName() {
+  //   if (this.state.attributes.length === (0 || 1)) return ''
+  //     else if (this.state.attributes.length > 1) return 'OPTIONS:'        
+  // }
 
   createCapacityButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_2ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, "capacity", event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createOptionButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttr_2ToCart(this.state.id, event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, "option_1", event.target.id)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
-  setAdditionalAttributes() {
-    if (this.state.attributes.length === (0 || 1)) return ''
-      else if (this.state.attributes.length > 1) {
-        const attrLength = this.state.attr_1.length
-        if (attrLength > 2) {
-          return (
-            <div className={styles.chooseSize}>
-              {this.createOptionButtons(this.state.attr_2)}           
-            </div> 
-          )
-        } else return (
-          <div className={styles.chooseSize}>
-            {this.createOptionButtons(this.state.attr_1)}           
-          </div>
-          )
-      }
-  }
+  // setAdditionalAttributes() {
+  //   if (this.state.attributes.length === (0 || 1)) return ''
+  //     else if (this.state.attributes.length > 1) {
+  //       const attrLength = this.state.attr_1.length
+  //       if (attrLength > 2) {
+  //         return (
+  //           <div className={styles.chooseSize}>
+  //             {this.createOptionButtons(this.state.attr_2)}           
+  //           </div> 
+  //         )
+  //       } else return (
+  //         <div className={styles.chooseSize}>
+  //           {this.createOptionButtons(this.state.attr_1)}           
+  //         </div>
+  //         )
+  //     }
+  // }
 
   insertDescriptions() {   
     const descrWrapper = document.querySelector('.Product_prodDescription__2eZrW');
@@ -282,11 +332,20 @@ class Product extends React.Component {
                 <h3 className={styles.title}>{this.state.brand}</h3>
                 <span className={styles.subtitle}>{this.state.name}</span>
 
+                <div className="attrWrapper">
                 <h4 className={styles.sizeTitle}>{this.showAttributeName(0)}</h4>
                 {this.setAttributes()}
+                </div>
 
-                <h4 className={styles.sizeTitle}>{this.state.attributes[1] ? this.showAttributeName(1) : ''}</h4>
-                {this.setAttributes_2()}                
+                <div className="attrWrapper">
+                  <h4 className={styles.sizeTitle}>{this.state.attributes[1] ? this.showAttributeName(1) : ''}</h4>
+                  {this.setAttributes_2()}
+                </div>
+
+                <div className="attrWrapper">
+                <h4 className={styles.sizeTitle}>{this.state.attributes[2] ? this.showAttributeName(2) : ''}</h4>
+                {this.setAttributes_3()}                  
+                </div>
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 
