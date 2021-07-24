@@ -58,24 +58,24 @@ class Categ extends React.Component {
 
   componentDidUpdate(_, prevState) {
     if (window.location.pathname !== prevState.location) {
-    const fromHref = window.location.href.split('/')[4];
-    console.log(fromHref)
-        
-    client.setEndpoint("http://localhost:4000/graphql");    
-  
-    const query = new Query("category", true)
-      .addArgument("input", "CategoryInput", { title : fromHref})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
-  
-      client.post(query).then(result => {
-        const newData = result.category.products
-        this.setState({
-        ...this.state,
-        location: window.location.pathname,        
-        currentCategoryData: newData           
-      });     
-    });
-  }   
+      const fromHref = window.location.href.split('/')[4];
+      console.log(fromHref)
+          
+      client.setEndpoint("http://localhost:4000/graphql");    
+    
+      const query = new Query("category", true)
+        .addArgument("input", "CategoryInput", { title : fromHref})
+        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
+    
+        client.post(query).then(result => {
+          const newData = result.category.products
+          this.setState({
+          ...this.state,
+          location: window.location.pathname,        
+          currentCategoryData: newData           
+        });     
+      });
+    }   
   }
 
   render() {

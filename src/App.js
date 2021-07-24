@@ -22,13 +22,15 @@ class App extends React.Component {
       currencyNumber: 0,
       countCart: 0,
       display: 'none',      
-      currencies: ''           
+      currencies: '',
+      attrs: 'def'           
   }
 
     this.addToCart = this.addToCart.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
-    
+    this.changeAttributes = this.changeAttributes.bind(this);
+    this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
   }
 
   changeCurrentCategory(event) {
@@ -39,21 +41,15 @@ class App extends React.Component {
       });
   }
 
-  changeLocalStorage(id, n) {
+  changeLocalStorage(id) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
+    const newId = jsonCart.length
 
-    const indicator = jsonCart.find(item => (item.name === id && item.size === 0 && item.color === 0 && item.capacity === 0 && item.option_1 === 0 && item.option_2 === 0));
-    
-    if (!indicator) {
-      jsonCart.push({id: n, name: id, size: 0, color: 0, capacity: 0, option_1: 0, option_2: 0})
-    } else {
-      jsonCart.forEach(element => {
-        if (element.name === id) {
-          element.id++;             
-        }      
-      })
-    }   
+    //if (this.state.attrs === 'def')
+
+    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs})
+   
     console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
@@ -62,9 +58,9 @@ class App extends React.Component {
   addToCart(inStock, id) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id, 1)
+        this.changeLocalStorage(id)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 1, attr_1: 0, attr_2: 0}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs}]));
         }      
        
       let newCount = this.state.countCart;
@@ -72,9 +68,61 @@ class App extends React.Component {
       this.setState({
         ...this.state,
         countCart: newCount,
-        display: 'flex'      
+        display: 'flex',
+        //attrs: 'def'     
       })
     }  
+  }
+
+  changeAttributes(event) {    
+    const currentButton = event.target;
+    const attrNAME = currentButton.closest('.attrWrapper').firstElementChild.innerHTML.toLowerCase()
+    const attrName = attrNAME.slice(0, attrNAME.length - 1)
+    const attrValue = currentButton.value
+
+    const key = attrName;
+    let newAttr = {}
+    newAttr[key] = attrValue
+    let newAttrs = []
+
+    if (this.state.attrs === 'def') {
+      newAttrs = [newAttr]
+    } else {
+        newAttrs = this.state.attrs;
+        const control = newAttrs.find(item => JSON.stringify(item) === JSON.stringify(newAttr));
+        console.log(control)       
+        if (control) return
+          else {
+            newAttrs.forEach((item, index, array) => {
+              let z = JSON.stringify(item).split('"')[1]
+              if (z === attrName) {
+                array.splice(index)
+              }
+              console.log(z)
+              console.log(attrName)              
+            });           
+            
+            newAttrs.push(newAttr)
+          } 
+          
+          // if () {
+          //   newAttrs.push(newAttr)
+          //}
+      }        
+
+    this.setState({
+      ...this.state,
+      attrs: newAttrs    
+    })
+
+    console.log(this.state.attrs)
+  }
+
+  setDefaultAttributes() {
+    this.setState({
+      ...this.state,
+      attrs: 'def'    
+    })
   }
 
   changeCurrency(event) {    
@@ -138,8 +186,9 @@ class App extends React.Component {
             categoriesList: this.state.categoriesList,            
             currencySimbol: this.state.currencySimbol,
             currencyNumber: this.state.currencyNumber,
-            currencies: this.state.currencies                      
+            currencies: this.state.currencies             
             }}>
+
             <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
               <Route exact path='/'>
@@ -151,11 +200,11 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} currencies={this.state.currencies} addToCart={this.addToCart}/>                
+                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} currencies={this.state.currencies} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>
-                <Product addToCart={this.addToCart}/>
+                <Product changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttribute={this.setDefaultAttribute}/>
               </Route>
               <Route path='/cart'>
                 <Cart/>
