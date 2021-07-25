@@ -59,7 +59,7 @@ class Categ extends React.Component {
   componentDidUpdate(_, prevState) {
     if (window.location.pathname !== prevState.location) {
       const fromHref = window.location.href.split('/')[4];
-      console.log(fromHref)
+      //console.log(fromHref)
           
       client.setEndpoint("http://localhost:4000/graphql");    
     

@@ -40,7 +40,7 @@ class Product extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.productAdded)
+    //console.log(this.state.productAdded)
     const id = window.location.href.split('/')[4];
 
     client.setEndpoint("http://localhost:4000/graphql");
@@ -85,14 +85,16 @@ class Product extends React.Component {
       attr_2: attr_2,
       attr_3: attr_3,
       description: description    
-      });                 
+      });
+      //this.props.setDefaultAttributes()
+      //console.log(this.props.def)                
      });
      
   }
 //******************************************************************** */
   componentDidUpdate() {
     if (this.state.productAdded !== 'no') {
-      console.log(this.state.productAdded)     
+      //console.log(this.state.productAdded)     
 
       const id = window.location.href.split('/')[4];
 
@@ -140,7 +142,7 @@ class Product extends React.Component {
         description: description,
         productAdded: 'no'    
         });
-        console.log(this.state.productAdded)                                
+        //console.log(this.state.productAdded)                                
       });
     }
   }
@@ -165,7 +167,7 @@ class Product extends React.Component {
       }      
     })
     //console.log(attr)
-    console.log(jsonCart);
+    //console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
@@ -189,7 +191,7 @@ class Product extends React.Component {
     });
     currentButton.classList.add(this.state.sizeButton.b)
     currentButton.setAttribute('choosed', "yes");
-    console.log(buttons)  
+    //console.log(buttons)  
   }
 
   markColor(event) {    
@@ -318,7 +320,7 @@ class Product extends React.Component {
   }
 
   componentWillUnmount() {
-    //this.props.setDefaultAttributes()
+    this.props.setDefaultAttributes()
   }  
 
   render() {

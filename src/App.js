@@ -89,25 +89,11 @@ class App extends React.Component {
       newAttrs = [newAttr]
     } else {
         newAttrs = this.state.attrs;
-        const control = newAttrs.find(item => JSON.stringify(item) === JSON.stringify(newAttr));
-        console.log(control)       
-        if (control) return
-          else {
-            newAttrs.forEach((item, index, array) => {
-              let z = JSON.stringify(item).split('"')[1]
-              if (z === attrName) {
-                array.splice(index)
-              }
-              console.log(z)
-              console.log(attrName)              
-            });           
-            
-            newAttrs.push(newAttr)
-          } 
+        const newArr = newAttrs.filter(item => JSON.stringify(item).split('"')[1] !== attrName);
+        //console.log(newArr)        
           
-          // if () {
-          //   newAttrs.push(newAttr)
-          //}
+        newAttrs = newArr
+        newAttrs.push(newAttr)
       }        
 
     this.setState({
@@ -115,7 +101,7 @@ class App extends React.Component {
       attrs: newAttrs    
     })
 
-    console.log(this.state.attrs)
+    //console.log(this.state.attrs)
   }
 
   setDefaultAttributes() {
@@ -204,7 +190,7 @@ class App extends React.Component {
               </Route>
 
               <Route path='/product'>
-                <Product changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttribute={this.setDefaultAttribute}/>
+                <Product def={this.state.attrs} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
                 <Cart/>
