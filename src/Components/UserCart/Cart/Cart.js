@@ -1,39 +1,72 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'; // eslint-disable-line
-import { client, Query, Field } from "@tilework/opus";
+import { client, Query} from "@tilework/opus";
 import imgProd1 from '../../../ImagesTemp/black.png';
-import imgProd2 from '../../../ImagesTemp/glasses.png';
+//import imgProd2 from '../../../ImagesTemp/glasses.png';
 import * as styles from './Cart.module.css'
 
 class Cart extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
+    this.state = {
+      jsonCart: '',            
+      cartData: []
+    }
     
-    //this.methodeName = this.methodeName.bind(this)
+    this.createCartList = this.createCartList.bind(this)
 	
   }
+  createCartList() {        
+    return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
+      <li key={index}>
+        {item.name}     
+      </li>
+    )
+  }
+
 
   componentDidMount() {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     jsonCart.splice(0,1);
+
+    this.setState({
+      ...this.state,        
+      jsonCart: jsonCart 
+    })
+
+    console.log(this.state.jsonCart)
+
+    let queryArg = []
+    jsonCart.forEach(element => {
+      queryArg.push(element.name)
+    })
+
+    const uniqueQueryArgs = Array.from(new Set(queryArg.map(JSON.stringify))).map(JSON.parse);
+
     console.log(jsonCart);
+    console.log(uniqueQueryArgs);
     
     client.setEndpoint("http://localhost:4000/graphql");
 
-    const query = new Query("category", true)     
-    .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "inStock", "gallery", "description", "category", "attributes {items {value}}", "prices {currency,amount }"]))
+    uniqueQueryArgs.forEach(element => {
+      let queryName = `${element}`
+      queryName = new Query("product", true)
+      .addArgument("id", "String!", element)   
+      .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
 
-    // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
-  
-      client.post(query).then(result => {
-        const newData = result.category.products
+      client.post(queryName).then(result => {
+        const itemData = result.product
+        let newCartData = this.state.cartData
+        newCartData.push(itemData)
+
         this.setState({
-        ...this.state,        
-        currentCategoryData: newData           
-      });     
-    });   
-
+          ...this.state,        
+          cartData: newCartData 
+        })
+        console.log(this.state.cartData)
+      })
+    })
   } 
 
   render() {
@@ -59,15 +92,16 @@ class Cart extends React.Component {
                   <div className={styles.prodImage}>
                     <div className={styles.countButtons}>
                       <button className={styles.plusBut}>&#43;</button>
-                      <span>1</span>
+                      <span>1</span>                    
                       <button className={styles.minusBut}>&#8722;</button>
                     </div>
                     <img className={styles.imgProd} src={imgProd1} alt="#"/>
                   </div>
                 </div>           
               </li>
+              {this.createCartList()}
 
-              <li className={styles.cartItem}>
+              {/* <li className={styles.cartItem}>
                 <span className={styles.cartLine}></span>
                 <div className={styles.cartItemWrapper}>
                   <div className={styles.prodInf}>
@@ -89,7 +123,7 @@ class Cart extends React.Component {
                     <img className={styles.imgProd} src={imgProd2} alt="#"/>
                   </div>
                 </div>           
-              </li>
+              </li> */}
 
                           
             </ul>            
