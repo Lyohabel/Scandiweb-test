@@ -5,13 +5,13 @@
     color: #1D1F22;
 }
 
-.chooseColor {
+.galleryItem {
     list-style: none;
     width: 80px;
     margin-bottom: 35px;
 }
 
-.imgChooseColor {
+.imgGalleryItem {
     width: 100%;
 }
 

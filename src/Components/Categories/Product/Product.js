@@ -209,7 +209,7 @@ class Product extends React.Component {
       return ''
     } else {
       return this.state.gallery && this.state.gallery.map(item =>
-        <li key={item} className={styles.chooseColor}><img className={styles.imgChooseColor} src={item} alt="#"/></li>
+        <li key={item} className={styles.galleryItem}><img className={styles.imgGalleryItem} src={item} alt="#"/></li>
       )
     }
   }
