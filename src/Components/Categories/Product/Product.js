@@ -179,28 +179,18 @@ class Product extends React.Component {
     return attrName
   }
 
-  markSize(event) {      
-    const currentButton = event.target;    
+  markAttribute(event) {      
+    const currentButton = event.target;       
     const buttons = [...currentButton.closest('div').children];
+    const attributeName = this.findAttributeName(event);    
        
     buttons.forEach(element => {
-      element.classList.remove(this.state.sizeButton.b)
-      element.classList.add(this.state.sizeButton.a)
-      element.setAttribute('choosed', "no");
+      element.classList.remove((attributeName !== 'color') ? this.state.sizeButton.b : this.state.colorButton.b)
+      element.classList.add((attributeName !== 'color') ? this.state.sizeButton.a : this.state.colorButton.a)
+      if (attributeName !== 'color') element.setAttribute('choosed', "no");
     });
-    currentButton.classList.add(this.state.sizeButton.b)
-    currentButton.setAttribute('choosed', "yes");
-    //console.log(buttons)  
-  }
-
-  markColor(event) {    
-    const carrentButton = event.target;
-    const buttons = [...carrentButton.closest('div').children];    
-    buttons.forEach(element => {
-      element.classList.remove(this.state.colorButton.b)
-      element.classList.add(this.state.colorButton.a)
-    });
-    carrentButton.classList.add(this.state.colorButton.b)   
+    currentButton.classList.add((attributeName !== 'color') ? this.state.sizeButton.b : this.state.colorButton.b)
+    if (attributeName !== 'color') currentButton.setAttribute('choosed', "yes");     
   }
 
   creatGallery() {
@@ -221,25 +211,25 @@ class Product extends React.Component {
 
   createSizesButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} choosed={(index === 0) ? "yes" : "no"}  style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} choosed={(index === 0) ? "yes" : "no"}  style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createColorsButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markColor(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
       )
   }
   
   createCapacityButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
   createOptionButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markSize(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
       )
   }
 
@@ -309,14 +299,7 @@ class Product extends React.Component {
                     {this.createOptionButtons(this.state.attr_3)}           
                   </div> 
                 )} 
-  }
-
-  insertDescriptions() {   
-    const descrWrapper = document.querySelector('.Product_prodDescription__2eZrW');
-    if (descrWrapper) {
-      descrWrapper.innerHTML = this.state.description;
-    }
-  }
+  }  
 
   componentWillUnmount() {
     this.props.setDefaultAttributes()
@@ -358,7 +341,7 @@ class Product extends React.Component {
 
                 <button onClick={() => {this.props.addToCart(this.state.instock, this.state.id); this.resetProduct()}} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
 
-                <span id="dis" className={styles.prodDescription}>{this.insertDescriptions()}</span>
+                <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.description}}></span>
 
               </div>              
             </div>              

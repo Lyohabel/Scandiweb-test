@@ -40,23 +40,16 @@ class Cart extends React.Component {
       sliderDisplayLeft: styles.sliderDisplayLeft,
       sliderDisplayRight: styles.sliderDisplayRight,
       imgDisplay: styles.imgDisplay,
-      imgHidden: styles.imgHidden
+      imgHidden: styles.imgHidden,
+      forLink: 'XXX'
     }
     
     this.createCartList = this.createCartList.bind(this)
     this.selectCurrency = this.selectCurrency.bind(this)
     this.creatGallery = this.creatGallery.bind(this)
+    this.findForLink = this.findForLink.bind(this)
 	
   }
-  // createCartList() {        
-  //   return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-  //     <li className={styles.cartItem} key={index}>
-  //       {item.name}
-  //         <div>{this.state.name[index]}</div>
-  //     </li>
-  //   )
-  // }
-
 
   componentDidMount() {
     const cart = window.localStorage.getItem('cart');    
@@ -201,7 +194,7 @@ class Cart extends React.Component {
             price_4: newPrice_4
           })      
         })
-        console.log(this.state.galleryLength[0])
+        //console.log(this.state.galleryLength[0])
       })
     })
   }
@@ -214,17 +207,40 @@ class Cart extends React.Component {
             else if (this.context.currencyNumber === 4) return this.state.price_4[index];
   }
 
+  findForLink(event) {    
+    const list = event.target.closest('ul')
+    const forLink = list.id
+
+    console.log(list)
+    console.log(forLink)
+
+    this.setState({
+      ...this.state,
+      forLink: forLink
+    })
+    console.log(this.state.forLink)   
+  }
+
   creatGallery(index) {
     const gl = this.state.gallery[index];
-    // if (gl.length === 1) {
-    //   return (<img key={index} className={styles.imgProd} src={this.state.img[index]} alt="#"/>)
-    // } else {
-      return gl && gl.map((item, index, array) =>
-        (array.length === 1) ? <li key={index} className={styles.galleryItem}><img className={styles.imgDisplay} src={item} alt="#"/></li> : <li key={index} className={styles.galleryItem}><img className={(index === 0) ? this.state.imgDisplay : this.state.imgHidden} src={item} alt="#"/></li>
-      )
-    //}
+    
+    return gl && gl.map((item, index, array) =>
+      (array.length === 1)
+        ? 
+          <li key={index} className={styles.galleryItem}>
+            <NavLink className={styles.prodLink} to={"/product/" + this.state.forLink}> 
+              <img onClick={(event) => this.findForLink(event)} className={styles.imgDisplay} src={item} alt="#"/>
+            </NavLink>              
+          </li>
+            : 
+              <li key={index} className={styles.galleryItem}>
+                <NavLink className={styles.prodLink} to={"/product/" + this.state.forLink}> 
+                  <img onClick={(event) => this.findForLink(event)} className={(index === 0) ? this.state.imgDisplay : this.state.imgHidden} src={item} alt="#"/>
+                </NavLink>                  
+              </li>
+    )
   }
-  
+    
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
       <li className={styles.cartItem} key={index}>
@@ -254,7 +270,7 @@ class Cart extends React.Component {
             <div className={styles.galleryWrapper}>
               <button className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
 
-              <ul className={styles.gallery}>              
+              <ul id={this.state.id[index]} className={styles.gallery}>              
                 {this.creatGallery(index)}              
               </ul>
 

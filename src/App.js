@@ -11,6 +11,9 @@ import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context';
 //import HashChange from "react-hashchange";
 
+
+const DEFAULT = 'default'
+
 class App extends React.Component {
   constructor(props) {
     super(props);
