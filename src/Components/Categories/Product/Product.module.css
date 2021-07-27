@@ -95,12 +95,16 @@
     /* width: 19%; */
     height: 45px;    
     border: 1px solid #1D1F22;
+    font-family: Source Sans Pro;
+    font-size: 16px;    
 } 
 
 .colorActive {
     /* width: 19%; */
     height: 45px;    
-    border: 2px solid #c9380c;   
+    border: 2px solid #c9380c;
+    font-family: Source Sans Pro;
+    font-size: 16px;     
 } 
 
 .priceTitle {

@@ -187,10 +187,12 @@ class Product extends React.Component {
     buttons.forEach(element => {
       element.classList.remove((attributeName !== 'color') ? this.state.sizeButton.b : this.state.colorButton.b)
       element.classList.add((attributeName !== 'color') ? this.state.sizeButton.a : this.state.colorButton.a)
-      if (attributeName !== 'color') element.setAttribute('choosed', "no");
+     //if (attributeName !== 'color')
+      element.setAttribute('choosed', "no");
     });
     currentButton.classList.add((attributeName !== 'color') ? this.state.sizeButton.b : this.state.colorButton.b)
-    if (attributeName !== 'color') currentButton.setAttribute('choosed', "yes");     
+    //if (attributeName !== 'color')
+    currentButton.setAttribute('choosed', "yes");     
   }
 
   creatGallery() {
@@ -209,27 +211,43 @@ class Product extends React.Component {
       else return `${this.state.attributes[ind].id.toUpperCase()}:`        
   }
 
-  createSizesButtons(attrs) {
+  createButtons(attrs, attrName) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} choosed={(index === 0) ? "yes" : "no"}  style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} choosed={(index === 0) ? "yes" : "no"}
+      onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}}          
+      className={(attrName !== 'COLOR') ? ((index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a) : ((index === 0) ? this.state.colorButton.b : this.state.colorButton.a)}
+      style={attrName !== 'COLOR' ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#000'}}>
+        {item.value}
+        <span>{item.displayValue}</span>
+      </button>
+      )
+  }  
+
+  //  style={{width: `calc(95% / ${array.length})`}}>{item.displayValue}</button>
+  // style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? //'#fff' : '#000'}}>{item.displayValue}</button> 
+
+  createSizesButtons(attrs) {
+    //console.log(attrs)
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} choosed={(index === 0) ? "yes" : "no"}  style={{width: `calc(95% / ${array.length})`}}>{item.displayValue}</button>
       )
   }
 
   createColorsButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`}}></button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.colorButton.b : this.state.colorButton.a} style={{backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#000'}}>{item.displayValue}</button>
       )
   }
   
   createCapacityButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.displayValue}</button>
       )
   }
 
   createOptionButtons(attrs) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.value}</button>
+      <button id={index} key={item.value} value={item.value} onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}} className={(index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a} style={{width: `calc(95% / ${array.length})`}}>{item.displayValue}</button>
       )
   }
 
