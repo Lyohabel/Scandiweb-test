@@ -75,6 +75,7 @@
     background-color: #fff;
     border: 1px solid #1D1F22;
     cursor: pointer;
+    position: relative;
 }
 
 .sizeActive {
@@ -88,7 +89,8 @@
     letter-spacing: 0.05em;
     background-color: #1D1F22;
     color: #fff;
-    border: 1px solid #1D1F22;    
+    border: 1px solid #1D1F22;
+    position: relative;    
 }
 
 .color {
@@ -96,7 +98,8 @@
     height: 45px;    
     border: 1px solid #1D1F22;
     font-family: Source Sans Pro;
-    font-size: 16px;    
+    font-size: 16px;
+    position: relative;    
 } 
 
 .colorActive {
@@ -104,8 +107,32 @@
     height: 45px;    
     border: 2px solid #c9380c;
     font-family: Source Sans Pro;
-    font-size: 16px;     
-} 
+    font-size: 16px;
+    position: relative;     
+}
+
+.displayValue {
+    display: block;
+    position: absolute;
+    padding: 3px;
+    border: 1px solid #1D1F22;
+    border-radius: 5px;
+    top: 50px;
+    color: #1D1F22;
+    display: none;
+}
+
+.colorActive .displayValue,
+.sizeActive .displayValue {
+    color: #1D1F22;
+}
+
+.color:hover .displayValue,
+.colorActive:hover .displayValue,
+.size:hover .displayValue,
+.sizeActive:hover .displayValue {
+    display: block;
+}
 
 .priceTitle {
     display: block;
