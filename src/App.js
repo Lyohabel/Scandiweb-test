@@ -20,13 +20,15 @@ class App extends React.Component {
     this.state = {
       startData: '',
       categoriesList: [],
-      currentCategory: 'tech',      
+      currentCategory: '',
+      categoryChanged: 'no',     
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
       display: 'none',      
       currencies: '',
-      attrs: 'def'           
+      currency: '',
+      attrs: DEFAULT           
   }
 
     this.addToCart = this.addToCart.bind(this);
@@ -34,13 +36,21 @@ class App extends React.Component {
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     this.changeAttributes = this.changeAttributes.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
+    this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
   }
 
-  changeCurrentCategory(event) {
-    const categ = event.target.innerHTML;
+  changeCurrentCategory(categ) {   
     this.setState({
       ...this.state,
-      currentCategory: categ             
+      currentCategory: categ,
+      categoryChanged: 'yes',            
+      });
+  }
+
+  setDefaultCategoryChanged() {
+    this.setState({
+      ...this.state,      
+      categoryChanged: 'no',            
       });
   }
 
@@ -49,7 +59,7 @@ class App extends React.Component {
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    //if (this.state.attrs === 'def')
+    //if (this.state.attrs === DEFAULT)
 
     jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs})
    
@@ -72,23 +82,21 @@ class App extends React.Component {
         ...this.state,
         countCart: newCount,
         display: 'flex',
-        //attrs: 'def'     
+        //attrs: DEFAULT    
       })
     }  
   }
 
-  changeAttributes(event) {    
-    const currentButton = event.target;
-    const attrNAME = currentButton.closest('.attrWrapper').firstElementChild.innerHTML.toLowerCase()
-    const attrName = attrNAME.slice(0, attrNAME.length - 1)
-    const attrValue = currentButton.value
+  changeAttributes(attrName, attrValue) {
+    // console.log(attrName.toLowerCase())
+    // console.log(attrValue)
 
-    const key = attrName;
+    const key = attrName.toLowerCase();
     let newAttr = {}
     newAttr[key] = attrValue
     let newAttrs = []
 
-    if (this.state.attrs === 'def') {
+    if (this.state.attrs === DEFAULT) {
       newAttrs = [newAttr]
     } else {
         newAttrs = this.state.attrs;
@@ -110,18 +118,19 @@ class App extends React.Component {
   setDefaultAttributes() {
     this.setState({
       ...this.state,
-      attrs: 'def'    
+      attrs: DEFAULT    
     })
   }
 
-  changeCurrency(event) {    
-    const newCurrencySimbol = event.target.innerHTML.split(' ', 1);
-    const newCurrency = event.target.innerHTML.split(' ')[1];
-    const newCurrencyNumber = this.state.currencies.indexOf(newCurrency);
+  changeCurrency(simbol, currency, index) {    
+    // const newCurrencySimbol = event.target.innerHTML.split(' ', 1);
+    // const newCurrency = event.target.innerHTML.split(' ')[1];
+    // const newCurrencyNumber = this.state.currencies.indexOf(newCurrency);
     this.setState({
       ...this.state,
-      currencySimbol: newCurrencySimbol,
-      currencyNumber: newCurrencyNumber
+      currencySimbol: simbol,
+      currency: currency,
+      currencyNumber: index
     }) 
   }
 
@@ -160,10 +169,13 @@ class App extends React.Component {
     });
 
     const queryCurrencies = new Query("currencies", true)      
-      client.post(queryCurrencies).then(result => {this.setState({
+      client.post(queryCurrencies).then(result => {        
+        this.setState({
         ...this.state,
-        currencies: result.currencies                    
-      });      
+        currencies: result.currencies,
+        currency: result.currencies[0]                   
+      });
+      console.log(this.state.currency)      
     });      
   }
 
@@ -189,7 +201,7 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} currencies={this.state.currencies} addToCart={this.addToCart}/>                
+                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} currencies={this.state.currencies} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>

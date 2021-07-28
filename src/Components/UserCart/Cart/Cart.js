@@ -220,14 +220,14 @@ class Cart extends React.Component {
     const id = this.state.id[index]
     
     return gl && gl.map((item, index, array) =>
-      (array.length === 1)
-        ? 
-          <li key={index} className={styles.galleryItem}>
-            <NavLink className={styles.prodLink} to={"/product/" + id}> 
-              <img className={styles.imgDisplay} src={item} alt="#"/>
-            </NavLink>              
-          </li>
-            : 
+      // (array.length === 1)
+      //   ? 
+      //     <li key={index} className={styles.galleryItem}>
+      //       <NavLink className={styles.prodLink} to={"/product/" + id}> 
+      //         <img className={styles.imgDisplay} src={item} alt="#"/>
+      //       </NavLink>              
+      //     </li>
+      //       : 
               <li key={index} className={styles.galleryItem}>
                 <NavLink className={styles.prodLink} to={"/product/" + id}> 
                   <img className={styles.imgDisplay} src={item} alt="#"/>

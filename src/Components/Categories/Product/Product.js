@@ -232,10 +232,10 @@ class Product extends React.Component {
       else return `${this.state.attributes[ind].id.toUpperCase()}:`        
   }
 
-  createButtons(attrs, btnStyle) {
+  createButtons(attrs, btnStyle, order) {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} choosed={(index === 0) ? "yes" : "no"}
-      onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(event)}}          
+      onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(this.showAttributeName(order), item.value)}}          
       className={(btnStyle !== COLOR_C) ? ((index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a) : ((index === 0) ? this.state.colorButton.b : this.state.colorButton.a)}
       style={btnStyle !== COLOR_C ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
         {btnStyle !== COLOR_C ? item.value : ''}
@@ -247,16 +247,16 @@ class Product extends React.Component {
   setAttributes(order) {
     switch(order) {  // eslint-disable-line
       case 1:  
-      if (this.state.attributes.length === 0) return ''
+      if (!this.state.attributes.length) return ''
       else if (this.state.attributes[0].id !== COLOR_C) {
          return (
           <div className={styles.chooseSize}>
-            {this.createButtons(this.state.attr_1, '')}           
+            {this.createButtons(this.state.attr_1, '', 0)}           
           </div> 
           )} else {
             return (
               <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_1, COLOR_C)}           
+                {this.createButtons(this.state.attr_1, COLOR_C, 0)}           
               </div> 
             )}
     
@@ -265,12 +265,12 @@ class Product extends React.Component {
       else if (this.state.attributes[1].id !== COLOR_C) {
          return (
           <div className={styles.chooseSize}>
-            {this.createButtons(this.state.attr_2, '')}           
+            {this.createButtons(this.state.attr_2, '', 1)}           
           </div> 
           )} else {
             return (
               <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_2, COLOR_C)}           
+                {this.createButtons(this.state.attr_2, COLOR_C, 1)}           
               </div> 
             )}
 
@@ -279,12 +279,12 @@ class Product extends React.Component {
           else if (this.state.attributes[2].id !== COLOR_C) {
              return (
               <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_3, '')}           
+                {this.createButtons(this.state.attr_3, '', 2)}           
               </div> 
               )} else {
                 return (
                   <div className={styles.chooseSize}>
-                    {this.createButtons(this.state.attr_3, COLOR_C)}           
+                    {this.createButtons(this.state.attr_3, COLOR_C, 2)}           
                   </div> 
                 )}        
     }    

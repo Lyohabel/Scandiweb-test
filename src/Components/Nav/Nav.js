@@ -8,11 +8,8 @@ import OverallData from '../../Context';
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {            
-      categ: {
-        a : styles.menuItem,
-        b : styles.active
-      },
+    this.state = {
+      category: '',
       count: this.props.countCart,
       //cartCountIcon:  styles.hidden,
       popUp: styles.hidden
@@ -28,6 +25,7 @@ class Nav extends React.Component {
 
   showCartMini() {    
     this.setState({
+      ...this.state,
       popUp: styles.popUp,
       //cartCountIcon:  styles.cartLinkIcon     
     }) 
@@ -35,27 +33,50 @@ class Nav extends React.Component {
 
   hideCartMini() {    
     this.setState({
+      ...this.state,
       popUp: styles.hidden      
     }) 
   }
 
-  markActive(event) {
-    const carrentLink = event.target.closest('li');
-    const links = [...carrentLink.closest('ul').children];    
-    links.forEach(element => {
-      element.classList.remove(this.state.categ.b)
-      element.classList.add(this.state.categ.a)
-    });
-    carrentLink.classList.add(this.state.categ.b)    
+  markActive(category) {
+    this.setState({
+      ...this.state,
+      category: category      
+    })
   }
 
   createLinksList() {    
     return this.context.categoriesList && this.context.categoriesList.map(item =>
-      <li onClick={(event) => this.markActive(event)} className={this.state.categ.a} key={item.category}>
-        <NavLink onClick={(event) => this.props.changeCurrentCategory(event)} className={styles.link} to={"/categ/" + item.category}>
+      <li onClick={() => this.markActive(item.category)} className={this.state.category === item.category ? styles.active : styles.menuItem} key={item.category}>
+        <NavLink onClick={() => this.props.changeCurrentCategory(item.category)} className={styles.link} to={"/categ/" + item.category}>
            {item.category}
         </NavLink>
       </li>      
+    )
+  }
+
+  showCurrencySimbol(index) {
+    switch(this.context.currencies[index]) {  // eslint-disable-line
+      case 'USD': 
+        return (<span>$</span>);
+
+      case 'GBP':
+        return (<span>&pound;</span>);      
+
+      case 'AUD':
+        return (<span>A$</span>);
+
+      case 'JPY':
+        return (<span>&#165;</span>);
+       
+      case 'RUB':
+        return (<span>&#8381;</span>);
+    }
+  }
+
+  creatCurrencyButtons() {
+    return this.context.currencies && this.context.currencies.map((item, index) => 
+      <li key={item} onClick={() => this.props.changeCurrency(this.showCurrencySimbol(index), this.context.currencies[index], index )}>{this.showCurrencySimbol(index)} {this.context.currencies[index]}</li>
     )
   }
 
@@ -71,9 +92,7 @@ class Nav extends React.Component {
               {/* <button onClick= {(event) => this.showMenu(event)} className={styles.showMenu}>Menu</button>                     */}
 
               <ul className={styles.menu}>
-                {/* <li className={styles.menuItem}>
-                    <button onClick= {() => this.closeMenu()} className={styles.closeMenu}>Close</button>
-                </li> */}
+                
                 {this.createLinksList()}               
                 
                 <li onClick={(event) => this.markActive(event)} className={this.state.test}>
@@ -92,11 +111,7 @@ class Nav extends React.Component {
 
                 <div className={styles.chooseCurrency}>
                   <ul>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>$ USD</li>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>&pound; GBP</li>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>A$ AUD</li>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>&#165; JPY</li>
-                    <li onClick={(event) => this.props.changeCurrency(event)}>&#8381; RUB</li>
+                    {this.creatCurrencyButtons()}                   
                   </ul>
                 </div>
 

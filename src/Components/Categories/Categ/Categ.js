@@ -7,18 +7,19 @@ import * as styles from './Categ.module.css';
 class Categ extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = {      
       currentCategoryData: '',
-      location: ''
+      //location: ''
     }
 
     this.createList = this.createList.bind(this)
-  }
+    //this.changeCategory = this.changeCategory.bind(this)
+  }  
 
   createList() {    
     return this.state.currentCategoryData && this.state.currentCategoryData.map(item =>
       <li className={styles.productItem} id={item.id} key={item.id}>
-        <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
+        <NavLink onClick={() => this.changeCategory()} className={styles.prodLink} to={"/product/" + item.id}> 
           <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
@@ -29,22 +30,13 @@ class Categ extends React.Component {
         <button onClick={() => this.props.addToCart(item.inStock, item.id)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
-  }
-
+  }  
   
-
-  changeCategory() {
-
-  }
-  
-  componentDidMount() {  
-    const fromHref = window.location.href.split('/')[4];
-    //console.log(fromHref)
-        
+  componentDidMount() { 
     client.setEndpoint("http://localhost:4000/graphql");    
   
     const query = new Query("category", true)
-      .addArgument("input", "CategoryInput", { title : fromHref})
+      .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
       .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
   
       client.post(query).then(result => {
@@ -56,27 +48,32 @@ class Categ extends React.Component {
     });    
   }
 
-  componentDidUpdate(_, prevState) {
-    if (window.location.pathname !== prevState.location) {
-      const fromHref = window.location.href.split('/')[4];
+  componentDidUpdate() {
+    //if (window.location.pathname !== prevState.location)
+    if (this.props.categoryChanged !== 'no') {
+      //const fromHref = window.location.href.split('/')[4];
       //console.log(fromHref)
+
+      //console.log(this.props.categoryChanged)
           
       client.setEndpoint("http://localhost:4000/graphql");    
     
       const query = new Query("category", true)
-        .addArgument("input", "CategoryInput", { title : fromHref})
+        .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
         .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
     
         client.post(query).then(result => {
           const newData = result.category.products
           this.setState({
           ...this.state,
-          location: window.location.pathname,        
+          categoryChanged: 'no',
+          //location: window.location.pathname,        
           currentCategoryData: newData           
-        });     
+        });
+        this.props.setDefaultCategoryChanged()    
       });
     }   
-  }
+  }  
 
   render() {
     return (
