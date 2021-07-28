@@ -86,15 +86,15 @@
 .sliderDisplayLeft {
     width: 10px;
     height: 25px;
-    padding: 5px;
+    padding: 7px;
     position: absolute;
-    right: 90%;
+    right: 84%;
     bottom: 50%;
     background-image: url(../../../Images/left.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: 60% 60%;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     background-color:rgba(194, 192, 192, 0.5);
 }
@@ -102,17 +102,27 @@
 .sliderDisplayRight {
     width: 10px;
     height: 25px;
-    padding: 5px;
+    padding: 7px;
     position: absolute;
-    right: 4%;
+    right: 3%;
     bottom: 50%;
     background-image: url(../../../Images/right.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: 60% 60%;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     background-color:rgba(194, 192, 192, 0.5);
+}
+
+.sliderDisplayRight:hover {
+    border: 2px solid rgba(138, 132, 132, 0.7);
+    cursor: url(../../../Images/slider-right.png), s-resize;
+}
+
+.sliderDisplayLeft:hover {
+    border: 2px solid rgba(138, 132, 132, 0.7);
+    cursor: url(../../../Images/slider-left.png), s-resize;
 }
 
 .gallery {
@@ -123,10 +133,10 @@
 }
 
 .galleryItem {
-    width: 140px;
+    min-width: 140px;
     height: 185px;
-    display: block;    
-
+    display: block;
+    overflow: hidden; 
 }
 
 .imgDisplay {

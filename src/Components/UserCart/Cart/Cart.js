@@ -47,11 +47,10 @@ class Cart extends React.Component {
     this.createCartList = this.createCartList.bind(this)
     this.selectCurrency = this.selectCurrency.bind(this)
     this.creatGallery = this.creatGallery.bind(this)
-    this.findForLink = this.findForLink.bind(this)
-	
+    this.showAnoterImage = this.showAnotherImage.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount() { 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     jsonCart.splice(0,1);
@@ -69,7 +68,7 @@ class Cart extends React.Component {
       queryArgs.push(element.name)
     })
 
-    const uniqueQueryArgs = Array.from(new Set(queryArgs.map(JSON.stringify))).map(JSON.parse); // eslint-disable-line
+    //const uniqueQueryArgs = Array.from(new Set(queryArgs.map(JSON.stringify))).map(JSON.parse); // eslint-disable-line
 
     // console.log(jsonCart);
     // console.log(jsonCart.length);
@@ -207,39 +206,52 @@ class Cart extends React.Component {
             else if (this.context.currencyNumber === 4) return this.state.price_4[index];
   }
 
-  findForLink(event) {    
-    const list = event.target.closest('ul')
-    const forLink = list.id
+  creatGalleryList(index) {    
+    return (
+      <ul id={this.state.id[index]} className={styles.gallery}>              
+                {this.creatGallery(index)}              
+      </ul>
+    )
 
-    console.log(list)
-    console.log(forLink)
-
-    this.setState({
-      ...this.state,
-      forLink: forLink
-    })
-    console.log(this.state.forLink)   
   }
 
   creatGallery(index) {
     const gl = this.state.gallery[index];
+    const id = this.state.id[index]
     
     return gl && gl.map((item, index, array) =>
       (array.length === 1)
         ? 
           <li key={index} className={styles.galleryItem}>
-            <NavLink className={styles.prodLink} to={"/product/" + this.state.forLink}> 
-              <img onClick={(event) => this.findForLink(event)} className={styles.imgDisplay} src={item} alt="#"/>
+            <NavLink className={styles.prodLink} to={"/product/" + id}> 
+              <img className={styles.imgDisplay} src={item} alt="#"/>
             </NavLink>              
           </li>
             : 
               <li key={index} className={styles.galleryItem}>
-                <NavLink className={styles.prodLink} to={"/product/" + this.state.forLink}> 
-                  <img onClick={(event) => this.findForLink(event)} className={(index === 0) ? this.state.imgDisplay : this.state.imgHidden} src={item} alt="#"/>
+                <NavLink className={styles.prodLink} to={"/product/" + id}> 
+                  <img className={styles.imgDisplay} src={item} alt="#"/>
                 </NavLink>                  
               </li>
     )
   }
+
+  showAnotherImage(event, dir) {    
+    const galleryList = event.target.closest('div').firstElementChild
+      if (dir === 'next') {
+        galleryList.appendChild(galleryList.firstElementChild)
+      } else if (dir === 'prev') {
+          galleryList.insertBefore(galleryList.lastElementChild, galleryList.firstElementChild)
+        }
+    
+    
+  }
+
+  // if (dir === 'next') {
+  //   slider.appendChild(slider.firstElementChild);
+  // } else if (dir === 'prev') {
+  // slider.insertBefore(slider.lastElementChild, slider.firstElementChild);
+  // } 
     
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
@@ -268,13 +280,18 @@ class Cart extends React.Component {
             </div>
 
             <div className={styles.galleryWrapper}>
-              <button className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
 
-              <ul id={this.state.id[index]} className={styles.gallery}>              
+              {this.creatGalleryList(index)}
+
+              <button onClick={(event) => this.showAnotherImage(event, 'prev')} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
+
+              {/* <ul id={this.state.id[index]} className={styles.gallery}>              
                 {this.creatGallery(index)}              
-              </ul>
+              </ul> */}
 
-              <button className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
+            
+
+              <button onClick={(event) => this.showAnotherImage(event, 'next')} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
             </div>
           </div>
          </div>
