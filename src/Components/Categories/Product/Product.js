@@ -3,8 +3,7 @@ import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 
-const COLOR = 'color'
-const COLOR_C = 'Color'
+const COLOR = 'Color'
 
 class Product extends React.Component {
   constructor(props) {
@@ -29,6 +28,10 @@ class Product extends React.Component {
       attr_2Id: '',
       attr_3Id: '',
 
+      activeAttribute: '',
+      defaultActiveAttribute: '',
+      defaultActiveAttributeName: '',
+      
       sizeButton: {
         a : styles.size,
         b : styles.sizeActive
@@ -194,26 +197,13 @@ class Product extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  findAttributeName(event) {
-    const currentButton = event.target;
-    const attrNAME = currentButton.closest('.attrWrapper').firstElementChild.innerHTML.toLowerCase()
-    const attrName = attrNAME.slice(0, attrNAME.length - 1)
-    
-    return attrName
-  }
-
-  markAttribute(event) {      
-    const currentButton = event.target;       
-    const buttons = [...currentButton.closest('div').children];
-    const attributeName = this.findAttributeName(event);    
-       
-    buttons.forEach(element => {
-      element.classList.remove((attributeName !== COLOR) ? this.state.sizeButton.b : this.state.colorButton.b)
-      element.classList.add((attributeName !== COLOR) ? this.state.sizeButton.a : this.state.colorButton.a)
-      element.setAttribute('choosed', "no");
-    });
-    currentButton.classList.add((attributeName !== COLOR) ? this.state.sizeButton.b : this.state.colorButton.b)    
-    currentButton.setAttribute('choosed', "yes");     
+  markAttribute(value, name, order) {
+    this.setState({
+      ...this.state,
+      defaultActiveAttribute: order,    
+      activeAttribute: value,
+      defaultActiveAttributeName: name    
+      }); 
   }
 
   creatGallery() {
@@ -234,21 +224,23 @@ class Product extends React.Component {
 
   createButtons(attrs, btnStyle, order) {
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} choosed={(index === 0) ? "yes" : "no"}
-      onClick={(event) => {this.markAttribute(event); this.addAttrToCart(this.state.id, this.findAttributeName(event), event.target.id); this.props.changeAttributes(this.showAttributeName(order), item.value)}}          
-      className={(btnStyle !== COLOR_C) ? ((index === 0) ? this.state.sizeButton.b : this.state.sizeButton.a) : ((index === 0) ? this.state.colorButton.b : this.state.colorButton.a)}
-      style={btnStyle !== COLOR_C ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
-        {btnStyle !== COLOR_C ? item.value : ''}
+      <button id={index} key={item.value} value={item.value} 
+      choosed={(this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? "yes"
+       : ((index === 0 && this.state.defaultActiveAttribute !== order) ? "yes" : "no")}
+      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}          
+      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.colorButton.b : this.state.colorButton.a))}      
+      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
+        {btnStyle !== COLOR ? item.value : ''}
         <span className={styles.displayValue}>{item.displayValue}</span>
       </button>
       )
-  }
+  } 
 
   setAttributes(order) {
     switch(order) {  // eslint-disable-line
       case 1:  
       if (!this.state.attributes.length) return ''
-      else if (this.state.attributes[0].id !== COLOR_C) {
+      else if (this.state.attributes[0].id !== COLOR) {
          return (
           <div className={styles.chooseSize}>
             {this.createButtons(this.state.attr_1, '', 0)}           
@@ -256,13 +248,13 @@ class Product extends React.Component {
           )} else {
             return (
               <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_1, COLOR_C, 0)}           
+                {this.createButtons(this.state.attr_1, COLOR, 0)}           
               </div> 
             )}
     
       case 2:  
       if (this.state.attributes.length < 2) return ''
-      else if (this.state.attributes[1].id !== COLOR_C) {
+      else if (this.state.attributes[1].id !== COLOR) {
          return (
           <div className={styles.chooseSize}>
             {this.createButtons(this.state.attr_2, '', 1)}           
@@ -270,13 +262,13 @@ class Product extends React.Component {
           )} else {
             return (
               <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_2, COLOR_C, 1)}           
+                {this.createButtons(this.state.attr_2, COLOR, 1)}           
               </div> 
             )}
 
         case 3:
           if (this.state.attributes.length < 3) return ''
-          else if (this.state.attributes[2].id !== COLOR_C) {
+          else if (this.state.attributes[2].id !== COLOR) {
              return (
               <div className={styles.chooseSize}>
                 {this.createButtons(this.state.attr_3, '', 2)}           
@@ -284,7 +276,7 @@ class Product extends React.Component {
               )} else {
                 return (
                   <div className={styles.chooseSize}>
-                    {this.createButtons(this.state.attr_3, COLOR_C, 2)}           
+                    {this.createButtons(this.state.attr_3, COLOR, 2)}           
                   </div> 
                 )}        
     }    

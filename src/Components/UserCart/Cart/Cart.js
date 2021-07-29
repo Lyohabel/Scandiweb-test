@@ -53,7 +53,7 @@ class Cart extends React.Component {
   componentDidMount() { 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    jsonCart.splice(0,1);
+    //jsonCart.splice(0,1);
 
     this.setState({
       ...this.state,        

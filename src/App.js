@@ -25,7 +25,7 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      display: 'none',      
+      displayCountCart: 'no',      
       currencies: '',
       currency: '',
       attrs: DEFAULT           
@@ -54,16 +54,32 @@ class App extends React.Component {
       });
   }
 
+  showCartCount() {
+    const cart = window.localStorage.getItem('cart');
+    if (!cart) return
+
+    const jsonCart = JSON.parse(cart);
+    console.log(jsonCart)
+    let cartCount = 0
+    jsonCart.forEach(element => {      
+      cartCount += element.amount
+    });
+
+    this.setState({
+      ...this.state,
+      displayCountCart: 'yes',      
+      countCart: cartCount,            
+      });
+  }
+
   changeLocalStorage(id) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    //if (this.state.attrs === DEFAULT)
-
     jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs})
    
-    console.log(jsonCart);
+    //console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
@@ -81,16 +97,12 @@ class App extends React.Component {
       this.setState({
         ...this.state,
         countCart: newCount,
-        display: 'flex',
-        //attrs: DEFAULT    
+        displayCountCart: 'yes'
       })
     }  
   }
 
   changeAttributes(attrName, attrValue) {
-    // console.log(attrName.toLowerCase())
-    // console.log(attrValue)
-
     const key = attrName.toLowerCase();
     let newAttr = {}
     newAttr[key] = attrValue
@@ -101,8 +113,7 @@ class App extends React.Component {
     } else {
         newAttrs = this.state.attrs;
         const newArr = newAttrs.filter(item => JSON.stringify(item).split('"')[1] !== attrName);
-        //console.log(newArr)        
-          
+       
         newAttrs = newArr
         newAttrs.push(newAttr)
       }        
@@ -111,8 +122,6 @@ class App extends React.Component {
       ...this.state,
       attrs: newAttrs    
     })
-
-    //console.log(this.state.attrs)
   }
 
   setDefaultAttributes() {
@@ -122,10 +131,7 @@ class App extends React.Component {
     })
   }
 
-  changeCurrency(simbol, currency, index) {    
-    // const newCurrencySimbol = event.target.innerHTML.split(' ', 1);
-    // const newCurrency = event.target.innerHTML.split(' ')[1];
-    // const newCurrencyNumber = this.state.currencies.indexOf(newCurrency);
+  changeCurrency(simbol, currency, index) {
     this.setState({
       ...this.state,
       currencySimbol: simbol,
@@ -152,6 +158,7 @@ class App extends React.Component {
       ...this.state,
       categoriesList: unique             
       });
+      this.showCartCount()
     });
 
     const queryStartData = new Query("categories", true)     
@@ -174,8 +181,7 @@ class App extends React.Component {
         ...this.state,
         currencies: result.currencies,
         currency: result.currencies[0]                   
-      });
-      console.log(this.state.currency)      
+      });        
     });      
   }
 
@@ -190,10 +196,10 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav cur={this.state.cur} changeCurrency={this.changeCurrency} countCart={this.state.countCart} display={this.state.display} changeCurrentCategory={this.changeCurrentCategory}/>          
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage startData={this.state.startData} currencies={this.state.currencies} changeCountCart={this.changeCountCart}/>
+                <StartPage startData={this.state.startData} currencies={this.state.currencies} addToCart={this.addToCart}/>
               </Route>
 
               <Route path='/test'>

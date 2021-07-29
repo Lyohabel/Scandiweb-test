@@ -15,6 +15,22 @@ class StartPage extends React.Component {
     //this.createList = this.createList.bind(this)
   }
 
+  createList() {      
+    return this.state.startData && this.state.startData.map(item =>
+      <li className={styles.productItem} id={item.id} key={item.id} instock={item.inStock.value}>
+        <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
+          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
+        </NavLink>
+
+        <span className={styles.prodName}>{item.name}</span>
+
+        <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
+
+        <button onClick={() => this.props.addToCart(item.inStock, item.id)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
+      </li>
+    )
+  }  
+
   componentDidMount() {    
     client.setEndpoint("http://localhost:4000/graphql");
     
@@ -32,22 +48,6 @@ class StartPage extends React.Component {
       //console.log(this.state.startData)    
     });
   }
-
-  createList() {      
-    return this.state.startData && this.state.startData.map(item =>
-      <li className={styles.productItem} id={item.id} key={item.id} instock={item.inStock.value}>
-        <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
-          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
-        </NavLink>
-
-        <span className={styles.prodName}>{item.name}</span>
-
-        <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
-
-        <button onClick={() => this.props.changeCountCart(item.inStock, item.id)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
-      </li>
-    )
-  }  
 
   render() {
     return (

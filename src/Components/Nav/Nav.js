@@ -116,7 +116,7 @@ class Nav extends React.Component {
                 </div>
 
                 <div onClick={() => this.showCartMini()} className={styles.cartLink}>
-                  <span className={styles.cartLinkIcon} style={{display: this.props.display}}>{this.props.countCart}</span>
+                  <span className={styles.cartLinkIcon} style={this.props.displayCountCart === "yes" ? {display: 'flex'} : {display: 'none'}}>{this.props.countCart}</span>
                 </div>
               </div>
             </div>
