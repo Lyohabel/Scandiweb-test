@@ -18,17 +18,25 @@ class Cart extends React.Component {
       brand: '',
       name: '',
       prices: '',
+
       price_0: '',
       price_1: '',
       price_2: '',
       price_3: '',
       price_4: '',
+
       instok: '',
       attributes: '',
-      description: '',      
+      description: '',
+
+      attr_1Id: '',
+      attr_2Id: '',
+      attr_3Id: '',
+
       attr_1: '',
       attr_2: '',
       attr_3: '',
+
       sizeButton: {
         a : styles.size,
         b : styles.sizeActive
@@ -41,16 +49,154 @@ class Cart extends React.Component {
       sliderDisplayRight: styles.sliderDisplayRight,
       imgDisplay: styles.imgDisplay,
       imgHidden: styles.imgHidden,
-      forLink: 'XXX'
+      imgStatus: '',
+      galleryId: ''
     }
     
     this.createCartList = this.createCartList.bind(this)
     this.selectCurrency = this.selectCurrency.bind(this)
     this.creatGallery = this.creatGallery.bind(this)
     this.showAnoterImage = this.showAnotherImage.bind(this)
+  }  
+
+  selectCurrency(index) {
+    if (this.context.currencyNumber === 0) return this.state.price_0[index];
+      else if (this.context.currencyNumber === 1) return this.state.price_1[index];
+        else if (this.context.currencyNumber === 2) return this.state.price_2[index];
+          else if (this.context.currencyNumber === 3) return this.state.price_3[index];
+            else if (this.context.currencyNumber === 4) return this.state.price_4[index];
   }
 
-  componentDidMount() { 
+  creatGalleryList(index) {    
+    return (
+      <ul id={this.state.id[index]} className={styles.gallery}>              
+                {this.creatGallery(index)}              
+      </ul>
+    )
+
+  }
+
+  creatGallery(index) {
+    const gl = this.state.gallery[index];
+    const id = this.state.id[index]
+    
+    return gl && gl.map((item, index, array) =>
+      (array.length === 1)
+       ?     
+        <li key={index} className={styles.galleryItem} style={{display: 'block'}}>
+          <NavLink className={styles.prodLink} to={"/product/" + id}> 
+            <img className={styles.imgDisplay} src={item} alt="#"/>
+          </NavLink>                  
+        </li>
+          :
+            <li key={index} className={styles.galleryItem} style={index === 0 ? {display: 'block'} : {display: 'none'}}>
+              <NavLink className={styles.prodLink} to={"/product/" + id}> 
+                <img className={styles.imgDisplay} src={item} alt="#"/>
+              </NavLink>                  
+            </li>
+    )
+  }
+
+  // setIndicator(index, array, id) { ДОДЕЛАТЬ СЛАЙДЕР!!!
+  //   array.forEach
+
+  //   //if (index === 0 && )
+
+  //   //this.state.imgStatus === index && this.state.galleryId === id
+
+  // } style={(this.setIndicator(index, array, id)) ? {display: 'block'} : {display: 'none'}}
+
+  showAnotherImage(dir, id) { // ДОДЕЛАТЬ СЛАЙДЕР!!!
+      if (dir === 'next') {
+        let newImgStatus = this.state.imgStatus + 1
+        this.setState({
+          ...this.state,
+          imgStatus: newImgStatus,
+          galleryId: id
+        })
+      }
+       else if (dir === 'prev') {
+        let newImgStatus = this.state.imgStatus - 1
+        this.setState({
+          ...this.state,
+          imgStatus: newImgStatus,
+          galleryId: id
+        })
+        }
+  }
+
+  creatChoosedAttributes() {
+    return this.state.attr_1 && this.state.attr_1.map((item, index, array) =>
+      <div key={index}>
+        <button className={styles.attrBut}>{item[0][0].value}</button>
+        <button className={styles.attrBut}>{item[0][1]}.value</button>
+      </div>
+    
+    )
+  }
+    
+  createCartList() {        
+    return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
+      <li className={styles.cartItem} key={index}>
+         <span className={styles.cartLine}></span>
+
+         <div className={styles.cartItemWrapper}>
+          <div className={styles.prodInf}>
+            <h4 className={styles.cartItemTitle}>{this.state.brand[index]}</h4>
+            <span className={styles.cartItemSubtitle}>{this.state.name[index]}</span>
+
+            <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.selectCurrency(index)}</span>
+            </div>
+
+            <div className={styles.attributesWrapper}>
+              {/* <div className={styles.attributeTypeWrapper}>
+                <button className={styles.attrBut}>S</button>
+                <button className={styles.attrBut}>M</button>
+              </div> */}
+
+              {/* {this.creatChoosedAttributes()} */}
+
+              <div className={styles.attributeTypeWrapper}>
+                <button className={styles.attrBut}>S</button>
+                <button className={styles.attrBut}>M</button>
+              </div>
+
+              <div className={styles.attributeTypeWrapper}>
+                <button className={styles.attrBut}>S</button>
+                <button className={styles.attrBut}>M</button>
+              </div>             
+            </div>          
+
+            {/* <div className={styles.colorButtons}>
+              <button className={styles.sBut}>S</button>
+              <button className={styles.mBut}>M</button>
+            </div>             */}
+          </div>
+
+          <div className={styles.prodImage}>
+            <div className={styles.countButtons}>
+              <button className={styles.plusBut}>&#43;</button>
+                <span>1</span>                    
+              <button className={styles.minusBut}>&#8722;</button>
+            </div>
+
+            <div className={styles.galleryWrapper}>
+
+              {this.creatGalleryList(index)}
+
+              <button onClick={() => this.showAnotherImage('prev', item.id)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
+              
+              <button onClick={() => this.showAnotherImage('next', item.id)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
+            </div>
+          </div>
+         </div>
+      </li>
+    )
+  }
+  
+  componentDidMount() {
+    if (!window.localStorage.getItem('cart')) return;
+
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     //jsonCart.splice(0,1);
@@ -61,18 +207,10 @@ class Cart extends React.Component {
       productsNumber: jsonCart.length 
     })
 
-    //console.log(this.state.jsonCart)
-
     let queryArgs = []
     jsonCart.forEach(element => {
       queryArgs.push(element.name)
     })
-
-    //const uniqueQueryArgs = Array.from(new Set(queryArgs.map(JSON.stringify))).map(JSON.parse); // eslint-disable-line
-
-    // console.log(jsonCart);
-    // console.log(jsonCart.length);
-    // console.log(uniqueQueryArgs);
     
     client.setEndpoint("http://localhost:4000/graphql");
 
@@ -85,11 +223,16 @@ class Cart extends React.Component {
         cartImg = [],
         cartPrices = [],
         cartAttributes = [],
+
+        cartAttr_1Id = [],
+        cartAttr_2Id = [],
+        cartAttr_3Id = [],
+
         cartAttr_1 = [],
         cartAttr_2 = [],
         cartAttr_3 = [],
-        cartDescription = []
-        
+
+        cartDescription = []        
 
         queryArgs.forEach((element, index) => {
       let queryName = `${element}`
@@ -113,9 +256,15 @@ class Cart extends React.Component {
           result.product.prices[4]
         ]      
         const attributes = result.product.attributes
+
+        const attr_1Id = result.product.attributes[0] ? result.product.attributes[0].id : ''
+        const attr_2Id = result.product.attributes[1] ? result.product.attributes[1].id : ''
+        const attr_3Id = result.product.attributes[2] ? result.product.attributes[2].id : ''
+
         const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items : ''
         const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items : ''
         const attr_3 = result.product.attributes[2] ? result.product.attributes[2].items : ''
+
         const description = result.product.description
 
         cartId.push(id)
@@ -127,9 +276,15 @@ class Cart extends React.Component {
         cartImg.push(img)
         cartPrices.push(prices)
         cartAttributes.push(attributes)
+
+        cartAttr_1Id.push(attr_1Id)
+        cartAttr_2Id.push(attr_2Id)
+        cartAttr_3Id.push(attr_3Id)
+
         cartAttr_1.push(attr_1)
         cartAttr_2.push(attr_2)
         cartAttr_3.push(attr_3)
+
         cartDescription.push(description)
 
 
@@ -146,10 +301,16 @@ class Cart extends React.Component {
           name: cartName,
           instock: cartInstock,
           prices: cartPrices,
-          attributes: cartAttributes,
+          attributes: Array.from(cartAttributes),
+
+          attr_1Id: cartAttr_1Id,
+          attr_2Id: cartAttr_2Id,
+          attr_3Id: cartAttr_3Id,
+
           attr_1: cartAttr_1,
           attr_2: cartAttr_2,
           attr_3: cartAttr_3,
+
           description: cartDescription    
           });
         //console.log(typeof itemData)
@@ -193,111 +354,37 @@ class Cart extends React.Component {
             price_4: newPrice_4
           })      
         })
-        //console.log(this.state.galleryLength[0])
+
+        // **********************************************************************************************************************************
+        let newAttr_1_1 = []
+        let newAttr_1_2 = []
+        let newAttr_1_3 = []       
+    
+        this.state.attr_1[0].map(item => { // eslint-disable-line
+          let x = JSON.stringify(item).split('"value":"')[1]
+          let y = JSON.stringify(x).split('"')[1]
+          const nA0 = y.slice(0, y.length - 1)
+          newAttr_1_1.push(nA0) 
+        })
+
+        if (this.state.attr_1[1]) this.state.attr_1[1].map(item => { // eslint-disable-line
+          let x = JSON.stringify(item).split('"value":"')[1]
+          let y = JSON.stringify(x).split('"')[1]
+          const nA1 = y.slice(0, y.length - 1)
+          newAttr_1_2.push(nA1) 
+        })
+
+        //console.log(JSON.stringify(this.state.attr_1[0]))
+        console.log(this.state.attr_1)
+        console.log(newAttr_1_1)
+        console.log(newAttr_1_2)
+        //console.log(newAttr_1_2)
+        // console.log(this.state.attributes)
+        // console.log(this.state.attr_1)
+        // console.log(this.state.jsonCart)
       })
     })
   }
-
-  selectCurrency(index) {
-    if (this.context.currencyNumber === 0) return this.state.price_0[index];
-      else if (this.context.currencyNumber === 1) return this.state.price_1[index];
-        else if (this.context.currencyNumber === 2) return this.state.price_2[index];
-          else if (this.context.currencyNumber === 3) return this.state.price_3[index];
-            else if (this.context.currencyNumber === 4) return this.state.price_4[index];
-  }
-
-  creatGalleryList(index) {    
-    return (
-      <ul id={this.state.id[index]} className={styles.gallery}>              
-                {this.creatGallery(index)}              
-      </ul>
-    )
-
-  }
-
-  creatGallery(index) {
-    const gl = this.state.gallery[index];
-    const id = this.state.id[index]
-    
-    return gl && gl.map((item, index, array) =>
-      // (array.length === 1)
-      //   ? 
-      //     <li key={index} className={styles.galleryItem}>
-      //       <NavLink className={styles.prodLink} to={"/product/" + id}> 
-      //         <img className={styles.imgDisplay} src={item} alt="#"/>
-      //       </NavLink>              
-      //     </li>
-      //       : 
-              <li key={index} className={styles.galleryItem}>
-                <NavLink className={styles.prodLink} to={"/product/" + id}> 
-                  <img className={styles.imgDisplay} src={item} alt="#"/>
-                </NavLink>                  
-              </li>
-    )
-  }
-
-  showAnotherImage(event, dir) {    
-    const galleryList = event.target.closest('div').firstElementChild
-      if (dir === 'next') {
-        galleryList.appendChild(galleryList.firstElementChild)
-      } else if (dir === 'prev') {
-          galleryList.insertBefore(galleryList.lastElementChild, galleryList.firstElementChild)
-        }
-    
-    
-  }
-
-  // if (dir === 'next') {
-  //   slider.appendChild(slider.firstElementChild);
-  // } else if (dir === 'prev') {
-  // slider.insertBefore(slider.lastElementChild, slider.firstElementChild);
-  // } 
-    
-  createCartList() {        
-    return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <li className={styles.cartItem} key={index}>
-         <span className={styles.cartLine}></span>
-
-         <div className={styles.cartItemWrapper}>
-          <div className={styles.prodInf}>
-            <h4 className={styles.cartItemTitle}>{this.state.brand[index]}</h4>
-            <span className={styles.cartItemSubtitle}>{this.state.name[index]}</span>
-
-            <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.selectCurrency(index)}</span>
-            </div>
-
-            <div className={styles.colorButtons}>
-              <button className={styles.sBut}>S</button>
-              <button className={styles.mBut}>M</button>
-            </div>            
-          </div>
-
-          <div className={styles.prodImage}>
-            <div className={styles.countButtons}>
-              <button className={styles.plusBut}>&#43;</button>
-                <span>1</span>                    
-              <button className={styles.minusBut}>&#8722;</button>
-            </div>
-
-            <div className={styles.galleryWrapper}>
-
-              {this.creatGalleryList(index)}
-
-              <button onClick={(event) => this.showAnotherImage(event, 'prev')} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
-
-              {/* <ul id={this.state.id[index]} className={styles.gallery}>              
-                {this.creatGallery(index)}              
-              </ul> */}
-
-            
-
-              <button onClick={(event) => this.showAnotherImage(event, 'next')} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
-            </div>
-          </div>
-         </div>
-      </li>
-    )
-  }  //{this.state.prices[index]}
 
   render() {
     return (

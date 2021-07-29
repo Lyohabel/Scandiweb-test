@@ -56,11 +56,23 @@
     align-items: flex-start;
 }
 
-.colorButtons > button {
+.attributesWrapper {
+    display: flex;
+}
+
+.attributeTypeWrapper:not(:last-child) {
+    margin-right: 15px;
+}
+
+.attrBut {
     width: 63px;
     height: 45px;
     font-family: Source Sans Pro;
     font-size: 18px;    
+}
+
+.attrBut:first-child {
+    margin-right: 5px;
 }
 
 .sBut {
@@ -135,8 +147,7 @@
 .galleryItem {
     min-width: 140px;
     height: 185px;
-    display: block;
-    overflow: hidden; 
+    /* display: block;    */
 }
 
 .imgDisplay {

@@ -59,7 +59,7 @@ class App extends React.Component {
     if (!cart) return
 
     const jsonCart = JSON.parse(cart);
-    console.log(jsonCart)
+    //console.log(jsonCart)
     let cartCount = 0
     jsonCart.forEach(element => {      
       cartCount += element.amount
@@ -102,8 +102,16 @@ class App extends React.Component {
     }  
   }
 
+  creatControl(item) {
+    const preControl = JSON.stringify(item).split('"')[1]
+    const control = preControl.slice(0, preControl.length)
+    //console.log(preControl)
+    console.log(control)
+    return control
+  }
+
   changeAttributes(attrName, attrValue) {
-    const key = attrName.toLowerCase();
+    const key = attrName.toLowerCase().slice(0, attrName.length - 1);
     let newAttr = {}
     newAttr[key] = attrValue
     let newAttrs = []
@@ -112,7 +120,11 @@ class App extends React.Component {
       newAttrs = [newAttr]
     } else {
         newAttrs = this.state.attrs;
-        const newArr = newAttrs.filter(item => JSON.stringify(item).split('"')[1] !== attrName);
+        //const control = JSON.stringify(item).split('"')[1].slice(0, control.length)
+        const newArr = newAttrs.filter(item => this.creatControl(item) !== key);
+
+        console.log(key)
+        console.log(newArr)
        
         newAttrs = newArr
         newAttrs.push(newAttr)

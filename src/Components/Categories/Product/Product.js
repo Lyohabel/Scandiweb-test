@@ -105,7 +105,8 @@ class Product extends React.Component {
       attr_3: attr_3,
 
       description: description    
-      });              
+      });
+      //console.log(this.state.attributes)             
      });
      
   }
@@ -197,15 +198,6 @@ class Product extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  markAttribute(value, name, order) {
-    this.setState({
-      ...this.state,
-      defaultActiveAttribute: order,    
-      activeAttribute: value,
-      defaultActiveAttributeName: name    
-      }); 
-  }
-
   creatGallery() {
     const gl = this.state.gallery;
     if (gl.length === 1) {
@@ -217,18 +209,29 @@ class Product extends React.Component {
     }
   }
 
+  markAttribute(value, name, order) { //СБРАСЫВАЕТ ОБРАТНО!!!!
+    this.setState({
+      ...this.state,
+      defaultActiveAttribute: order,    
+      activeAttribute: value,
+      defaultActiveAttributeName: name    
+      }); 
+  }
+
   showAttributeName(ind) {
     if (this.state.attributes.length === 0) return '';
-      else return `${this.state.attributes[ind].id.toUpperCase()}:`        
-  }
+      else return `${this.state.attributes[ind].id.toUpperCase()}:`             
+  }  
 
   createButtons(attrs, btnStyle, order) {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} 
       choosed={(this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? "yes"
        : ((index === 0 && this.state.defaultActiveAttribute !== order) ? "yes" : "no")}
-      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}          
-      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.colorButton.b : this.state.colorButton.a))}      
+      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
+
+      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
+
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
         {btnStyle !== COLOR ? item.value : ''}
         <span className={styles.displayValue}>{item.displayValue}</span>
