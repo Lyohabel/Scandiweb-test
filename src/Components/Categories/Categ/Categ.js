@@ -17,7 +17,7 @@ class Categ extends React.Component {
     return this.state.currentCategoryData && this.state.currentCategoryData.map(item =>
       <li className={styles.productItem} id={item.id} key={item.id}>
         <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
-          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
+          <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
         <h3 className={styles.prodTitle}>{item.brand} <span className={styles.subtitle}>{item.name}</span></h3>                

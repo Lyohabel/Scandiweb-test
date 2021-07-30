@@ -21,6 +21,7 @@ class App extends React.Component {
       startData: '',
       categoriesList: [],
       currentCategory: '',
+      currentProduct: '',
       categoryChanged: 'no',     
       currencySimbol: '$',
       currencyNumber: 0,
@@ -34,10 +35,11 @@ class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
+    this.setCurrentProduct = this.setCurrentProduct.bind(this);
     this.changeAttributes = this.changeAttributes.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
     this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
-  }
+  } //changeAttributes
 
   changeCurrentCategory(categ) {   
     this.setState({
@@ -46,7 +48,13 @@ class App extends React.Component {
       categoryChanged: 'yes',            
       });
   }
-
+  
+  setCurrentProduct(prod) {      
+    this.setState({
+      ...this.state,
+      currentProduct: prod                 
+      });
+  }
   setDefaultCategoryChanged() {
     this.setState({
       ...this.state,      
@@ -99,14 +107,13 @@ class App extends React.Component {
         countCart: newCount,
         displayCountCart: 'yes'
       })
-    }  
+    } 
   }
 
   creatControl(item) {
     const preControl = JSON.stringify(item).split('"')[1]
-    const control = preControl.slice(0, preControl.length)
-    //console.log(preControl)
-    console.log(control)
+    const control = preControl.slice(0, preControl.length)    
+    //console.log(control)
     return control
   }
 
@@ -123,8 +130,8 @@ class App extends React.Component {
         //const control = JSON.stringify(item).split('"')[1].slice(0, control.length)
         const newArr = newAttrs.filter(item => this.creatControl(item) !== key);
 
-        console.log(key)
-        console.log(newArr)
+        // console.log(key)
+        // console.log(newArr)
        
         newAttrs = newArr
         newAttrs.push(newAttr)
@@ -184,7 +191,7 @@ class App extends React.Component {
         this.setState({
         ...this.state,        
         startData: newData           
-        }); 
+        });        
     });
 
     const queryCurrencies = new Query("currencies", true)      
@@ -219,14 +226,14 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} currencies={this.state.currencies} addToCart={this.addToCart}/>                
+                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} currencies={this.state.currencies} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>
-                <Product def={this.state.attrs} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
+                <Product currentProduct={this.state.currentProduct} def={this.state.attrs} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
-                <Cart/>
+                <Cart setCurrentProduct={this.setCurrentProduct}/>
               </Route>
             </Switch>
           </OverallData.Provider>

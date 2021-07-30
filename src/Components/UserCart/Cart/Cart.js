@@ -60,11 +60,7 @@ class Cart extends React.Component {
   }  
 
   selectCurrency(index) {
-    if (this.context.currencyNumber === 0) return this.state.price_0[index];
-      else if (this.context.currencyNumber === 1) return this.state.price_1[index];
-        else if (this.context.currencyNumber === 2) return this.state.price_2[index];
-          else if (this.context.currencyNumber === 3) return this.state.price_3[index];
-            else if (this.context.currencyNumber === 4) return this.state.price_4[index];
+    return this.state[`price_${this.context.currencyNumber}`][index]    
   }
 
   creatGalleryList(index) {    
@@ -84,13 +80,13 @@ class Cart extends React.Component {
       (array.length === 1)
        ?     
         <li key={index} className={styles.galleryItem} style={{display: 'block'}}>
-          <NavLink className={styles.prodLink} to={"/product/" + id}> 
+          <NavLink onClick={() => this.props.setCurrentProduct(id)} className={styles.prodLink} to={"/product/" + id}> 
             <img className={styles.imgDisplay} src={item} alt="#"/>
           </NavLink>                  
         </li>
           :
             <li key={index} className={styles.galleryItem} style={index === 0 ? {display: 'block'} : {display: 'none'}}>
-              <NavLink className={styles.prodLink} to={"/product/" + id}> 
+              <NavLink onClick={() => this.props.setCurrentProduct(id)} className={styles.prodLink} to={"/product/" + id}> 
                 <img className={styles.imgDisplay} src={item} alt="#"/>
               </NavLink>                  
             </li>
@@ -261,9 +257,9 @@ class Cart extends React.Component {
         const attr_2Id = result.product.attributes[1] ? result.product.attributes[1].id : ''
         const attr_3Id = result.product.attributes[2] ? result.product.attributes[2].id : ''
 
-        const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items : ''
-        const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items : ''
-        const attr_3 = result.product.attributes[2] ? result.product.attributes[2].items : ''
+        const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items[0].value : ''
+        const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items[0].value : ''
+        const attr_3 = result.product.attributes[2] ? result.product.attributes[2].items[0].value : ''
 
         const description = result.product.description
 
@@ -356,30 +352,40 @@ class Cart extends React.Component {
         })
 
         // **********************************************************************************************************************************
-        let newAttr_1_1 = []
-        let newAttr_1_2 = []
-        let newAttr_1_3 = []       
+        let newAttr_1_1 = [] // eslint-disable-line
+        let newAttr_1_2 = [] // eslint-disable-line
+        let newAttr_1_3 = [] // eslint-disable-line    
     
-        this.state.attr_1[0].map(item => { // eslint-disable-line
-          let x = JSON.stringify(item).split('"value":"')[1]
-          let y = JSON.stringify(x).split('"')[1]
-          const nA0 = y.slice(0, y.length - 1)
-          newAttr_1_1.push(nA0) 
-        })
+        // if (this.state.attr_1[3]) this.state.attr_1[3].map(item => { // eslint-disable-line
+        //   let x = JSON.stringify(item).split('"value":"')[1]
+        //   let y = JSON.stringify(x).split('"')[1]
+        //   const nA0 = y.slice(0, y.length - 1)
+        //   newAttr_1_1.push(nA0) 
+        // })
 
-        if (this.state.attr_1[1]) this.state.attr_1[1].map(item => { // eslint-disable-line
-          let x = JSON.stringify(item).split('"value":"')[1]
-          let y = JSON.stringify(x).split('"')[1]
-          const nA1 = y.slice(0, y.length - 1)
-          newAttr_1_2.push(nA1) 
-        })
+        // if (this.state.attr_2[3]) this.state.attr_2[3].map(item => { // eslint-disable-line
+        //   let x = JSON.stringify(item).split('"value":"')[1]
+        //   let y = JSON.stringify(x).split('"')[1]
+        //   const nA1 = y.slice(0, y.length - 1)
+        //   newAttr_1_2.push(nA1) 
+        // })
+
+        // if (this.state.attr_3[3]) this.state.attr_3[3].map(item => { // eslint-disable-line
+        //   let x = JSON.stringify(item).split('"value":"')[1]
+        //   let y = JSON.stringify(x).split('"')[1]
+        //   const nA2 = y.slice(0, y.length - 1)
+        //   newAttr_1_3.push(nA2) 
+        // })
 
         //console.log(JSON.stringify(this.state.attr_1[0]))
-        console.log(this.state.attr_1)
-        console.log(newAttr_1_1)
-        console.log(newAttr_1_2)
+        // console.log(this.state.attr_1)
+        // console.log(newAttr_1_1)
+        // console.log(newAttr_1_2)
+        // console.log(newAttr_1_3)
         //console.log(newAttr_1_2)
         // console.log(this.state.attributes)
+        // console.log(this.state.attributes[0])
+        console.log(this.state.attr_1Id, this.state.attr_1)
         // console.log(this.state.attr_1)
         // console.log(this.state.jsonCart)
       })

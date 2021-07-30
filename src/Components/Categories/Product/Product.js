@@ -29,8 +29,13 @@ class Product extends React.Component {
       attr_3Id: '',
 
       activeAttribute: '',
-      defaultActiveAttribute: '',
-      defaultActiveAttributeName: '',
+      defaultActiveAttribute_0: '',
+      defaultActiveAttribute_1: '',
+      defaultActiveAttribute_2: '',
+
+      defaultActiveAttributeName_0: '',
+      defaultActiveAttributeName_1: '',
+      defaultActiveAttributeName_2: '',
       
       sizeButton: {
         a : styles.size,
@@ -47,13 +52,105 @@ class Product extends React.Component {
     }
   }
 
+  
+
+  resetProduct() {
+    this.setState({
+      ...this.state,     
+      productAdded: 'yes'    
+      });
+  } 
+
+  addAttrToCart(id, attr, value) {
+    if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);    
+
+    jsonCart.forEach(element => {      
+      if (element.name === id) {
+        element[attr] = +value;             
+      }      
+    })   
+
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  }
+
+  creatGallery() {
+    const gl = this.state.gallery;
+    if (gl.length === 1) {
+      return ''
+    } else {
+      return this.state.gallery && this.state.gallery.map(item =>
+        <li key={item} className={styles.galleryItem}><img className={styles.imgGalleryItem} src={item} alt="#"/></li>
+      )
+    }
+  }
+
+  markAttribute(value, name, order) { //СБРАСЫВАЕТ ОБРАТНО!!!!
+    this.setState({
+      ...this.state,
+      [`defaultActiveAttribute_${order}`]: order,    
+      activeAttribute: value,
+      [`defaultActiveAttributeName_${order}`]: name    
+      }); 
+  }
+
+  showAttributeName(ind) {
+    if (this.state.attributes.length === 0) return '';
+      else return `${this.state.attributes[ind].id.toUpperCase()}:`             
+  }  
+
+  createButtons(attrs, btnStyle, order) {
+    return attrs && attrs.map((item, index, array) =>
+      <button id={index} key={item.value} value={item.value} 
+      choosed={(this.state.activeAttribute === item.value && this.state[`defaultActiveAttributeName_${order}`] === this.showAttributeName(order)) ? "yes"
+       : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? "yes" : "no")}
+      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
+
+      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state[`defaultActiveAttributeName_${order}`] === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
+
+      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
+        {btnStyle !== COLOR ? item.value : ''}
+        <span className={styles.displayValue}>{item.displayValue}</span>
+      </button>
+      )
+  } 
+
+  setAttributes(order) {
+    if (this.state.attributes.length < order + 1) return ''
+    if (this.state.attributes[order].id !== COLOR) {
+      return (
+        <div className={styles.chooseSize}>
+          {this.createButtons(this.state[`attr_${order + 1}`], '', order)}           
+        </div> 
+      )
+    } else {
+        return (
+          <div className={styles.chooseSize}>
+            {this.createButtons(this.state[`attr_${order + 1}`], COLOR, order)}           
+          </div> 
+        )
+      }    
+  }
+
+  returnAttributes(arr) {
+    return arr && arr.map((item, index) =>
+      <div key={item.id} className="attrWrapper">
+        <h4 className={styles.sizeTitle}>{this.state.attributes[index] ? this.showAttributeName(index) : ''}</h4>
+        {this.setAttributes(index)}
+      </div>
+    )    
+  }
+
   componentDidMount() {
-    const id = window.location.href.split('/')[4];
+    //const id = window.location.href.split('/')[4];
+    const product = this.props.currentProduct;    
 
     client.setEndpoint("http://localhost:4000/graphql");
 
     const query = new Query("product", true)
-   .addArgument("id", "String!", id)   
+   .addArgument("id", "String!", product)   
    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
 
     client.post(query).then(result => {
@@ -107,19 +204,19 @@ class Product extends React.Component {
       description: description    
       });
       //console.log(this.state.attributes)             
-     });
-     
+     });     
   }
 
   componentDidUpdate() {
     if (this.state.productAdded !== 'no') {
 
-      const id = window.location.href.split('/')[4];
+      //const id = window.location.href.split('/')[4];
+      const product = this.props.currentProduct;
 
       client.setEndpoint("http://localhost:4000/graphql");
 
       const query = new Query("product", true)
-    .addArgument("id", "String!", id)   
+    .addArgument("id", "String!", product)   
     .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
 
       client.post(query).then(result => {
@@ -175,125 +272,6 @@ class Product extends React.Component {
       });
     }
   }
-
-  resetProduct() {
-    this.setState({
-      ...this.state,     
-      productAdded: 'yes'    
-      });
-  } 
-
-  addAttrToCart(id, attr, value) {
-    if (!window.localStorage.getItem('cart')) return;
-
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);    
-
-    jsonCart.forEach(element => {      
-      if (element.name === id) {
-        element[attr] = +value;             
-      }      
-    })   
-
-    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-  }
-
-  creatGallery() {
-    const gl = this.state.gallery;
-    if (gl.length === 1) {
-      return ''
-    } else {
-      return this.state.gallery && this.state.gallery.map(item =>
-        <li key={item} className={styles.galleryItem}><img className={styles.imgGalleryItem} src={item} alt="#"/></li>
-      )
-    }
-  }
-
-  markAttribute(value, name, order) { //СБРАСЫВАЕТ ОБРАТНО!!!!
-    this.setState({
-      ...this.state,
-      defaultActiveAttribute: order,    
-      activeAttribute: value,
-      defaultActiveAttributeName: name    
-      }); 
-  }
-
-  showAttributeName(ind) {
-    if (this.state.attributes.length === 0) return '';
-      else return `${this.state.attributes[ind].id.toUpperCase()}:`             
-  }  
-
-  createButtons(attrs, btnStyle, order) {
-    return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} 
-      choosed={(this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? "yes"
-       : ((index === 0 && this.state.defaultActiveAttribute !== order) ? "yes" : "no")}
-      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
-
-      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state.defaultActiveAttributeName === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state.defaultActiveAttribute !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
-
-      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
-        {btnStyle !== COLOR ? item.value : ''}
-        <span className={styles.displayValue}>{item.displayValue}</span>
-      </button>
-      )
-  } 
-
-  setAttributes(order) {
-    switch(order) {  // eslint-disable-line
-      case 1:  
-      if (!this.state.attributes.length) return ''
-      else if (this.state.attributes[0].id !== COLOR) {
-         return (
-          <div className={styles.chooseSize}>
-            {this.createButtons(this.state.attr_1, '', 0)}           
-          </div> 
-          )} else {
-            return (
-              <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_1, COLOR, 0)}           
-              </div> 
-            )}
-    
-      case 2:  
-      if (this.state.attributes.length < 2) return ''
-      else if (this.state.attributes[1].id !== COLOR) {
-         return (
-          <div className={styles.chooseSize}>
-            {this.createButtons(this.state.attr_2, '', 1)}           
-          </div> 
-          )} else {
-            return (
-              <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_2, COLOR, 1)}           
-              </div> 
-            )}
-
-        case 3:
-          if (this.state.attributes.length < 3) return ''
-          else if (this.state.attributes[2].id !== COLOR) {
-             return (
-              <div className={styles.chooseSize}>
-                {this.createButtons(this.state.attr_3, '', 2)}           
-              </div> 
-              )} else {
-                return (
-                  <div className={styles.chooseSize}>
-                    {this.createButtons(this.state.attr_3, COLOR, 2)}           
-                  </div> 
-                )}        
-    }    
-  }
-
-  returnAttributes(arr) {
-    return arr && arr.map((item, index) =>
-      <div key={item.id} className="attrWrapper">
-        <h4 className={styles.sizeTitle}>{this.state.attributes[index] ? this.showAttributeName(index) : ''}</h4>
-        {this.setAttributes(index+1)}
-      </div>
-    )    
-  }
-
  
   componentWillUnmount() {
     this.props.setDefaultAttributes()
