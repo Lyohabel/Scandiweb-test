@@ -14,6 +14,7 @@ class Cart extends React.Component {
       id: '',     
       gallery: '',
       galleryLength: '',
+      galleryIndicator: '',      
       img: '',
       brand: '',
       name: '',
@@ -33,9 +34,29 @@ class Cart extends React.Component {
       attr_2Id: '',
       attr_3Id: '',
 
-      attr_1: '',
-      attr_2: '',
-      attr_3: '',
+      attr_1Length: '',
+      attr_2Length: '',
+      attr_3Length: '',
+
+      attr_1_1: '',
+      attr_2_1: '',
+      attr_3_1: '',
+
+      attr_1_2: '',
+      attr_2_2: '',
+      attr_3_2: '',
+
+      attr_1_3: '',
+      attr_2_3: '',
+      attr_3_3: '',
+
+      attr_1_4: '',
+      attr_2_4: '',
+      attr_3_4: '',
+
+      attr_1_5: '',
+      attr_2_5: '',
+      attr_3_5: '',
 
       sizeButton: {
         a : styles.size,
@@ -49,7 +70,7 @@ class Cart extends React.Component {
       sliderDisplayRight: styles.sliderDisplayRight,
       imgDisplay: styles.imgDisplay,
       imgHidden: styles.imgHidden,
-      imgStatus: '',
+      imgStatus: 0,
       galleryId: ''
     }
     
@@ -85,25 +106,25 @@ class Cart extends React.Component {
           </NavLink>                  
         </li>
           :
-            <li key={index} className={styles.galleryItem} style={index === 0 ? {display: 'block'} : {display: 'none'}}>
+            <li key={index} className={styles.galleryItem}
+            style={(this.state.galleryId === id) ? ((index === 0) ? {display: 'block'} : {display: 'none'}) : ((this.state.imgStatus === index) ? {display: 'block'} : {display: 'none'})}>
               <NavLink onClick={() => this.props.setCurrentProduct(id)} className={styles.prodLink} to={"/product/" + id}> 
                 <img className={styles.imgDisplay} src={item} alt="#"/>
               </NavLink>                  
             </li>
-    )
+    ) // && this.state.galleryId === id
   }
 
-  // setIndicator(index, array, id) { ДОДЕЛАТЬ СЛАЙДЕР!!!
-  //   array.forEach
+  // setIndicator(index) {
+  //   this.setState({
+  //     ...this.state,
+  //     galleryIndicator: index
+  //   })
 
-  //   //if (index === 0 && )
-
-  //   //this.state.imgStatus === index && this.state.galleryId === id
-
-  // } style={(this.setIndicator(index, array, id)) ? {display: 'block'} : {display: 'none'}}
-
-  showAnotherImage(dir, id) { // ДОДЕЛАТЬ СЛАЙДЕР!!!
-      if (dir === 'next') {
+  // }
+    
+  showAnotherImage(dir, id, index) { // ДОДЕЛАТЬ СЛАЙДЕР!!!
+      if (dir === 'next' && this.state.imgStatus < this.state.galleryLength[index] - 1) {
         let newImgStatus = this.state.imgStatus + 1
         this.setState({
           ...this.state,
@@ -111,7 +132,7 @@ class Cart extends React.Component {
           galleryId: id
         })
       }
-       else if (dir === 'prev') {
+       else if (dir === 'prev'  && this.state.imgStatus > 0) {
         let newImgStatus = this.state.imgStatus - 1
         this.setState({
           ...this.state,
@@ -119,6 +140,9 @@ class Cart extends React.Component {
           galleryId: id
         })
         }
+        console.log(id)
+        console.log(this.state.galleryId)
+        console.log(this.state.imgStatus)
   }
 
   creatChoosedAttributes() {
@@ -180,9 +204,9 @@ class Cart extends React.Component {
 
               {this.creatGalleryList(index)}
 
-              <button onClick={() => this.showAnotherImage('prev', item.id)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
+              <button onClick={() => this.showAnotherImage('prev', item.id, index)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
               
-              <button onClick={() => this.showAnotherImage('next', item.id)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
+              <button onClick={() => this.showAnotherImage('next', item.id, index)} className={(this.state.galleryLength[index] > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
             </div>
           </div>
          </div>
@@ -224,9 +248,29 @@ class Cart extends React.Component {
         cartAttr_2Id = [],
         cartAttr_3Id = [],
 
-        cartAttr_1 = [],
-        cartAttr_2 = [],
-        cartAttr_3 = [],
+        cartAttr_1Length = [],
+        cartAttr_2Length = [],
+        cartAttr_3Length = [],
+
+        cartAttr_1_1 = [],
+        cartAttr_2_1 = [],
+        cartAttr_3_1 = [],
+
+        cartAttr_1_2 = [],
+        cartAttr_2_2 = [],
+        cartAttr_3_2 = [],
+
+        cartAttr_1_3 = [],
+        cartAttr_2_3 = [],
+        cartAttr_3_3 = [],
+
+        cartAttr_1_4 = [],
+        cartAttr_2_4 = [],
+        cartAttr_3_4 = [],
+
+        cartAttr_1_5 = [],
+        cartAttr_2_5 = [],
+        cartAttr_3_5 = [],
 
         cartDescription = []        
 
@@ -253,13 +297,35 @@ class Cart extends React.Component {
         ]      
         const attributes = result.product.attributes
 
-        const attr_1Id = result.product.attributes[0] ? result.product.attributes[0].id : ''
-        const attr_2Id = result.product.attributes[1] ? result.product.attributes[1].id : ''
-        const attr_3Id = result.product.attributes[2] ? result.product.attributes[2].id : ''
+        const attr_1Id = result.product.attributes[0] ? result.product.attributes[0].id : 0
+        const attr_2Id = result.product.attributes[1] ? result.product.attributes[1].id : 0
+        const attr_3Id = result.product.attributes[2] ? result.product.attributes[2].id : 0
 
-        const attr_1 = result.product.attributes[0] ? result.product.attributes[0].items[0].value : ''
-        const attr_2 = result.product.attributes[1] ? result.product.attributes[1].items[0].value : ''
-        const attr_3 = result.product.attributes[2] ? result.product.attributes[2].items[0].value : ''
+        const attr_1Length = result.product.attributes[0] ? result.product.attributes[0].items.length : 0
+        const attr_2Length = result.product.attributes[1] ? result.product.attributes[1].items.length : 0
+        const attr_3Length = result.product.attributes[2] ? result.product.attributes[2].items.length : 0
+
+        const attr_1_1 =  result.product.attributes[0] && result.product.attributes[0].items[0] ? result.product.attributes[0].items[0].value : 0
+        const attr_2_1 =  result.product.attributes[1] && result.product.attributes[1].items[0] ? result.product.attributes[1].items[0].value : 0
+        const attr_3_1 =  result.product.attributes[2] && result.product.attributes[2].items[0] ? result.product.attributes[2].items[0].value : 0
+
+        const attr_1_2 =  result.product.attributes[0] && result.product.attributes[0].items[1] ? result.product.attributes[0].items[1].value : 0
+        const attr_2_2 =  result.product.attributes[1] && result.product.attributes[1].items[1] ? result.product.attributes[1].items[1].value : 0
+        const attr_3_2 =  result.product.attributes[2] && result.product.attributes[2].items[1] ? result.product.attributes[2].items[1].value : 0
+
+        const attr_1_3 = result.product.attributes[0] && result.product.attributes[0].items[2] ? result.product.attributes[0].items[2].value : 0
+        const attr_2_3 = result.product.attributes[1] && result.product.attributes[1].items[2] ? result.product.attributes[1].items[2].value : 0
+        const attr_3_3 = result.product.attributes[2] && result.product.attributes[2].items[2] ? result.product.attributes[2].items[2].value : 0
+
+        const attr_1_4 = result.product.attributes[0] && result.product.attributes[0].items[3] ? result.product.attributes[0].items[3].value : 0
+        const attr_2_4 = result.product.attributes[1] && result.product.attributes[1].items[3] ? result.product.attributes[1].items[3].value : 0
+        const attr_3_4 = result.product.attributes[2] && result.product.attributes[2].items[3] ? result.product.attributes[2].items[3].value : 0
+
+        const attr_1_5 = result.product.attributes[0] && result.product.attributes[0].items[4] ? result.product.attributes[0].items[4].value : 0
+        const attr_2_5 = result.product.attributes[1] && result.product.attributes[1].items[4] ? result.product.attributes[1].items[4].value : 0
+        const attr_3_5 = result.product.attributes[2] && result.product.attributes[2].items[4] ? result.product.attributes[2].items[4].value : 0
+
+       
 
         const description = result.product.description
 
@@ -273,13 +339,33 @@ class Cart extends React.Component {
         cartPrices.push(prices)
         cartAttributes.push(attributes)
 
+        cartAttr_1Length.push(attr_1Length)
+        cartAttr_2Length.push(attr_2Length)
+        cartAttr_3Length.push(attr_3Length)
+
         cartAttr_1Id.push(attr_1Id)
         cartAttr_2Id.push(attr_2Id)
         cartAttr_3Id.push(attr_3Id)
 
-        cartAttr_1.push(attr_1)
-        cartAttr_2.push(attr_2)
-        cartAttr_3.push(attr_3)
+        cartAttr_1_1.push(attr_1_1)
+        cartAttr_2_1.push(attr_2_1)
+        cartAttr_3_1.push(attr_3_1)
+
+        cartAttr_1_2.push(attr_1_2)
+        cartAttr_2_2.push(attr_2_2)
+        cartAttr_3_2.push(attr_3_2)
+
+        cartAttr_1_3.push(attr_1_3)
+        cartAttr_2_3.push(attr_2_3)
+        cartAttr_3_3.push(attr_3_3)
+
+        cartAttr_1_4.push(attr_1_4)
+        cartAttr_2_4.push(attr_2_4)
+        cartAttr_3_4.push(attr_3_4)
+
+        cartAttr_1_5.push(attr_1_5)
+        cartAttr_2_5.push(attr_2_5)
+        cartAttr_3_5.push(attr_3_5)
 
         cartDescription.push(description)
 
@@ -303,9 +389,29 @@ class Cart extends React.Component {
           attr_2Id: cartAttr_2Id,
           attr_3Id: cartAttr_3Id,
 
-          attr_1: cartAttr_1,
-          attr_2: cartAttr_2,
-          attr_3: cartAttr_3,
+          attr_1Length: cartAttr_1Length,
+          attr_2Length: cartAttr_2Length,
+          attr_3Length: cartAttr_3Length,
+
+          attr_1_1: cartAttr_1_1,
+          attr_2_1: cartAttr_2_1,
+          attr_3_1: cartAttr_3_1,
+
+          attr_1_2: cartAttr_1_2,
+          attr_2_2: cartAttr_2_2,
+          attr_3_2: cartAttr_3_2,
+
+          attr_1_3: cartAttr_1_3,
+          attr_2_3: cartAttr_2_3,
+          attr_3_3: cartAttr_3_3,
+
+          attr_1_4: cartAttr_1_4,
+          attr_2_4: cartAttr_2_4,
+          attr_3_4: cartAttr_3_4,
+
+          attr_1_5: cartAttr_1_5,
+          attr_2_5: cartAttr_2_5,
+          attr_3_5: cartAttr_3_5,
 
           description: cartDescription    
           });
@@ -348,47 +454,22 @@ class Cart extends React.Component {
             price_2: newPrice_2,
             price_3: newPrice_3,
             price_4: newPrice_4
-          })      
+          })              
         })
 
         // **********************************************************************************************************************************
-        let newAttr_1_1 = [] // eslint-disable-line
-        let newAttr_1_2 = [] // eslint-disable-line
-        let newAttr_1_3 = [] // eslint-disable-line    
-    
-        // if (this.state.attr_1[3]) this.state.attr_1[3].map(item => { // eslint-disable-line
-        //   let x = JSON.stringify(item).split('"value":"')[1]
-        //   let y = JSON.stringify(x).split('"')[1]
-        //   const nA0 = y.slice(0, y.length - 1)
-        //   newAttr_1_1.push(nA0) 
-        // })
-
-        // if (this.state.attr_2[3]) this.state.attr_2[3].map(item => { // eslint-disable-line
-        //   let x = JSON.stringify(item).split('"value":"')[1]
-        //   let y = JSON.stringify(x).split('"')[1]
-        //   const nA1 = y.slice(0, y.length - 1)
-        //   newAttr_1_2.push(nA1) 
-        // })
-
-        // if (this.state.attr_3[3]) this.state.attr_3[3].map(item => { // eslint-disable-line
-        //   let x = JSON.stringify(item).split('"value":"')[1]
-        //   let y = JSON.stringify(x).split('"')[1]
-        //   const nA2 = y.slice(0, y.length - 1)
-        //   newAttr_1_3.push(nA2) 
-        // })
-
-        //console.log(JSON.stringify(this.state.attr_1[0]))
-        // console.log(this.state.attr_1)
-        // console.log(newAttr_1_1)
-        // console.log(newAttr_1_2)
-        // console.log(newAttr_1_3)
-        //console.log(newAttr_1_2)
-        // console.log(this.state.attributes)
-        // console.log(this.state.attributes[0])
-        console.log(this.state.attr_1Id, this.state.attr_1)
-        // console.log(this.state.attr_1)
-        // console.log(this.state.jsonCart)
+                
+        console.log(this.state.attr_1_3)
+        console.log(this.state.attr_2_3)
+        console.log(this.state.attr_3_3)
+        
+        console.log(this.state.attr_1_4)
+        console.log(this.state.attr_2_4)
+        console.log(this.state.attr_3_4)
+        
+      
       })
+      
     })
   }
 

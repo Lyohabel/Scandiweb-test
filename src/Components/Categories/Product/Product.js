@@ -28,7 +28,10 @@ class Product extends React.Component {
       attr_2Id: '',
       attr_3Id: '',
 
-      activeAttribute: '',
+      activeAttribute_0: '',
+      activeAttribute_1: '',
+      activeAttribute_2: '',
+
       defaultActiveAttribute_0: '',
       defaultActiveAttribute_1: '',
       defaultActiveAttribute_2: '',
@@ -87,13 +90,31 @@ class Product extends React.Component {
     }
   }
 
-  markAttribute(value, name, order) { //СБРАСЫВАЕТ ОБРАТНО!!!!
-    this.setState({
-      ...this.state,
-      [`defaultActiveAttribute_${order}`]: order,    
-      activeAttribute: value,
-      [`defaultActiveAttributeName_${order}`]: name    
-      }); 
+  markAttribute(value, order) {
+    switch(order) {  // eslint-disable-line
+      case 0:    
+      this.setState({
+        ...this.state,
+        defaultActiveAttribute_0: order,    
+        activeAttribute_0: value
+      });
+      break
+
+      case 1:    
+      this.setState({
+        ...this.state,
+        defaultActiveAttribute_1: order,    
+        activeAttribute_1: value    
+      });
+      break
+
+      case 2:    
+      this.setState({
+        ...this.state,
+        defaultActiveAttribute_2: order,    
+        activeAttribute_2: value           
+      });
+    }
   }
 
   showAttributeName(ind) {
@@ -104,11 +125,10 @@ class Product extends React.Component {
   createButtons(attrs, btnStyle, order) {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} 
-      choosed={(this.state.activeAttribute === item.value && this.state[`defaultActiveAttributeName_${order}`] === this.showAttributeName(order)) ? "yes"
-       : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? "yes" : "no")}
-      onClick={() => {this.markAttribute(item.value, this.showAttributeName(order), order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
+      choosed={(this.state[`activeAttribute_${order}`] === item.value) ? "yes" : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? "yes" : "no")}
+      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
 
-      className={(btnStyle !== COLOR) ? ((this.state.activeAttribute === item.value && this.state[`defaultActiveAttributeName_${order}`] === this.showAttributeName(order)) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state.activeAttribute === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
+      className={(btnStyle !== COLOR) ? ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
 
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
         {btnStyle !== COLOR ? item.value : ''}
