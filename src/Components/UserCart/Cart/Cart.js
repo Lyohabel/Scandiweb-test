@@ -21,7 +21,7 @@ class Cart extends React.Component {
       sliderDisplayRight: styles.sliderDisplayRight,
       imgDisplay: styles.imgDisplay,
       imgHidden: styles.imgHidden,
-      imgStatus: '',
+      imgStatus: 0,
       galleryId: ''
     }
     
@@ -46,30 +46,30 @@ class Cart extends React.Component {
       (array.length === 1)
        ?     
         <li key={index} className={styles.galleryItem} style={{display: 'block'}}>
-          <NavLink className={styles.prodLink} to={"/product/" + id}> 
+          <NavLink onClick={() => this.props.setCurrentProduct(id)} className={styles.prodLink} to={"/product/" + id}> 
             <img className={styles.imgDisplay} src={item} alt="#"/>
           </NavLink>                  
         </li>
           :
-            <li key={index} className={styles.galleryItem} style={index === 0 ? {display: 'block'} : {display: 'none'}}>
-              <NavLink className={styles.prodLink} to={"/product/" + id}> 
+            <li key={index} className={styles.galleryItem}
+            style={(this.state.galleryId === id) ? ((index === 0) ? {display: 'block'} : {display: 'none'}) : ((this.state.imgStatus === index) ? {display: 'block'} : {display: 'none'})}>
+              <NavLink onClick={() => this.props.setCurrentProduct(id)} className={styles.prodLink} to={"/product/" + id}> 
                 <img className={styles.imgDisplay} src={item} alt="#"/>
               </NavLink>                  
             </li>
-    )
+    ) // && this.state.galleryId === id
   }
 
-  // setIndicator(index, array, id) { ДОДЕЛАТЬ СЛАЙДЕР!!!
-  //   array.forEach
+  // setIndicator(index) {
+  //   this.setState({
+  //     ...this.state,
+  //     galleryIndicator: index
+  //   })
 
-  //   //if (index === 0 && )
-
-  //   //this.state.imgStatus === index && this.state.galleryId === id
-
-  // } style={(this.setIndicator(index, array, id)) ? {display: 'block'} : {display: 'none'}}
-
-  showAnotherImage(dir, id) { // ДОДЕЛАТЬ СЛАЙДЕР!!!
-      if (dir === 'next') {
+  // }
+    
+  showAnotherImage(dir, id, index) { // ДОДЕЛАТЬ СЛАЙДЕР!!!
+      if (dir === 'next' && this.state.imgStatus < this.state.galleryLength[index] - 1) {
         let newImgStatus = this.state.imgStatus + 1
         this.setState({
           ...this.state,
@@ -77,7 +77,7 @@ class Cart extends React.Component {
           galleryId: id
         })
       }
-       else if (dir === 'prev') {
+       else if (dir === 'prev'  && this.state.imgStatus > 0) {
         let newImgStatus = this.state.imgStatus - 1
         this.setState({
           ...this.state,
@@ -85,6 +85,9 @@ class Cart extends React.Component {
           galleryId: id
         })
         }
+        console.log(id)
+        console.log(this.state.galleryId)
+        console.log(this.state.imgStatus)
   }
 
   creatChoosedAttributes() {
@@ -102,7 +105,7 @@ class Cart extends React.Component {
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    //jsonCart.splice(0,1);
+    console.log(jsonCart[0].attrNames[0])    
 
     // this.setState({
     //   ...this.state,      

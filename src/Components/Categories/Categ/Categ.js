@@ -8,23 +8,27 @@ class Categ extends React.Component {
   constructor(props) {
     super(props);
     this.state = {      
-      currentCategoryData: ''     
+      currentCategoryData: '',
+      attr_1Id: '',
+      attr_2Id: '',
+      attr_3Id: ''    
     }
     //this.createList = this.createList.bind(this)    
   }  
 
   createList() {    
-    return this.state.currentCategoryData && this.state.currentCategoryData.map(item =>
+    return this.state.currentCategoryData && this.state.currentCategoryData.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
         <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
-          <img className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
+          <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
         <h3 className={styles.prodTitle}>{item.brand} <span className={styles.subtitle}>{item.name}</span></h3>                
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.addToCart(item.inStock, item.id)} className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
+        <button onClick={() => this.props.addToCart(item.inStock, item.id, this.state.attr_1Id[index], this.state.attr_2Id[index], this.state.attr_3Id[index])} 
+        className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
   }  
@@ -34,14 +38,32 @@ class Categ extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
+
+      const attr_1Id = []
+      const attr_2Id = []
+      const attr_3Id = []
   
-      client.post(query).then(result => {
-        const newData = result.category.products
-        this.setState({
+    client.post(query).then(result => {
+      const newData = result.category.products     
+
+      newData.forEach(element => {
+        attr_1Id.push(element.attributes && element.attributes[0] ? element.attributes[0].id : '')
+        attr_2Id.push(element.attributes && element.attributes[1] ? element.attributes[1].id : '')
+        attr_3Id.push(element.attributes && element.attributes[2] ? element.attributes[2].id : '')
+      });
+
+      this.setState({
         ...this.state,        
-        currentCategoryData: newData           
-      });     
+        currentCategoryData: newData,
+        attr_1Id: attr_1Id,
+        attr_2Id: attr_2Id,
+        attr_3Id: attr_3Id            
+      });
+      // console.log(newData)
+      // console.log(this.state.attr_1Id)
+      // console.log(this.state.attr_2Id)
+      // console.log(this.state.attr_3Id)          
     });    
   }
 
@@ -51,16 +73,33 @@ class Categ extends React.Component {
     
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "inStock", "gallery", "prices {currency,amount }"]))
+        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
+
+      const attr_1Id = []
+      const attr_2Id = []
+      const attr_3Id = []
     
-        client.post(query).then(result => {
-          const newData = result.category.products
-          this.setState({
-          ...this.state,
-          categoryChanged: 'no',
-          currentCategoryData: newData           
+      client.post(query).then(result => {
+        const newData = result.category.products
+        newData.forEach(element => {
+          attr_1Id.push(element.attributes && element.attributes[0] ? element.attributes[0].id : '')
+          attr_2Id.push(element.attributes && element.attributes[1] ? element.attributes[1].id : '')
+          attr_3Id.push(element.attributes && element.attributes[2] ? element.attributes[2].id : '')
         });
-        this.props.setDefaultCategoryChanged()    
+  
+        this.setState({
+          ...this.state,        
+          currentCategoryData: newData,
+          attr_1Id: attr_1Id,
+          attr_2Id: attr_2Id,
+          attr_3Id: attr_3Id            
+        });
+        // console.log(newData) 
+        // console.log(this.state.attr_1Id)
+        // console.log(this.state.attr_2Id)
+        // console.log(this.state.attr_3Id)
+
+        this.props.setDefaultCategoryChanged()            
       });
     }   
   }  
