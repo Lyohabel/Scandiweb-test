@@ -145,15 +145,28 @@ class Cart extends React.Component {
         console.log(this.state.imgStatus)
   }
 
-  creatChoosedAttributes() {
-    return this.state.attr_1 && this.state.attr_1.map((item, index, array) =>
-      <div key={index}>
-        <button className={styles.attrBut}>{item[0][0].value}</button>
-        <button className={styles.attrBut}>{item[0][1]}.value</button>
-      </div>
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  // findChoosedAttributes() {
+  //   if (!this.state.jsonCart) return    
+  //   this.state.jsonCart.forEach((element, index) => {
+  //     let name1 = `item${index}_1`
+  //     window[name1] = []
+  //     window[name1].push(this.state.attr_1Id[index], this.state.attr_1_1[index], this.state.attr_1_2[index], this.state.attr_1_3[index], this.state.attr_1_4[index], this.state.attr_1_5[index])
+  //     //return name1
+  //     console.log(name1)
+  //   })
+  // }
+
+  // creatChoosedAttributes() {
+  //   return this.state.attr_1 && this.state.attr_1.map((item, index, array) =>
+  //     <div key={index}>
+  //       <button className={styles.attrBut}>{item[0][0].value}</button>
+  //       <button className={styles.attrBut}>{item[0][1]}.value</button>
+  //     </div>
     
-    )
-  }
+  //   )
+  // }
     
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
@@ -177,7 +190,7 @@ class Cart extends React.Component {
               {/* {this.creatChoosedAttributes()} */}
 
               <div className={styles.attributeTypeWrapper}>
-                <button className={styles.attrBut}>S</button>
+                <button onClick={() => this.findChoosedAttributes()} className={styles.attrBut}>S</button>
                 <button className={styles.attrBut}>M</button>
               </div>
 
@@ -219,6 +232,7 @@ class Cart extends React.Component {
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
+    console.log(jsonCart[3].attrs[0].capacity)
     //jsonCart.splice(0,1);
 
     this.setState({
@@ -459,13 +473,13 @@ class Cart extends React.Component {
 
         // **********************************************************************************************************************************
                 
-        console.log(this.state.attr_1_3)
-        console.log(this.state.attr_2_3)
-        console.log(this.state.attr_3_3)
+        // console.log(this.state.attr_1_5)
+        // console.log(this.state.attr_2_5)
+        // console.log(this.state.attr_3_5)
         
-        console.log(this.state.attr_1_4)
-        console.log(this.state.attr_2_4)
-        console.log(this.state.attr_3_4)
+        // console.log(this.state.attr_1_4)
+        // console.log(this.state.attr_2_4)
+        // console.log(this.state.attr_3_4)
         
       
       })

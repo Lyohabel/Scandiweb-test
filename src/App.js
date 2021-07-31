@@ -29,7 +29,8 @@ class App extends React.Component {
       displayCountCart: 'no',      
       currencies: '',
       currency: '',
-      attrs: DEFAULT           
+      attrs: DEFAULT,
+      //attrNames: ''           
   }
 
     this.addToCart = this.addToCart.bind(this);
@@ -80,24 +81,24 @@ class App extends React.Component {
       });
   }
 
-  changeLocalStorage(id) {
+  changeLocalStorage(id, attr_1Name, attr_2Name, attr_3Name) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs})
+    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: [attr_1Name, attr_2Name, attr_3Name]})
    
     //console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id) {
+  addToCart(inStock, id, attr_1Name, attr_2Name, attr_3Name) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id)
+        this.changeLocalStorage(id, attr_1Name, attr_2Name, attr_3Name)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: [attr_1Name, attr_2Name, attr_3Name]}]));
         }      
        
       let newCount = this.state.countCart;

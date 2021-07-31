@@ -126,7 +126,9 @@ class Product extends React.Component {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} 
       choosed={(this.state[`activeAttribute_${order}`] === item.value) ? "yes" : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? "yes" : "no")}
-      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.id, this.showAttributeName(order), index); this.props.changeAttributes(this.showAttributeName(order), item.value)}}
+      onClick={() => {this.markAttribute(item.value, order); 
+        this.addAttrToCart(this.state.id, this.showAttributeName(order), index); 
+        this.props.changeAttributes(this.showAttributeName(order), item.value)}}
 
       className={(btnStyle !== COLOR) ? ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
 
@@ -318,7 +320,11 @@ class Product extends React.Component {
 
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => {this.props.addToCart(this.state.instock, this.state.id); this.resetProduct()}} className={(this.state.instock ? styles.add : styles.inStockFalse)}><span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span></button>
+                <button onClick={() => {this.props.addToCart(this.state.instock, this.state.id, this.state.attr_1Id, this.state.attr_2Id, this.state.attr_3Id,); 
+                this.resetProduct()}} 
+                className={(this.state.instock ? styles.add : styles.inStockFalse)}>
+                  <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>
+                </button>
 
                 <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.description}}></span>
 
