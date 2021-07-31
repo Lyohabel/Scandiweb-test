@@ -26,37 +26,7 @@ class Cart extends React.Component {
       price_3: '',
       price_4: '',
 
-      instok: '',
-      attributes: '',
-      description: '',
-
-      attr_1Id: '',
-      attr_2Id: '',
-      attr_3Id: '',
-
-      attr_1Length: '',
-      attr_2Length: '',
-      attr_3Length: '',
-
-      attr_1_1: '',
-      attr_2_1: '',
-      attr_3_1: '',
-
-      attr_1_2: '',
-      attr_2_2: '',
-      attr_3_2: '',
-
-      attr_1_3: '',
-      attr_2_3: '',
-      attr_3_3: '',
-
-      attr_1_4: '',
-      attr_2_4: '',
-      attr_3_4: '',
-
-      attr_1_5: '',
-      attr_2_5: '',
-      attr_3_5: '',
+      instok: '',      
 
       sizeButton: {
         a : styles.size,
@@ -145,28 +115,7 @@ class Cart extends React.Component {
         console.log(this.state.imgStatus)
   }
 
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  // findChoosedAttributes() {
-  //   if (!this.state.jsonCart) return    
-  //   this.state.jsonCart.forEach((element, index) => {
-  //     let name1 = `item${index}_1`
-  //     window[name1] = []
-  //     window[name1].push(this.state.attr_1Id[index], this.state.attr_1_1[index], this.state.attr_1_2[index], this.state.attr_1_3[index], this.state.attr_1_4[index], this.state.attr_1_5[index])
-  //     //return name1
-  //     console.log(name1)
-  //   })
-  // }
-
-  // creatChoosedAttributes() {
-  //   return this.state.attr_1 && this.state.attr_1.map((item, index, array) =>
-  //     <div key={index}>
-  //       <button className={styles.attrBut}>{item[0][0].value}</button>
-  //       <button className={styles.attrBut}>{item[0][1]}.value</button>
-  //     </div>
-    
-  //   )
-  // }
+ 
     
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
@@ -198,12 +147,7 @@ class Cart extends React.Component {
                 <button className={styles.attrBut}>S</button>
                 <button className={styles.attrBut}>M</button>
               </div>             
-            </div>          
-
-            {/* <div className={styles.colorButtons}>
-              <button className={styles.sBut}>S</button>
-              <button className={styles.mBut}>M</button>
-            </div>             */}
+            </div>
           </div>
 
           <div className={styles.prodImage}>
@@ -232,8 +176,7 @@ class Cart extends React.Component {
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    console.log(jsonCart[3].attrs[0].capacity)
-    //jsonCart.splice(0,1);
+    console.log(jsonCart[0].attrNames[0])    
 
     this.setState({
       ...this.state,        
@@ -255,38 +198,7 @@ class Cart extends React.Component {
         cartName = [],
         cartInstock = [],
         cartImg = [],
-        cartPrices = [],
-        cartAttributes = [],
-
-        cartAttr_1Id = [],
-        cartAttr_2Id = [],
-        cartAttr_3Id = [],
-
-        cartAttr_1Length = [],
-        cartAttr_2Length = [],
-        cartAttr_3Length = [],
-
-        cartAttr_1_1 = [],
-        cartAttr_2_1 = [],
-        cartAttr_3_1 = [],
-
-        cartAttr_1_2 = [],
-        cartAttr_2_2 = [],
-        cartAttr_3_2 = [],
-
-        cartAttr_1_3 = [],
-        cartAttr_2_3 = [],
-        cartAttr_3_3 = [],
-
-        cartAttr_1_4 = [],
-        cartAttr_2_4 = [],
-        cartAttr_3_4 = [],
-
-        cartAttr_1_5 = [],
-        cartAttr_2_5 = [],
-        cartAttr_3_5 = [],
-
-        cartDescription = []        
+        cartPrices = []             
 
         queryArgs.forEach((element, index) => {
       let queryName = `${element}`
@@ -308,40 +220,7 @@ class Cart extends React.Component {
           result.product.prices[2],
           result.product.prices[3],
           result.product.prices[4]
-        ]      
-        const attributes = result.product.attributes
-
-        const attr_1Id = result.product.attributes[0] ? result.product.attributes[0].id : 0
-        const attr_2Id = result.product.attributes[1] ? result.product.attributes[1].id : 0
-        const attr_3Id = result.product.attributes[2] ? result.product.attributes[2].id : 0
-
-        const attr_1Length = result.product.attributes[0] ? result.product.attributes[0].items.length : 0
-        const attr_2Length = result.product.attributes[1] ? result.product.attributes[1].items.length : 0
-        const attr_3Length = result.product.attributes[2] ? result.product.attributes[2].items.length : 0
-
-        const attr_1_1 =  result.product.attributes[0] && result.product.attributes[0].items[0] ? result.product.attributes[0].items[0].value : 0
-        const attr_2_1 =  result.product.attributes[1] && result.product.attributes[1].items[0] ? result.product.attributes[1].items[0].value : 0
-        const attr_3_1 =  result.product.attributes[2] && result.product.attributes[2].items[0] ? result.product.attributes[2].items[0].value : 0
-
-        const attr_1_2 =  result.product.attributes[0] && result.product.attributes[0].items[1] ? result.product.attributes[0].items[1].value : 0
-        const attr_2_2 =  result.product.attributes[1] && result.product.attributes[1].items[1] ? result.product.attributes[1].items[1].value : 0
-        const attr_3_2 =  result.product.attributes[2] && result.product.attributes[2].items[1] ? result.product.attributes[2].items[1].value : 0
-
-        const attr_1_3 = result.product.attributes[0] && result.product.attributes[0].items[2] ? result.product.attributes[0].items[2].value : 0
-        const attr_2_3 = result.product.attributes[1] && result.product.attributes[1].items[2] ? result.product.attributes[1].items[2].value : 0
-        const attr_3_3 = result.product.attributes[2] && result.product.attributes[2].items[2] ? result.product.attributes[2].items[2].value : 0
-
-        const attr_1_4 = result.product.attributes[0] && result.product.attributes[0].items[3] ? result.product.attributes[0].items[3].value : 0
-        const attr_2_4 = result.product.attributes[1] && result.product.attributes[1].items[3] ? result.product.attributes[1].items[3].value : 0
-        const attr_3_4 = result.product.attributes[2] && result.product.attributes[2].items[3] ? result.product.attributes[2].items[3].value : 0
-
-        const attr_1_5 = result.product.attributes[0] && result.product.attributes[0].items[4] ? result.product.attributes[0].items[4].value : 0
-        const attr_2_5 = result.product.attributes[1] && result.product.attributes[1].items[4] ? result.product.attributes[1].items[4].value : 0
-        const attr_3_5 = result.product.attributes[2] && result.product.attributes[2].items[4] ? result.product.attributes[2].items[4].value : 0
-
-       
-
-        const description = result.product.description
+        ]
 
         cartId.push(id)
         cartGallery.push(gallery)
@@ -351,42 +230,7 @@ class Cart extends React.Component {
         cartInstock.push(instock)
         cartImg.push(img)
         cartPrices.push(prices)
-        cartAttributes.push(attributes)
-
-        cartAttr_1Length.push(attr_1Length)
-        cartAttr_2Length.push(attr_2Length)
-        cartAttr_3Length.push(attr_3Length)
-
-        cartAttr_1Id.push(attr_1Id)
-        cartAttr_2Id.push(attr_2Id)
-        cartAttr_3Id.push(attr_3Id)
-
-        cartAttr_1_1.push(attr_1_1)
-        cartAttr_2_1.push(attr_2_1)
-        cartAttr_3_1.push(attr_3_1)
-
-        cartAttr_1_2.push(attr_1_2)
-        cartAttr_2_2.push(attr_2_2)
-        cartAttr_3_2.push(attr_3_2)
-
-        cartAttr_1_3.push(attr_1_3)
-        cartAttr_2_3.push(attr_2_3)
-        cartAttr_3_3.push(attr_3_3)
-
-        cartAttr_1_4.push(attr_1_4)
-        cartAttr_2_4.push(attr_2_4)
-        cartAttr_3_4.push(attr_3_4)
-
-        cartAttr_1_5.push(attr_1_5)
-        cartAttr_2_5.push(attr_2_5)
-        cartAttr_3_5.push(attr_3_5)
-
-        cartDescription.push(description)
-
-
-        // const itemData = result.product.name
-        // newCartData.push(itemData)        
-
+        
         this.setState({
           ...this.state,          
           id: cartId,
@@ -396,42 +240,9 @@ class Cart extends React.Component {
           brand: cartBrand,
           name: cartName,
           instock: cartInstock,
-          prices: cartPrices,
-          attributes: Array.from(cartAttributes),
-
-          attr_1Id: cartAttr_1Id,
-          attr_2Id: cartAttr_2Id,
-          attr_3Id: cartAttr_3Id,
-
-          attr_1Length: cartAttr_1Length,
-          attr_2Length: cartAttr_2Length,
-          attr_3Length: cartAttr_3Length,
-
-          attr_1_1: cartAttr_1_1,
-          attr_2_1: cartAttr_2_1,
-          attr_3_1: cartAttr_3_1,
-
-          attr_1_2: cartAttr_1_2,
-          attr_2_2: cartAttr_2_2,
-          attr_3_2: cartAttr_3_2,
-
-          attr_1_3: cartAttr_1_3,
-          attr_2_3: cartAttr_2_3,
-          attr_3_3: cartAttr_3_3,
-
-          attr_1_4: cartAttr_1_4,
-          attr_2_4: cartAttr_2_4,
-          attr_3_4: cartAttr_3_4,
-
-          attr_1_5: cartAttr_1_5,
-          attr_2_5: cartAttr_2_5,
-          attr_3_5: cartAttr_3_5,
-
-          description: cartDescription    
+          prices: cartPrices             
           });
-        //console.log(typeof itemData)
-        //console.log(this.state.prices)
-
+        
         let newPrice_0 = []
         let newPrice_1 = []
         let newPrice_2 = []
@@ -470,20 +281,7 @@ class Cart extends React.Component {
             price_4: newPrice_4
           })              
         })
-
-        // **********************************************************************************************************************************
-                
-        // console.log(this.state.attr_1_5)
-        // console.log(this.state.attr_2_5)
-        // console.log(this.state.attr_3_5)
-        
-        // console.log(this.state.attr_1_4)
-        // console.log(this.state.attr_2_4)
-        // console.log(this.state.attr_3_4)
-        
-      
       })
-      
     })
   }
 

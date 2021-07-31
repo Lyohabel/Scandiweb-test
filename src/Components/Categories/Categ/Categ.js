@@ -60,10 +60,10 @@ class Categ extends React.Component {
         attr_2Id: attr_2Id,
         attr_3Id: attr_3Id            
       });
-      console.log(newData)
-      console.log(this.state.attr_1Id)
-      console.log(this.state.attr_2Id)
-      console.log(this.state.attr_3Id)          
+      // console.log(newData)
+      // console.log(this.state.attr_1Id)
+      // console.log(this.state.attr_2Id)
+      // console.log(this.state.attr_3Id)          
     });    
   }
 
@@ -94,10 +94,10 @@ class Categ extends React.Component {
           attr_2Id: attr_2Id,
           attr_3Id: attr_3Id            
         });
-        console.log(newData) 
-        console.log(this.state.attr_1Id)
-        console.log(this.state.attr_2Id)
-        console.log(this.state.attr_3Id)
+        // console.log(newData) 
+        // console.log(this.state.attr_1Id)
+        // console.log(this.state.attr_2Id)
+        // console.log(this.state.attr_3Id)
 
         this.props.setDefaultCategoryChanged()            
       });
