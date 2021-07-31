@@ -18,8 +18,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startData: '',
-      startData1: '',
+      // startData: '',
+      // startData1: '',
       categoriesList: [],
       currentCategory: '',
       currentProduct: '',
@@ -182,22 +182,22 @@ class App extends React.Component {
       this.showCartCount()
     });
 
-    const queryStartData = new Query("categories", true)     
-      .addField(new Field("name"))
-      .addField(new Field("products{id, name, inStock, gallery, prices {currency,amount}, brand }"))
+    // const queryStartData = new Query("categories", true)     
+    //   .addField(new Field("name"))
+    //   .addField(new Field("products{id, name, inStock, gallery, prices {currency,amount}, brand }"))
 
-      // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
+    //   // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
   
-      client.post(queryStartData).then(result => {
-        const newData = result.categories
-        const newData1 = JSON.parse(JSON.stringify(result.categories))
+    //   client.post(queryStartData).then(result => {
+    //     const newData = result.categories
+    //     const newData1 = JSON.parse(JSON.stringify(result.categories))
 
-        this.setState({
-        ...this.state,        
-        startData: newData,
-        startData1: newData1          
-        });        
-    });
+    //     this.setState({
+    //     ...this.state,        
+    //     startData: newData,
+    //     startData1: newData1          
+    //     });        
+    // });
 
     const queryCurrencies = new Query("currencies", true)      
       client.post(queryCurrencies).then(result => {        
@@ -213,7 +213,7 @@ class App extends React.Component {
     return (
       <BrowserRouter >
           <OverallData.Provider value={{
-            startData: this.state.startData,
+            //startData: this.state.startData,
             categoriesList: this.state.categoriesList,            
             currencySimbol: this.state.currencySimbol,
             currencyNumber: this.state.currencyNumber,
@@ -223,15 +223,15 @@ class App extends React.Component {
             <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage startData={this.state.startData} currencies={this.state.currencies} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
+                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
               </Route>
 
               <Route path='/test'>
-                <Test products={this.state.products} currencies={this.state.currencies} changeInf={this.changeInf} inf={this.state.inf}/>                
+                <Test />                
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ changeAttributes={this.changeAttributes} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} currencies={this.state.currencies} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>                
+                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>

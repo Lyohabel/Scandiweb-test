@@ -8,12 +8,8 @@ class Categ extends React.Component {
   constructor(props) {
     super(props);
     this.state = {      
-      currentCategoryData: '',
-      attr_1Id: '',
-      attr_2Id: '',
-      attr_3Id: ''    
-    }
-    //this.createList = this.createList.bind(this)    
+      currentCategoryData: ''
+    }        
   }  
 
   createList() {    
@@ -27,7 +23,7 @@ class Categ extends React.Component {
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.addToCart(item.inStock, item.id, this.state.attr_1Id[index], this.state.attr_2Id[index], this.state.attr_3Id[index])} 
+        <button onClick={() => this.props.addToCart(item.inStock, item.id, ((item.attributes) ? item.attributes[0].id : ''), ((item.attributes && item.attributes[1]) ? item.attributes[1].id : ''), ((item.attributes && item.attributes[2]) ? item.attributes[2].id : ''), )}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
@@ -39,31 +35,14 @@ class Categ extends React.Component {
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
       .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
-
-      const attr_1Id = []
-      const attr_2Id = []
-      const attr_3Id = []
   
-    client.post(query).then(result => {
-      const newData = result.category.products     
-
-      newData.forEach(element => {
-        attr_1Id.push(element.attributes && element.attributes[0] ? element.attributes[0].id : '')
-        attr_2Id.push(element.attributes && element.attributes[1] ? element.attributes[1].id : '')
-        attr_3Id.push(element.attributes && element.attributes[2] ? element.attributes[2].id : '')
-      });
+    client.post(query).then(result => {      
+      const newData = JSON.parse(JSON.stringify(result.category.products))
 
       this.setState({
         ...this.state,        
-        currentCategoryData: newData,
-        attr_1Id: attr_1Id,
-        attr_2Id: attr_2Id,
-        attr_3Id: attr_3Id            
-      });
-      // console.log(newData)
-      // console.log(this.state.attr_1Id)
-      // console.log(this.state.attr_2Id)
-      // console.log(this.state.attr_3Id)          
+        currentCategoryData: newData 
+      });   
     });    
   }
 
@@ -74,31 +53,15 @@ class Categ extends React.Component {
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
         .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
-
-      const attr_1Id = []
-      const attr_2Id = []
-      const attr_3Id = []
     
       client.post(query).then(result => {
-        const newData = result.category.products
-        newData.forEach(element => {
-          attr_1Id.push(element.attributes && element.attributes[0] ? element.attributes[0].id : '')
-          attr_2Id.push(element.attributes && element.attributes[1] ? element.attributes[1].id : '')
-          attr_3Id.push(element.attributes && element.attributes[2] ? element.attributes[2].id : '')
-        });
+        const newData = JSON.parse(JSON.stringify(result.category.products))        
   
         this.setState({
           ...this.state,        
-          currentCategoryData: newData,
-          attr_1Id: attr_1Id,
-          attr_2Id: attr_2Id,
-          attr_3Id: attr_3Id            
+          currentCategoryData: newData
         });
-        // console.log(newData) 
-        // console.log(this.state.attr_1Id)
-        // console.log(this.state.attr_2Id)
-        // console.log(this.state.attr_3Id)
-
+        
         this.props.setDefaultCategoryChanged()            
       });
     }   

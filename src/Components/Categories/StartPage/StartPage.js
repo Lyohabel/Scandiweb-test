@@ -8,7 +8,7 @@ class StartPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
       startData: '',
       startTitle: ''
     }
@@ -43,8 +43,7 @@ class StartPage extends React.Component {
         this.setState({               
         startData: newData,
         startTitle: newTitle           
-        });           
-      console.log(this.state.startData[0].attributes[0].id) 
+        });
     });
   }
 

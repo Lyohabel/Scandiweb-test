@@ -115,7 +115,7 @@ class Cart extends React.Component {
         console.log(this.state.imgStatus)
   }
 
-  
+
 
  
     
@@ -200,13 +200,25 @@ class Cart extends React.Component {
         cartName = [],
         cartInstock = [],
         cartImg = [],
-        cartPrices = []             
+        cartPrices = []
+        
+      queryArgs.forEach((element, index, array) => { // ! checking for inStock before displaying in the cart
+        let queryInStock = `${element}`
+        queryInStock = new Query("product", true)
+        .addArgument("id", "String!", element)   
+        .addField("inStock")
 
-        queryArgs.forEach((element, index) => {
-      let queryName = `${element}`
-      queryName = new Query("product", true)
-      .addArgument("id", "String!", element)   
-      .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
+        client.post(queryInStock).then(result => {
+           if (result.product.inStock !== true)
+           array.splice(index, 1)
+        })
+      })
+
+      queryArgs.forEach((element, index) => {
+        let queryName = `${element}`
+        queryName = new Query("product", true)
+        .addArgument("id", "String!", element)   
+        .addFieldList(["id", "name", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {currency,amount }"])
 
       client.post(queryName).then(result => {
         const id = result.product.id

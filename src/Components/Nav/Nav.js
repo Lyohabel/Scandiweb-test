@@ -10,24 +10,18 @@ class Nav extends React.Component {
     super(props);
     this.state = {
       category: '',
-      count: this.props.countCart,
-      //cartCountIcon:  styles.hidden,
+      count: this.props.countCart,      
       popUp: styles.hidden
     }
 
     this.hideCartMini = this.hideCartMini.bind(this)    
 	
-  }  
-
-  componentDidMount() {    
-    
   }
 
   showCartMini() {    
     this.setState({
       ...this.state,
-      popUp: styles.popUp,
-      //cartCountIcon:  styles.cartLinkIcon     
+      popUp: styles.popUp      
     }) 
   }
 
