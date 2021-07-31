@@ -19,6 +19,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       startData: '',
+      startData1: '',
       categoriesList: [],
       currentCategory: '',
       currentProduct: '',
@@ -189,9 +190,12 @@ class App extends React.Component {
   
       client.post(queryStartData).then(result => {
         const newData = result.categories
+        const newData1 = JSON.parse(JSON.stringify(result.categories))
+
         this.setState({
         ...this.state,        
-        startData: newData           
+        startData: newData,
+        startData1: newData1          
         });        
     });
 
@@ -219,7 +223,7 @@ class App extends React.Component {
             <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage startData={this.state.startData} currencies={this.state.currencies} addToCart={this.addToCart}/>
+                <StartPage startData={this.state.startData} currencies={this.state.currencies} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
               </Route>
 
               <Route path='/test'>

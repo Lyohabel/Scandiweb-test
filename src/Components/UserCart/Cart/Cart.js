@@ -115,6 +115,8 @@ class Cart extends React.Component {
         console.log(this.state.imgStatus)
   }
 
+  
+
  
     
   createCartList() {        
