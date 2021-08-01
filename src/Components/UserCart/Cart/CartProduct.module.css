@@ -1,12 +1,12 @@
-.cart {
-    margin-top: 80px;
-    color: #1D1F22;
-}
-
 .cartWrapper {    
     display: flex;
     justify-content: space-between;
+    color: #26292e;
     margin-bottom: 20px;
+}
+
+.prodInf {
+    width: 75%;
 }
 
 .cartTitle {
@@ -62,9 +62,90 @@
     display: flex;
 }
 
+.attributeTypeWrapper {
+    width: 300px;
+    display: flex;
+}
+
 .attributeTypeWrapper:not(:last-child) {
     margin-right: 15px;
 }
+
+.size {    
+    height: 45px;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    background-color: #fff;
+    border: 1px solid #1D1F22;
+    cursor: pointer;
+    position: relative;
+}
+
+.sizeActive {    
+    height: 45px;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    background-color: #1D1F22;
+    color: #fff;
+    border: 1px solid #1D1F22;
+    position: relative;    
+}
+
+.color {    
+    height: 45px;    
+    border: 1px solid #1D1F22;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    position: relative;    
+} 
+
+.colorActive {    
+    height: 45px;    
+    border: 2px solid #c9380c;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    position: relative;     
+}
+
+.displayValue {
+    display: block;
+    position: absolute;
+    padding: 3px;
+    border: 1px solid #1D1F22;
+    border-radius: 5px;
+    top: 50px;
+    color: #1D1F22;
+    display: none;
+}
+
+.colorActive .displayValue,
+.sizeActive .displayValue {
+    color: #1D1F22;
+}
+
+.color:not(:last-child),
+.colorActive:not(:last-child),
+.size:not(:last-child),
+.sizeActive:not(:last-child) {
+    margin-right: 7px;
+}
+
+.color:hover .displayValue,
+.colorActive:hover .displayValue,
+.size:hover .displayValue,
+.sizeActive:hover .displayValue {
+    display: block;
+}
+
+/* ======================================================================= */
 
 .attrBut {
     width: 63px;

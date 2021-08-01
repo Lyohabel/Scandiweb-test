@@ -19,14 +19,14 @@ class Product extends React.Component {
       activeAttribute_0: '',
       activeAttribute_1: '',
       activeAttribute_2: '',
+      activeAttribute_3: '', // fallback unusing property
+      activeAttribute_4: '', // fallback unusing property
 
       defaultActiveAttribute_0: '',
       defaultActiveAttribute_1: '',
       defaultActiveAttribute_2: '',
-
-      defaultActiveAttributeName_0: '',
-      defaultActiveAttributeName_1: '',
-      defaultActiveAttributeName_2: '',
+      defaultActiveAttribute_3: '', // fallback unusing property
+      defaultActiveAttribute_4: '', // fallback unusing property      
       
       sizeButton: {
         a : styles.size,
