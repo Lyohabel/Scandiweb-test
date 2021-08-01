@@ -8,14 +8,22 @@ class StartPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
       startData: '',
       startTitle: ''
     }
   }
 
+  creatAttributeNameList(index) {
+    if (!this.state.startData[index].attributes[0]) return '';
+    let list = [];
+    this.state.startData[index].attributes.forEach(item => {
+      list.push(item.id);
+    });    
+    return list;
+  }
+
   createList() {      
-    return this.state.startData && this.state.startData.map(item =>
+    return this.state.startData && this.state.startData.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
         <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
           <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
@@ -25,7 +33,7 @@ class StartPage extends React.Component {
        
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.addToCart(item.inStock, item.id, ((item.attributes) ? item.attributes[0].id : ''), ((item.attributes && item.attributes[1]) ? item.attributes[1].id : ''), ((item.attributes && item.attributes[2]) ? item.attributes[2].id : ''), )} 
+        <button onClick={() => this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index) )} 
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
@@ -37,12 +45,10 @@ class StartPage extends React.Component {
       .addField(new Field("name"))
       .addField(new Field("products{id, name, brand, attributes {id}, inStock, gallery, prices{amount}}"))      
   
-      client.post(queryStartData).then(result => {        
-        const newData = JSON.parse(JSON.stringify(result.categories[0].products))
-        const newTitle = result.categories[0].name
+      client.post(queryStartData).then(result => {       
         this.setState({               
-        startData: newData,
-        startTitle: newTitle           
+        startData: JSON.parse(JSON.stringify(result.categories[0].products)),
+        startTitle: result.categories[0].name           
         });
     });
   }

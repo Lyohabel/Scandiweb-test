@@ -10,7 +10,16 @@ class Categ extends React.Component {
     this.state = {      
       currentCategoryData: ''
     }        
-  }  
+  }
+  
+  creatAttributeNameList(index) {
+    if (!this.state.currentCategoryData[index].attributes[0]) return '';
+    let list = [];
+    this.state.currentCategoryData[index].attributes.forEach(item => {
+      list.push(item.id);
+    });    
+    return list;
+  }
 
   createList() {    
     return this.state.currentCategoryData && this.state.currentCategoryData.map((item, index) =>
@@ -23,7 +32,7 @@ class Categ extends React.Component {
 
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.addToCart(item.inStock, item.id, ((item.attributes) ? item.attributes[0].id : ''), ((item.attributes && item.attributes[1]) ? item.attributes[1].id : ''), ((item.attributes && item.attributes[2]) ? item.attributes[2].id : ''), )}
+        <button onClick={() => this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index) )}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
@@ -34,14 +43,12 @@ class Categ extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices{amount}"]))
   
-    client.post(query).then(result => {      
-      const newData = JSON.parse(JSON.stringify(result.category.products))
-
+    client.post(query).then(result => {
       this.setState({
         ...this.state,        
-        currentCategoryData: newData 
+        currentCategoryData: JSON.parse(JSON.stringify(result.category.products)) 
       });   
     });    
   }
@@ -52,14 +59,12 @@ class Categ extends React.Component {
     
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices {currency,amount }"]))
+        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices{amount}"]))
     
       client.post(query).then(result => {
-        const newData = JSON.parse(JSON.stringify(result.category.products))        
-  
         this.setState({
           ...this.state,        
-          currentCategoryData: newData
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
         });
         
         this.props.setDefaultCategoryChanged()            

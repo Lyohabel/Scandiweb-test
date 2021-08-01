@@ -82,24 +82,24 @@ class App extends React.Component {
       });
   }
 
-  changeLocalStorage(id, attr_1Name, attr_2Name, attr_3Name) {
+  changeLocalStorage(id, attributeNames) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: [attr_1Name, attr_2Name, attr_3Name]})
+    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames})
    
     //console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id, attr_1Name, attr_2Name, attr_3Name) {
+  addToCart(inStock, id, attributeNames) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id, attr_1Name, attr_2Name, attr_3Name)
+        this.changeLocalStorage(id, attributeNames)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: [attr_1Name, attr_2Name, attr_3Name]}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames}]));
         }      
        
       let newCount = this.state.countCart;
@@ -235,7 +235,7 @@ class App extends React.Component {
               </Route>
 
               <Route path='/product'>
-                <Product currentProduct={this.state.currentProduct} def={this.state.attrs} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
+                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
                 <Cart setCurrentProduct={this.setCurrentProduct}/>
@@ -243,7 +243,7 @@ class App extends React.Component {
             </Switch>
           </OverallData.Provider>
       </BrowserRouter >
-    );
+    ); // def={this.state.attrs}
   } 
 } 
 
