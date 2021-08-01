@@ -1,5 +1,5 @@
 import React from 'react';
-import * as _ from 'lodash';
+//import * as _ from 'lodash';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
@@ -182,7 +182,7 @@ class Product extends React.Component {
           prices: result.product.prices.map(item => item.amount),
           attributes: JSON.parse(JSON.stringify(result.product.attributes)),
           });
-        console.log(this.state.product.inStock)                                               
+        //console.log(this.state.product.inStock)                                               
       });
     }
   }

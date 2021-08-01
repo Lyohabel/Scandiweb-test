@@ -3,8 +3,10 @@
     color: #1D1F22;
 }
 
-.cartWrapper {
-    width: 75%;
+.cartWrapper {    
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .cartTitle {

@@ -132,22 +132,13 @@ class Cart extends React.Component {
             </div>
 
             <div className={styles.attributesWrapper}>
-              {/* <div className={styles.attributeTypeWrapper}>
-                <button className={styles.attrBut}>S</button>
-                <button className={styles.attrBut}>M</button>
-              </div> */}
-
+              
               {/* {this.creatChoosedAttributes()} */}
 
               <div className={styles.attributeTypeWrapper}>
                 <button onClick={() => this.findChoosedAttributes()} className={styles.attrBut}>S</button>
                 <button className={styles.attrBut}>M</button>
               </div>
-
-              <div className={styles.attributeTypeWrapper}>
-                <button className={styles.attrBut}>S</button>
-                <button className={styles.attrBut}>M</button>
-              </div>             
             </div>
           </div>
 
