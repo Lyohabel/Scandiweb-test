@@ -48,21 +48,6 @@ class Product extends React.Component {
       ...this.state,     
       productAdded: 'yes'    
       });
-  } 
-
-  addAttrToCart(id, attr, value) {
-    if (!window.localStorage.getItem('cart')) return;
-
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);    
-
-    jsonCart.forEach(element => {      
-      if (element.name === id) {
-        element[attr] = +value;             
-      }      
-    })   
-
-    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
   creatGallery() {
@@ -97,8 +82,7 @@ class Product extends React.Component {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} 
       choosed={(this.state[`activeAttribute_${order}`] === item.value) ? "yes" : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? "yes" : "no")}
-      onClick={() => {this.markAttribute(item.value, order); 
-        this.addAttrToCart(this.state.product.id, this.creatAttributeNameList()[order], index); 
+      onClick={() => {this.markAttribute(item.value, order);
         this.props.changeAttributes(this.creatAttributeNameList()[order], item.value)}}
 
       className={(btnStyle !== COLOR) ? ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 

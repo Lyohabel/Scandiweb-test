@@ -45,18 +45,29 @@ class CartProduct extends React.Component {
       },
     }   
     
-    // this.creatGallery = this.creatGallery.bind(this)
+    this.addAttrToCart = this.addAttrToCart.bind(this)
     this.setAttributes = this.setAttributes.bind(this)
   }
 
-  // creatAttributeNameList() {    СДЕЛАТЬ!
-  //   if (!this.state.product.attributes[0]) return '';
-  //   let list = [];
-  //   this.state.product.attributes.forEach(item => {
-  //     list.push(item.id);
-  //   });
-  //   return list;
-  // }
+  addAttrToCart(attr, value, index) {
+    if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+
+    const key = attr.toLowerCase()
+    let newAttr = {}
+    newAttr[key] = value
+
+    if (jsonCart[index].attrs === "default") {
+      jsonCart[index].attrs = [newAttr]
+    } else {      
+      let x = jsonCart[index].attrs.findIndex(item => JSON.stringify(item).includes(key) === true)
+      if(x !== -1) jsonCart[index].attrs.splice(x, 1)
+      jsonCart[index].attrs.push(newAttr)      
+    }
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  }
 
   markAttribute(value, order) {
     this.setState({
@@ -105,18 +116,12 @@ class CartProduct extends React.Component {
       
       style={btnStyle !== COLOR_ ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
       
-      onClick={() => {this.markAttribute(item.value, order);}}> 
+      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.props.savedData.attrNames[order], item.value, this.props.id);}}> 
         {btnStyle !== COLOR_ ? item.value : ''}      
       <span className={styles.displayValue}>{attributeName}</span>
       </button>    
     )
   }
-
-  //     
-  //      onClick={() => {this.markAttribute(item.value, order); 
-  //       this.addAttrToCart(this.state.product.id, this.creatAttributeNameList()[order], index); 
-  //       this.props.changeAttributes(this.creatAttributeNameList()[order], item.value)}}  
-  // }=====================================================================================
 
   setAttributes(order) { // Почему-то в этом компоненте не рработает ?????????
     if (!this.state.cartProductData.attributes || this.state.cartProductData.attributes.length < order + 1) return ''   
@@ -200,7 +205,7 @@ class CartProduct extends React.Component {
               attributes: JSON.parse(JSON.stringify(result.product.attributes))
             })  
             //console.log(this.state.cartProductData.attributes)
-            console.log(this.props.savedData)
+            //console.log(this.props.savedData.name)
           })
         }
     })

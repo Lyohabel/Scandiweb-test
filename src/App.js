@@ -143,6 +143,8 @@ class App extends React.Component {
       ...this.state,
       attrs: newAttrs    
     })
+    // console.log(attrName)
+    // console.log(attrValue)
   }
 
   setDefaultAttributes() {
@@ -238,7 +240,7 @@ class App extends React.Component {
                 <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
-                <Cart setCurrentProduct={this.setCurrentProduct}/>
+                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
             </Switch>
           </OverallData.Provider>

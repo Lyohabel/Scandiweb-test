@@ -15,11 +15,11 @@ class Cart extends React.Component {
       jsonCart: ''
     }
     
-    this.createCartList = this.createCartList.bind(this)    
+    this.createCartList = this.createCartList.bind(this)      
   }
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartProduct key={index} id={index} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct} />
+      <CartProduct key={index} id={index} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct}/>
     )
   }
   
@@ -35,6 +35,10 @@ class Cart extends React.Component {
       jsonCart: JSON.parse(cart)
     })    
   }
+
+  // componentWillUnmount() {
+  //   this.props.setDefaultAttributes()
+  // }  
 
   render() {
     return (
