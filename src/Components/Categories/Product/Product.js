@@ -1,5 +1,4 @@
 import React from 'react';
-//import * as _ from 'lodash';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
@@ -14,7 +13,6 @@ class Product extends React.Component {
       gallery: '',     
       prices: '',
       instok: '',
-      attributes: '',
 
       activeAttribute_0: '',
       activeAttribute_1: '',
@@ -89,7 +87,7 @@ class Product extends React.Component {
   creatAttributeNameList() {
     if (!this.state.product.attributes[0]) return '';
     let list = [];
-    this.state.attributes.forEach(item => {
+    this.state.product.attributes.forEach(item => {
       list.push(item.id);
     });
     return list;
@@ -110,23 +108,15 @@ class Product extends React.Component {
         <span className={styles.displayValue}>{item.displayValue}</span>
       </button>
       )
-  } 
+  }
 
   setAttributes(order) {
-    if (this.state.product.attributes.length < order + 1) return ''
-    if (this.state.product.attributes[order].id !== COLOR) {
-      return (
-        <div className={styles.chooseSize}>
-          {this.createButtons(this.state.attributes[`${order}`].items, '', order)}           
-        </div> 
-      )
-    } else {
-        return (
-          <div className={styles.chooseSize}>
-            {this.createButtons(this.state.attributes[`${order}`].items, COLOR, order)}           
-          </div> 
-        )
-      }    
+    if (this.state.product.attributes.length < order + 1) return ''   
+    return (
+      <div className={styles.chooseSize}>
+        {this.createButtons(this.state.product.attributes[order].items, this.state.product.attributes[order].id, order)}           
+      </div> 
+    )    
   }
 
   returnAttributes(arr) {
@@ -154,8 +144,7 @@ class Product extends React.Component {
       product: JSON.parse(JSON.stringify(result.product)),
       gallery: result.product.gallery,      
       instock: result.product.inStock,
-      prices: result.product.prices.map(item => item.amount),
-      attributes: JSON.parse(JSON.stringify(result.product.attributes)),
+      prices: result.product.prices.map(item => item.amount)
       });
       console.log(this.state.product)                   
      });     
@@ -179,8 +168,7 @@ class Product extends React.Component {
           product: JSON.parse(JSON.stringify(result.product)),
           gallery: result.product.gallery,      
           instock: result.product.inStock,
-          prices: result.product.prices.map(item => item.amount),
-          attributes: JSON.parse(JSON.stringify(result.product.attributes)),
+          prices: result.product.prices.map(item => item.amount)
           });
         //console.log(this.state.product.inStock)                                               
       });

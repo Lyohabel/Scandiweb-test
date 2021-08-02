@@ -12,8 +12,7 @@ class Cart extends React.Component {
     super(props);
     this.state = {
       //currentProducts: [],
-      jsonCart: '',
-      productsNumber: '' 
+      jsonCart: ''
     }
     
     this.createCartList = this.createCartList.bind(this)    
@@ -28,13 +27,12 @@ class Cart extends React.Component {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
-    console.log(jsonCart)    
+    // let jsonCart = JSON.parse(cart);
+    // console.log(jsonCart)    
 
     this.setState({
       ...this.state,        
-      jsonCart: jsonCart,
-      productsNumber: jsonCart.length 
+      jsonCart: JSON.parse(cart)
     })    
   }
 

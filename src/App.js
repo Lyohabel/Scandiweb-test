@@ -120,7 +120,7 @@ class App extends React.Component {
   }
 
   changeAttributes(attrName, attrValue) {
-    const key = attrName.toLowerCase().slice(0, attrName.length - 1);
+    const key = attrName.toLowerCase()
     let newAttr = {}
     newAttr[key] = attrValue
     let newAttrs = []
