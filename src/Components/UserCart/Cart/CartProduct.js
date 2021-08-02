@@ -43,6 +43,7 @@ class CartProduct extends React.Component {
         a : styles.color,
         b : styles.colorActive
       },
+      productAmount: this.props.savedData.amount
     }   
     
     this.addAttrToCart = this.addAttrToCart.bind(this)
@@ -66,6 +67,17 @@ class CartProduct extends React.Component {
       if(x !== -1) jsonCart[index].attrs.splice(x, 1)
       jsonCart[index].attrs.push(newAttr)      
     }
+    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+  }
+
+  changeProductAmountInData(index, amount) {
+    if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+
+    jsonCart[index].amount = amount
+    
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
@@ -177,6 +189,24 @@ class CartProduct extends React.Component {
         })
       }        
   }
+
+  changeProductAmount(sign) {
+    if (sign === 'plus') {
+      const newAmount = this.state.productAmount + 1
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+      this.changeProductAmountInData(this.props.id, newAmount) 
+    } else if (this.state.productAmount > 0){
+          const newAmount = this.state.productAmount - 1
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+      this.changeProductAmountInData(this.props.id, newAmount) 
+      } 
+  }
   
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
@@ -243,9 +273,9 @@ class CartProduct extends React.Component {
 
           <div className={styles.prodImage}>
             <div className={styles.countButtons}>
-              <button className={styles.plusBut}>&#43;</button>
-                <span>{this.props.savedData.amount}</span>                    
-              <button className={styles.minusBut}>&#8722;</button>
+              <button onClick={() => this.changeProductAmount('plus')} className={styles.plusBut}>&#43;</button>
+                <span>{this.state.productAmount}</span>                    
+              <button onClick={() => this.changeProductAmount('minus')} className={styles.minusBut}>&#8722;</button>
             </div>
 
             <div className={styles.galleryWrapper}>
