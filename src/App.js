@@ -218,7 +218,7 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory}/>          
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct}/>          
             <Switch>
               <Route exact path='/'>
                 <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>

@@ -117,7 +117,7 @@ class Nav extends React.Component {
           </div>
 
           <div className={this.state.popUp}>
-            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini}/></div>
+            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} setCurrentProduct={this.props.setCurrentProduct}/></div>
           </div>
       </nav>
     );

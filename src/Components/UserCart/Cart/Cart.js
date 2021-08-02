@@ -11,7 +11,6 @@ class Cart extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
     this.state = {
-      //currentProducts: [],
       jsonCart: ''
     }
     
@@ -26,19 +25,13 @@ class Cart extends React.Component {
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
 
-    const cart = window.localStorage.getItem('cart');    
-    // let jsonCart = JSON.parse(cart);
-    // console.log(jsonCart)    
+    const cart = window.localStorage.getItem('cart');
 
     this.setState({
       ...this.state,        
       jsonCart: JSON.parse(cart)
     })    
   }
-
-  // componentWillUnmount() {
-  //   this.props.setDefaultAttributes()
-  // }  
 
   render() {
     return (

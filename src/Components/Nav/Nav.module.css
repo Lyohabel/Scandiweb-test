@@ -132,8 +132,11 @@
 .popUp {
     position: absolute;
     width: 100%;
+    min-height: max-content;
     height: 100vh;
     background-color: rgba(206, 209, 202, 0.3);
+    background-attachment: fixed;
+    overflow-y: scroll;
 }
 
 .innerPopUp {

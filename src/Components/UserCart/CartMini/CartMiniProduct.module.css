@@ -1,5 +1,8 @@
+
+/* ============= */
+
 .cartMiniWrapper {
-    position: relative;      
+    position: relative;   
 }
 
 .cartMini {
@@ -9,7 +12,6 @@
     color: #1D1F22;
     background-color: #fff;
     padding: 15px;
-    padding-bottom: 120px;
     position: absolute;
     left: 65%;
 }
@@ -148,3 +150,4 @@
     border: none;
     cursor: pointer;
 }
+
