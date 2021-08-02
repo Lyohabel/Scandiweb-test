@@ -9,11 +9,7 @@ import Categ from './Components/Categories/Categ/Categ';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context';
-//import HashChange from "react-hashchange";
-
-
-const DEFAULT = 'default'
-
+import {DEFAULT} from './CONST';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -151,7 +147,7 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       attrs: DEFAULT    
-    })
+    })    
   }
 
   changeCurrency(simbol, currency, index) {

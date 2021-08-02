@@ -2,9 +2,7 @@ import React from 'react';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
-
-const COLOR = 'Color'
-
+import {COLOR} from '../../../CONST';
 class Product extends React.Component {
   constructor(props) {
     super(props);

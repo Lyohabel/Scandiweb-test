@@ -4,9 +4,7 @@ import {NavLink} from 'react-router-dom'; // eslint-disable-line
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
-
-const COLOR_ = 'Color'
-
+import {COLOR, DEFAULT} from '../../../CONST';
 class CartProduct extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
@@ -60,7 +58,7 @@ class CartProduct extends React.Component {
     let newAttr = {}
     newAttr[key] = value
 
-    if (jsonCart[index].attrs === "default") {
+    if (jsonCart[index].attrs === DEFAULT) {
       jsonCart[index].attrs = [newAttr]
     } else {      
       let x = jsonCart[index].attrs.findIndex(item => JSON.stringify(item).includes(key) === true)
@@ -105,37 +103,37 @@ class CartProduct extends React.Component {
     
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value}
-      className={(btnStyle !== COLOR_) ? 
+      className={(btnStyle !== COLOR) ? 
         ((this.state[`activeAttribute_${order}`] === item.value) ? // ok
         this.state.sizeButton.b : 
-        ((this.props.savedData.attrs === "default" && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        ((this.props.savedData.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
         this.state.sizeButton.b : // ok
-        ((this.props.savedData.attrs !== "default" && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        ((this.props.savedData.attrs !== DEFAULT && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
         this.state.sizeButton.b :
-        (((index === 0 && this.props.savedData.attrs !== "default" && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
+        (((index === 0 && this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
         this.state.sizeButton.b :
         this.state.sizeButton.a))        
         :        
         ((this.state[`activeAttribute_${order}`] === item.value) ? 
         this.state.colorButton.b : 
-        ((this.props.savedData.attrs === "default" && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        ((this.props.savedData.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
         this.state.colorButton.b :
-        ((this.props.savedData.attrs !== "default" && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        ((this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
         this.state.colorButton.b :
-        (((index === 0 && this.props.savedData.attrs !== "default" && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
+        (((index === 0 && this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
         this.state.colorButton.b :
         this.state.colorButton.a))}
       
-      style={btnStyle !== COLOR_ ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
+      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
       
       onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.props.savedData.attrNames[order], item.value, this.props.id);}}> 
-        {btnStyle !== COLOR_ ? item.value : ''}      
+        {btnStyle !== COLOR ? item.value : ''}      
       <span className={styles.displayValue}>{attributeName}</span>
       </button>    
     )
   }
 
-  setAttributes(order) { // Почему-то в этом компоненте не рработает ?????????
+  setAttributes(order) { // Почему-то в этом компоненте не работает ?????????
     if (!this.state.cartProductData.attributes || this.state.cartProductData.attributes.length < order + 1) return ''   
     return (
       <div className={styles.attributeTypeWrapper}>
