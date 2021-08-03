@@ -23,6 +23,7 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
+      cartChanged: 'no',
       displayCountCart: 'no',      
       currencies: '',
       currency: '',
@@ -31,6 +32,7 @@ class App extends React.Component {
   }
 
     this.addToCart = this.addToCart.bind(this);
+    this.showCartCount = this.showCartCount.bind(this);
     this.setCartChanged = this.setCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
@@ -56,11 +58,11 @@ class App extends React.Component {
       });
   }
 
-  setCartChanged(arg) {      
+  setCartChanged() {      
     this.setState({
       ...this.state,
-      cartChanged: arg                 
-      });
+      cartChanged: 'no'                 
+      });    
   }
   setDefaultCategoryChanged() {
     this.setState({
@@ -69,7 +71,7 @@ class App extends React.Component {
       });
   }
 
-  showCartCount() {
+  createCartCount() {
     const cart = window.localStorage.getItem('cart');
     if (!cart) return
 
@@ -79,12 +81,19 @@ class App extends React.Component {
     jsonCart.forEach(element => {      
       cartCount += element.amount
     });
+    return cartCount;
+  }
 
+  showCartCount() {    
+    if (!window.localStorage.getItem('cart')) return
+    const cartCount = this.createCartCount()
+    console.log(cartCount)
     this.setState({
       ...this.state,
       displayCountCart: 'yes',      
       countCart: cartCount,            
       });
+      console.log(this.state.countCart)
   }
 
   changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand) {
@@ -103,17 +112,19 @@ class App extends React.Component {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand)
-      } else {
+         } else {
         window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
-        }      
+        }    
        
       let newCount = this.state.countCart;
       newCount++;
       this.setState({
         ...this.state,
         countCart: newCount,
-        displayCountCart: 'yes'
+        displayCountCart: 'yes',
+        cartChanged: 'yes'
       })
+      //this.showCartCount()
     } 
   }
 

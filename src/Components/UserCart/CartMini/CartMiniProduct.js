@@ -1,7 +1,7 @@
 import React from 'react';
 // import * as _ from 'lodash';
-import {NavLink} from 'react-router-dom'; // eslint-disable-line
-import { client, Query} from "@tilework/opus";
+//import {NavLink} from 'react-router-dom'; // eslint-disable-line
+//import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css'
 //import {COLOR, DEFAULT} from '../../../CONST';
@@ -51,7 +51,7 @@ class CartMiniProduct extends React.Component {
       <li className={styles.prodItem}>
               <div className={styles.prodInf}>
                 <h4>{this.props.savedData.brand}<br/>{this.props.savedData.name}</h4>              
-                <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber].amount ? this.props.savedData.prices[this.context.currencyNumber].amount : this.props.savedData.prices[this.context.currencyNumber]}</span></div>
+                <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span></div>
                 <div className={styles.colorButtons}>
                   <button className={styles.sBut}>
                     <span>S</span>
