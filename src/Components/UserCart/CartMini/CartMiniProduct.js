@@ -35,6 +35,7 @@ class CartMiniProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        //this.props.setCartChanged('yes')
     } else if (sign === 'minus' && productAmount > 0){
           const newAmount = productAmount - 1
       this.setState({
@@ -42,9 +43,26 @@ class CartMiniProduct extends React.Component {
         productAmount: newAmount
         })
         jsonCart[this.props.id].amount = newAmount
-        window.localStorage.setItem('cart', JSON.stringify(jsonCart)); 
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        //this.props.setCartChanged('yes') 
       } 
   }
+
+  componentDidUpdate() {    
+    if (!window.localStorage.getItem('cart')) return;
+
+    if (this.props.miniCartChanged !== 'no') {
+      const cart = window.localStorage.getItem('cart');
+      const newAmount = JSON.parse(cart)[this.props.id].amount
+
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+      this.props.setMiniCartChanged('no')
+      //console.log('UPD!')      
+    }    
+  } 
 
   render() { // onClick={console.log(this.props.savedData.prices[0].amount)}
     return (

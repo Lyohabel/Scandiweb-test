@@ -18,7 +18,7 @@ class Cart extends React.Component {
   }
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartProduct key={index} id={index} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct}/>
+      <CartProduct key={index} id={index} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct} setCartChanged={this.props.setCartChanged} cartChanged={this.props.cartChanged}/>
     )
   }
   

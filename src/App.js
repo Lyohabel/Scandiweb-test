@@ -24,6 +24,7 @@ class App extends React.Component {
       currencyNumber: 0,
       countCart: 0,
       cartChanged: 'no',
+      miniCartChanged: 'no',
       displayCountCart: 'no',      
       currencies: '',
       currency: '',
@@ -34,6 +35,7 @@ class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.showCartCount = this.showCartCount.bind(this);
     this.setCartChanged = this.setCartChanged.bind(this);
+    this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     this.setCurrentProduct = this.setCurrentProduct.bind(this);
@@ -58,12 +60,21 @@ class App extends React.Component {
       });
   }
 
-  setCartChanged() {      
+  setCartChanged(arg) {      
     this.setState({
       ...this.state,
-      cartChanged: 'no'                 
+      cartChanged: arg                 
       });    
   }
+
+  setMiniCartChanged(arg) {      
+    this.setState({
+      ...this.state,
+      miniCartChanged: arg                 
+      });    
+  }
+
+
   setDefaultCategoryChanged() {
     this.setState({
       ...this.state,      
@@ -238,10 +249,10 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} cartChanged={this.state.cartChanged} setCartChanged={this.setCartChanged}/>          
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} miniCartChanged={this.state.miniCartChanged} setMiniCartChanged={this.setMiniCartChanged} setCartChanged={this.setCartChanged}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setCartChanged={this.setCartChanged}/>
+                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
               </Route>
 
               <Route path='/test'>
@@ -249,14 +260,14 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setCartChanged={this.setCartChanged}/>                
+                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>                
               </Route>
 
               <Route path='/product'>
-                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged}/>
+                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
-                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}/>
+                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged} сartChanged={this.state.cartChanged}/>
               </Route>
             </Switch>
           </OverallData.Provider>

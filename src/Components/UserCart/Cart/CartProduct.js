@@ -192,6 +192,7 @@ class CartProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        this.props.setCartChanged('yes') 
     } else if (sign === 'minus' && productAmount > 0){
           const newAmount = productAmount - 1
       this.setState({
@@ -199,7 +200,8 @@ class CartProduct extends React.Component {
         productAmount: newAmount
         })
         jsonCart[this.props.id].amount = newAmount
-        window.localStorage.setItem('cart', JSON.stringify(jsonCart)); 
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        this.props.setCartChanged('yes') 
       } 
   }
   
@@ -235,6 +237,22 @@ class CartProduct extends React.Component {
         }
     })
   }
+
+  // componentDidUpdate() {    
+  //   if (!window.localStorage.getItem('cart')) return;
+
+  //   if (this.props.cartChanged !== 'no') {
+  //     const cart = window.localStorage.getItem('cart');
+  //     const newAmount = JSON.parse(cart)[this.props.id].amount
+
+  //     this.setState({
+  //       ...this.state,
+  //       productAmount: newAmount
+  //       })
+  //     this.props.setCartChanged('no')
+  //     //console.log('UPD!')      
+  //   }    
+  // } 
 
   render() {
     return (
