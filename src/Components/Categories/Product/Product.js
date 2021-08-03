@@ -150,7 +150,8 @@ class Product extends React.Component {
           product: JSON.parse(JSON.stringify(result.product)),
           gallery: result.product.gallery,      
           instock: result.product.inStock,
-          prices: result.product.prices.map(item => item.amount)
+          prices: result.product.prices.map(item => item.amount),
+          productAdded: 'no'
           });
         //console.log(this.state.product.inStock)                                               
       });
