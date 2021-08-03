@@ -182,7 +182,7 @@ class Product extends React.Component {
 
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => {this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList()); 
+                <button onClick={() => {this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.prices, this.state.gallery); 
                 this.resetProduct()}}
                 className={(this.state.instock ? styles.add : styles.inStockFalse)}>
                   <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>

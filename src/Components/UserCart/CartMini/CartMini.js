@@ -1,7 +1,5 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import imgProd1 from '../../../ImagesTemp/black.png';
-import imgProd2 from '../../../ImagesTemp/glasses.png';
 import * as styles from './CartMini.module.css';
 import CartMiniProduct from './CartMiniProduct';
 
@@ -59,7 +57,7 @@ class CartMini extends React.Component {
               </div>            
             </li> */}
 
-            <li>{this.createCartMiniList()}</li>
+            {this.createCartMiniList()}
           </ul>
 
           <div className={styles.prodSumm}>

@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom'; // eslint-disable-line
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css'
-import {COLOR, DEFAULT} from '../../../CONST';
+//import {COLOR, DEFAULT} from '../../../CONST';
 
 class CartMiniProduct extends React.Component {
   constructor(props) { // eslint-disable-line
@@ -18,9 +18,33 @@ class CartMiniProduct extends React.Component {
       attributes: '',
       productAmount: this.props.savedData.amount
     }
-  } 
-    
-    
+  }
+
+  changeProductAmount(sign) {
+    if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+    let productAmount = jsonCart[this.props.id].amount
+
+    if (sign === 'plus') {
+      const newAmount = productAmount + 1
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+        jsonCart[this.props.id].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+    } else if (sign === 'minus' && productAmount > 0){
+          const newAmount = productAmount - 1
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+        jsonCart[this.props.id].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart)); 
+      } 
+  }
   
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
@@ -55,23 +79,29 @@ class CartMiniProduct extends React.Component {
     })
   }
 
-  render() {
+  render() { // onClick={console.log(this.state.jsonCart)}
     return (
       <li className={styles.prodItem}>
               <div className={styles.prodInf}>
-                <h4>Apollo<br/>Running Short</h4>              
-                <div className={styles.prodPrice}><span>$</span><span className={styles.priceNumber}>50</span><span>.00</span></div>
+                <h4>{this.state.cartProductData.brand}<br/>{this.state.cartProductData.name}</h4>              
+                <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.state.prices[this.context.currencyNumber]}</span></div>
                 <div className={styles.colorButtons}>
-                  <button className={styles.sBut}>S</button>
-                  <button onClick={console.log(this.state.jsonCart)} className={styles.mBut}>M</button>
+                  <button className={styles.sBut}>
+                    <span>S</span>
+                    <span className={styles.butPrompt}>
+                      To change the selected attributes, click on the button VIEW BAG below to go to the cart 
+                    </span>
+                  </button>
+                  <button className={styles.mBut}>M</button>
+                  <button className={styles.sBut}>...</button>
                 </div>
               </div>
 
               <div className={styles.prodImage}>
                 <div className={styles.countButtons}>
-                  <button className={styles.plusBut}>&#43;</button>
-                  <span>1</span>
-                  <button className={styles.minusBut}>&#8722;</button>
+                  <button onClick={() => this.changeProductAmount('plus')} className={styles.plusBut}>&#43;</button>
+                  <span>{this.state.productAmount}</span>
+                  <button onClick={() => this.changeProductAmount('minus')} className={styles.minusBut}>&#8722;</button>
                 </div>
                 <img className={styles.imgProd} src={this.state.img} alt="#"/>
               </div>            

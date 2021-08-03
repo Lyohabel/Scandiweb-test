@@ -68,17 +68,6 @@ class CartProduct extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  changeProductAmountInData(index, amount) {
-    if (!window.localStorage.getItem('cart')) return;
-
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
-
-    jsonCart[index].amount = amount
-    
-    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-  }
-
   markAttribute(value, order) {
     this.setState({
       ...this.state,
@@ -189,20 +178,28 @@ class CartProduct extends React.Component {
   }
 
   changeProductAmount(sign) {
+    if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');    
+    let jsonCart = JSON.parse(cart);
+    let productAmount = jsonCart[this.props.id].amount
+
     if (sign === 'plus') {
-      const newAmount = this.state.productAmount + 1
+      const newAmount = productAmount + 1
       this.setState({
         ...this.state,
         productAmount: newAmount
         })
-      this.changeProductAmountInData(this.props.id, newAmount) 
-    } else if (this.state.productAmount > 0){
-          const newAmount = this.state.productAmount - 1
+        jsonCart[this.props.id].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+    } else if (sign === 'minus' && productAmount > 0){
+          const newAmount = productAmount - 1
       this.setState({
         ...this.state,
         productAmount: newAmount
         })
-      this.changeProductAmountInData(this.props.id, newAmount) 
+        jsonCart[this.props.id].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart)); 
       } 
   }
   

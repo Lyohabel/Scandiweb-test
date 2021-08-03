@@ -64,22 +64,24 @@
 .chooseCurrency {
     background-image: url(../../Images/vector.png);
     background-repeat: no-repeat;
-    background-position: 50% 50%;
+    background-position: 50% 50%;    
     width: 20px;
     height: 20px;
     margin: 0;
     position: relative;
     margin-right: 10px;
-    cursor: pointer; 
+    cursor: pointer;
+    z-index: 2; 
 }
 
 .chooseCurrency > ul {
     display: none;
     position: absolute;
-    top: 5px;
+    background-color: #fff;
+    top: 20px;
     left: -25px;
     padding-top: 20px;
-    padding-left: 10px;
+    padding-left: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);  
 }
 

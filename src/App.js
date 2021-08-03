@@ -90,12 +90,12 @@ class App extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id, attributeNames) {
+  addToCart(inStock, id, attributeNames, prices, gallery) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, attributeNames)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, prices: prices, gallery: gallery}]));
         }      
        
       let newCount = this.state.countCart;
