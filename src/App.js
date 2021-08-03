@@ -31,6 +31,7 @@ class App extends React.Component {
   }
 
     this.addToCart = this.addToCart.bind(this);
+    this.setCartChanged = this.setCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
     this.setCurrentProduct = this.setCurrentProduct.bind(this);
@@ -43,7 +44,8 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       currentCategory: categ,
-      categoryChanged: 'yes',            
+      categoryChanged: 'yes',
+      cartChanged: 'yes'         
       });
   }
   
@@ -51,6 +53,13 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       currentProduct: prod                 
+      });
+  }
+
+  setCartChanged(arg) {      
+    this.setState({
+      ...this.state,
+      cartChanged: arg                 
       });
   }
   setDefaultCategoryChanged() {
@@ -78,24 +87,24 @@ class App extends React.Component {
       });
   }
 
-  changeLocalStorage(id, attributeNames) {
+  changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames})
+    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
    
     //console.log(jsonCart);
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id, attributeNames, prices, gallery) {
+  addToCart(inStock, id, attributeNames, prices, gallery, prodName, brand) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id, attributeNames)
+        this.changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand)
       } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, prices: prices, gallery: gallery}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
         }      
        
       let newCount = this.state.countCart;
@@ -218,10 +227,10 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct}/>          
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} cartChanged={this.state.cartChanged} setCartChanged={this.setCartChanged}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
+                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setCartChanged={this.setCartChanged}/>
               </Route>
 
               <Route path='/test'>
@@ -229,11 +238,11 @@ class App extends React.Component {
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>                
+                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setCartChanged={this.setCartChanged}/>                
               </Route>
 
               <Route path='/product'>
-                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
+                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged}/>
               </Route>
               <Route path='/cart'>
                 <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}/>

@@ -33,7 +33,7 @@ class StartPage extends React.Component {
        
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
-        <button onClick={() => this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.prices, item.gallery )} 
+        <button onClick={() => {this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.prices, item.gallery, item.name, item.brand); this.props.setCartChanged('yes')}} 
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
     )
