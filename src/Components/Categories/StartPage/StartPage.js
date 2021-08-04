@@ -34,7 +34,9 @@ class StartPage extends React.Component {
         <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
 
         <button onClick={() => {
-          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
+          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index),
+          item.attributes, (item.attributes[0] ? item.attributes[0].items : ''),
+          item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
         }} 
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
       </li>
@@ -45,7 +47,7 @@ class StartPage extends React.Component {
     
     const queryStartData = new Query("categories", true)     
       .addField(new Field("name"))
-      .addField(new Field("products{id, name, brand, attributes {id}, inStock, gallery, prices{amount}}"))      
+      .addField(new Field("products{id, name, brand, attributes{id, items{value, id}}, inStock, gallery, prices{amount}}"))      
   
       client.post(queryStartData).then(result => {       
         this.setState({               

@@ -223,7 +223,7 @@ class CartProduct extends React.Component {
         else {
           const queryName = new Query("product", true)
             .addArgument("id", "String!", name)   
-            .addFieldList(["id", "name", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
+            .addFieldList(["id", "name", "gallery", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
 
           client.post(queryName).then(result => {
             this.setState({

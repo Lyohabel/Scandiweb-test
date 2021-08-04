@@ -4,6 +4,7 @@ import imgLogo from '../../Images/a-logo.png'
 import CartMini from '../UserCart/CartMini/CartMini';
 import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
+import {POPUP} from '../../CONST';
 
 class Nav extends React.Component {
   constructor(props) {
@@ -18,11 +19,12 @@ class Nav extends React.Component {
 	
   }
 
-  showCartMini() {    
+  showCartMini() {
+    this.props.setPopUpPosition(POPUP)   
     this.setState({
       ...this.state,
       popUp: styles.popUp      
-    }) 
+    })    
   }
 
   hideCartMini() {    
@@ -90,15 +92,17 @@ class Nav extends React.Component {
                 
                 {this.createLinksList()}               
                 
-                <li onClick={(event) => this.markActive(event)} className={this.state.test}>
+                {/* <li onClick={(event) => this.markActive(event)} className={this.state.test}>
                   <NavLink className={styles.link} to="/test">
                     TEST
                   </NavLink>
-                </li>                   
+                </li>                    */}
               </ul>
 
               <div className={styles.logo}>
-                <img className={styles.imgLogo} src={imgLogo} alt="#"/>
+                <NavLink className={styles.link} to="/">
+                  <img className={styles.imgLogo} src={imgLogo} alt="#"/>   
+                </NavLink>                
               </div>
 
               <div className={styles.cartWrapper}>

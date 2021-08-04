@@ -11,6 +11,7 @@ class Product extends React.Component {
       gallery: '',     
       prices: '',
       instok: '',
+      attributes_1: '',
 
       activeAttribute_0: '',
       activeAttribute_1: '',
@@ -85,11 +86,11 @@ class Product extends React.Component {
 
       className={(btnStyle !== COLOR) ? ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
 
-      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.displayValue === 'Black' || item.displayValue === 'Blue') ? '#fff' : '#1D1F22'}}>
+      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`}}>
         {btnStyle !== COLOR ? item.value : ''}
-        <span className={styles.displayValue}>{item.displayValue}</span>
+        <span className={styles.displayValue}>{item.id}</span>
       </button>
-      )
+      )// , color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'
   }
 
   setAttributes(order) {
@@ -117,18 +118,17 @@ class Product extends React.Component {
 
     const query = new Query("product", true)
    .addArgument("id", "String!", product)   
-   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {amount}"])
+   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
 
-    client.post(query).then(result => {      
-      
+    client.post(query).then(result => {
       this.setState({
       ...this.state,
       product: JSON.parse(JSON.stringify(result.product)),
       gallery: result.product.gallery,      
       instock: result.product.inStock,
-      prices: result.product.prices.map(item => item.amount)
-      });
-      console.log(this.state.product)                   
+      prices: result.product.prices.map(item => item.amount),
+      attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
+      });                         
      });     
   }
 
@@ -141,20 +141,18 @@ class Product extends React.Component {
 
       const query = new Query("product", true)
     .addArgument("id", "String!", product)   
-    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, items {displayValue, value, id}}", "prices {amount}"])
+    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
 
-      client.post(query).then(result => {        
-
-        this.setState({
-          ...this.state,
-          product: JSON.parse(JSON.stringify(result.product)),
-          gallery: result.product.gallery,      
-          instock: result.product.inStock,
-          prices: result.product.prices.map(item => item.amount),
-          productAdded: 'no'
-          });
-        //console.log(this.state.product.inStock)                                               
-      });
+    client.post(query).then(result => {
+      this.setState({
+      ...this.state,
+      product: JSON.parse(JSON.stringify(result.product)),
+      gallery: result.product.gallery,      
+      instock: result.product.inStock,
+      prices: result.product.prices.map(item => item.amount),
+      attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
+      });                         
+     });   
     }
   }
  
@@ -184,7 +182,7 @@ class Product extends React.Component {
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
                 <button onClick={() => {
-                  this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
+                  this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
                   //this.props.setCartChanged('yes'); 
                   this.resetProduct()}}
                 className={(this.state.instock ? styles.add : styles.inStockFalse)}>

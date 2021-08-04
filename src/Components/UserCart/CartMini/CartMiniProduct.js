@@ -42,18 +42,18 @@ class CartMiniProduct extends React.Component {
       } 
   }
 
-  showChosedAttribute() {
+  showChosedAttribute() { // onClick={console.log(this.props.savedData)}
     if (this.props.savedData.attrNames === "") return ""
     else return (
       <div className={styles.colorButtons}>
-        <button onClick={console.log(this.props.savedData)} className={styles.sBut}>
-            <span>S</span>
+        <button className={styles.sBut}>
+            <span>{this.props.savedData.attributes_1[0].value}</span>
             <span className={styles.butPrompt}>
               To view and change the selected attributes, click on the button VIEW BAG below to go to the cart 
             </span>
           </button>
-          <button className={styles.mBut}>M</button>
-          <button className={styles.sBut}>...</button>
+          <button className={styles.mBut}>{this.props.savedData.attributes_1[1].value}</button>
+          {/* <button className={styles.sBut}>...</button> */}
         </div>
     )
   }

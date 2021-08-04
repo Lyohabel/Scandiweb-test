@@ -37,7 +37,6 @@ class Cart extends React.Component {
       jsonCart: JSON.parse(cart),
       cartOpen: 'yes'
     })
-    console.log(this.props)
   }
 
   // componentDidUpdate() {//  

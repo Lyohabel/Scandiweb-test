@@ -6,4 +6,6 @@ const COLOR_ = 'Color'
 
 const COLOR = 'Color'
 
-export {DEFAULT, COLOR_, COLOR};
+const POPUP = 'popUp'
+
+export {DEFAULT, COLOR_, COLOR, POPUP};

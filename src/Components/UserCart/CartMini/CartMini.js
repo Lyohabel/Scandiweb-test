@@ -10,7 +10,7 @@ class CartMini extends React.Component {
     this.state = {
       jsonCart: '',
       currencySimbol: '$',
-      total: 100
+      total: '00.00'
     }
     
     //this.methodeName = this.methodeName.bind(this)
