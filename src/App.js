@@ -23,7 +23,10 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      cartChanged: 'no',
+      //cartChanged: 'no',
+      cartProductChanged: 'no',
+      miniCartProductChanged: 'no',
+      miniCartProductChangedId: 'noId',
       miniCartChanged: 'no',
       displayCountCart: 'no',      
       currencies: '',
@@ -34,7 +37,9 @@ class App extends React.Component {
 
     this.addToCart = this.addToCart.bind(this);
     this.showCartCount = this.showCartCount.bind(this);
-    this.setCartChanged = this.setCartChanged.bind(this);
+    //this.setCartChanged = this.setCartChanged.bind(this);
+    this.setCartProductChanged = this.setCartProductChanged.bind(this);
+    this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
     this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
@@ -60,11 +65,27 @@ class App extends React.Component {
       });
   }
 
-  setCartChanged(arg) {      
+  // setCartChanged(arg) {      
+  //   this.setState({
+  //     ...this.state,
+  //     cartChanged: arg                 
+  //     });    
+  // }
+
+  setCartProductChanged(arg) {      
     this.setState({
       ...this.state,
-      cartChanged: arg                 
+      cartProductChanged: arg                 
       });    
+  }
+
+  setMiniCartProductChanged(arg,id) {         
+    this.setState({
+      ...this.state,
+      miniCartProductChangedId: id,
+      miniCartProductChanged: arg                 
+      });
+      console.log(this.state.miniCartProductChangedId)   
   }
 
   setMiniCartChanged(arg) {      
@@ -98,13 +119,13 @@ class App extends React.Component {
   showCartCount() {    
     if (!window.localStorage.getItem('cart')) return
     const cartCount = this.createCartCount()
-    console.log(cartCount)
+    //console.log(cartCount)
     this.setState({
       ...this.state,
       displayCountCart: 'yes',      
       countCart: cartCount,            
       });
-      console.log(this.state.countCart)
+     // console.log(this.state.countCart)
   }
 
   changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand) {
@@ -133,7 +154,7 @@ class App extends React.Component {
         ...this.state,
         countCart: newCount,
         displayCountCart: 'yes',
-        cartChanged: 'yes'
+        miniCartChanged: 'yes'
       })
       //this.showCartCount()
     } 
@@ -249,7 +270,13 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} miniCartChanged={this.state.miniCartChanged} setMiniCartChanged={this.setMiniCartChanged} setCartChanged={this.setCartChanged}/>          
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} miniCartChanged={this.state.miniCartChanged} 
+            setMiniCartChanged={this.setMiniCartChanged} 
+            //setCartChanged={this.setCartChanged}
+            setCartProductChanged={this.setCartProductChanged}
+            miniCartProductChanged={this.state.miniCartProductChanged}
+            miniCartProductChangedId={this.state.miniCartProductChangedId}
+            setMiniCartProductChanged={this.setMiniCartProductChanged}/>          
             <Switch>
               <Route exact path='/'>
                 <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
@@ -267,7 +294,11 @@ class App extends React.Component {
                 <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
-                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged} сartChanged={this.state.cartChanged}/>
+                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged}
+                cartProductChanged={this.state.cartProductChanged} 
+                //сartChanged={this.state.cartChanged}
+                setCartProductChanged={this.setCartProductChanged}
+                setMiniCartProductChanged={this.setMiniCartProductChanged}/>
               </Route>
             </Switch>
           </OverallData.Provider>

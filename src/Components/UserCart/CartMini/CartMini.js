@@ -19,7 +19,12 @@ class CartMini extends React.Component {
 
   createCartMiniList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartMiniProduct key={index} id={index} savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} setCurrentProduct={this.props.setCurrentProduct} miniCartChanged={this.props.miniCartChanged} setMiniCartChanged={this.props.setMiniCartChanged}/>
+      <CartMiniProduct key={index} id={index} savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} setCurrentProduct={this.props.setCurrentProduct}
+      miniCartChanged={this.props.miniCartChanged} 
+      setMiniCartChanged={this.props.setMiniCartChanged}
+      miniCartProductChanged={this.props.miniCartProductChanged}
+      miniCartProductChangedId={this.props.miniCartProductChangedId}      
+      setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
     )
   }
 
@@ -83,7 +88,9 @@ class CartMini extends React.Component {
           </div>
 
           <div className={styles.prodButtons}>
-            <button onClick={() => {this.props.hideCartMini(); this.props.setCartChanged('yes')}} className={styles.viewButton}>
+            <button onClick={() => {this.props.hideCartMini(); 
+            //this.props.setCartChanged('yes'); 
+            this.props.setCartProductChanged('yes')}} className={styles.viewButton}>
               <NavLink className={styles.cartLink} to="/cart">
                 View bag
               </NavLink>              

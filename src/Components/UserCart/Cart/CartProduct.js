@@ -177,7 +177,7 @@ class CartProduct extends React.Component {
       }        
   }
 
-  changeProductAmount(sign) {
+  changeProductAmount(sign,id) {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
@@ -192,7 +192,7 @@ class CartProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        this.props.setCartChanged('yes') 
+        this.props.setMiniCartProductChanged('yes',id) 
     } else if (sign === 'minus' && productAmount > 0){
           const newAmount = productAmount - 1
       this.setState({
@@ -201,7 +201,7 @@ class CartProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        this.props.setCartChanged('yes') 
+        this.props.setMiniCartProductChanged('yes',id) 
       } 
   }
   
@@ -238,21 +238,21 @@ class CartProduct extends React.Component {
     })
   }
 
-  // componentDidUpdate() {    
-  //   if (!window.localStorage.getItem('cart')) return;
+  componentDidUpdate() {    
+    if (!window.localStorage.getItem('cart')) return;
 
-  //   if (this.props.cartChanged !== 'no') {
-  //     const cart = window.localStorage.getItem('cart');
-  //     const newAmount = JSON.parse(cart)[this.props.id].amount
+    if (this.props.cartProductChanged !== 'no') {
+      const cart = window.localStorage.getItem('cart');
+      const newAmount = JSON.parse(cart)[this.props.id].amount
 
-  //     this.setState({
-  //       ...this.state,
-  //       productAmount: newAmount
-  //       })
-  //     this.props.setCartChanged('no')
-  //     //console.log('UPD!')      
-  //   }    
-  // } 
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+      this.props.setCartProductChanged('no')
+      //console.log('CartProduct UPD!')      
+    }    
+  } 
 
   render() {
     return (
@@ -286,9 +286,9 @@ class CartProduct extends React.Component {
 
           <div className={styles.prodImage}>
             <div className={styles.countButtons}>
-              <button onClick={() => this.changeProductAmount('plus')} className={styles.plusBut}>&#43;</button>
+              <button onClick={() => this.changeProductAmount('plus', this.props.id)} className={styles.plusBut}>&#43;</button>
                 <span>{this.state.productAmount}</span>                    
-              <button onClick={() => this.changeProductAmount('minus')} className={styles.minusBut}>&#8722;</button>
+              <button onClick={() => this.changeProductAmount('minus', this.props.id)} className={styles.minusBut}>&#8722;</button>
             </div>
 
             <div className={styles.galleryWrapper}>
