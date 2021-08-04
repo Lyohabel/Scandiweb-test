@@ -20,7 +20,7 @@ class StartPage extends React.Component {
       list.push(item.id);
     });    
     return list;
-  }
+  } // 
 
   createList() {      
     return this.state.startData && this.state.startData.map((item, index) =>
@@ -29,9 +29,13 @@ class StartPage extends React.Component {
           <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>
 
-        <h3 className={styles.prodTitle}>{item.brand} <span className={styles.subtitle}>{item.name}</span></h3>
+        <div className={styles.prodInf}>
+          <h3 className={styles.prodTitle}>{item.brand} <span className={styles.subtitle}>{item.name}</span></h3>
        
-        <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span></div>
+          <div className={styles.prodPrice}>
+            <span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span>
+          </div>
+        </div>        
 
         <button onClick={() => {
           this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index),
@@ -59,7 +63,7 @@ class StartPage extends React.Component {
 
   render() {
     return (
-      <section className="men">
+      <section className="categ">
           <div className="container">
             <h3 className={styles.title}>{this.state.startTitle}</h3>
             <ul className={styles.products}>

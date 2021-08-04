@@ -86,18 +86,13 @@ class Nav extends React.Component {
       <nav className={styles.nav}>
           <div className="container">
             <div className={styles.wrapper}>
-              {/* <button onClick= {(event) => this.showMenu(event)} className={styles.showMenu}>Menu</button>                     */}
+              <button onClick= {(event) => this.showMenu(event)} className={styles.showMenu}>Menu</button>                    
 
-              <ul className={styles.menu}>
-                
-                {this.createLinksList()}               
-                
-                {/* <li onClick={(event) => this.markActive(event)} className={this.state.test}>
-                  <NavLink className={styles.link} to="/test">
-                    TEST
-                  </NavLink>
-                </li>                    */}
-              </ul>
+              <div className={styles.menuWrapper}>
+                <ul className={styles.menu}>                
+                  {this.createLinksList()}                
+                </ul>
+              </div>              
 
               <div className={styles.logo}>
                 <NavLink className={styles.link} to="/">

@@ -45,12 +45,9 @@
     background-color: rgb(226, 220, 220);
 }
 
-/* .prodName {
-    display: block;
-    font-weight: 300;
-    font-size: 18px;    
+.prodInf {
     margin-top: auto;
-} */
+}
 
 .prodTitle {
     display: block;
@@ -58,11 +55,6 @@
     font-size: 18px;   
     margin-bottom: 10px; 
 }
-
-/* .subtitle {    
-    font-weight: 300;
-    font-size: 18px;    
-} */
 
 .prodPrice {
     font-weight: 500;
@@ -131,4 +123,12 @@
 .inStockFalse .redLine {
     display: block;
 }
+
+/* all, screen, print, speech;
+not, only; ,=or, and=both;
+orientation: landscape; - <1024
+
+! 1280; 1152; 800 
+
+@media screen and (max-width: 768px) {} */
 
