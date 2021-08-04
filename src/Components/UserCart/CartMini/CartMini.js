@@ -35,15 +35,20 @@ class CartMini extends React.Component {
     const jsonCart = JSON.parse(cart)
     let total = 0
 
-    jsonCart.forEach(element => {      
-      total += element.prices[this.context.currencyNumber] * element.amount
+    const checkDeleted =  jsonCart.filter(item => item.amount > 0);
+
+    checkDeleted.forEach((element) => {      
+      total += element.prices[this.context.currencyNumber] * element.amount     
     });
+    window.localStorage.setItem('cart', JSON.stringify(checkDeleted));
 
     this.setState({
       ...this.state,
       currencySimbol: this.context.currencySimbol,        
-      total: total.toFixed(2)      
+      total: total.toFixed(2),
+      jsonCart: checkDeleted    
     })
+    this.props.setCartChanged('yes')
   }
 
   componentDidMount() {
@@ -55,6 +60,7 @@ class CartMini extends React.Component {
       ...this.state,        
       jsonCart: JSON.parse(cart)
     })
+    this.props.setMiniCartChanged('no')
   }
 
   componentDidUpdate() {    
@@ -88,18 +94,21 @@ class CartMini extends React.Component {
           </div>
 
           <div className={styles.prodButtons}>
-            <button onClick={() => {this.props.hideCartMini(); 
-            //this.props.setCartChanged('yes'); 
+            <button onClick={() => {this.props.hideCartMini();
             this.props.setCartProductChanged('yes')}} className={styles.viewButton}>
               <NavLink className={styles.cartLink} to="/cart">
                 View bag
               </NavLink>              
             </button>
-            <button onClick={() => this.checkOut()} className={styles.checkButton}>Check out</button>
+            <button onClick={() => this.checkOut()} className={styles.checkButton}>
+              <NavLink className={styles.cartLink} to={"/categ/" + this.props.category}>
+                Check out
+              </NavLink>              
+            </button>
           </div>
         </div>
       </div>     
-    );
+    ); // ; this.props.showCartCount()}
   } 
 }
 

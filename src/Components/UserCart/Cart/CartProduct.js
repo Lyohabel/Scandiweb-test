@@ -5,6 +5,7 @@ import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
+//import Product from '../../Categories/Product/Product';
 class CartProduct extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
@@ -182,6 +183,7 @@ class CartProduct extends React.Component {
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
+    if (jsonCart.length === 0) return
     let productAmount = jsonCart[this.props.id].amount
 
     if (sign === 'plus') {
@@ -243,7 +245,9 @@ class CartProduct extends React.Component {
 
     if (this.props.cartProductChanged !== 'no') {
       const cart = window.localStorage.getItem('cart');
-      const newAmount = JSON.parse(cart)[this.props.id].amount
+      const product = JSON.parse(cart)[this.props.id]
+      if (!product) return
+      const newAmount = product.amount
 
       this.setState({
         ...this.state,

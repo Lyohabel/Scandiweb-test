@@ -135,7 +135,7 @@
     position: absolute;
     width: 100%;
     min-height: max-content;
-    height: 100vh;
+    height: calc(100vh - 100%);
     background-color: rgba(206, 209, 202, 0.3);
     background-attachment: fixed;
     overflow-y: scroll;

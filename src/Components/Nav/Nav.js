@@ -35,7 +35,8 @@ class Nav extends React.Component {
   markActive(category) {
     this.setState({
       ...this.state,
-      category: category      
+      category: category,
+      popUp: styles.hidden      
     })
   }
 
@@ -117,10 +118,11 @@ class Nav extends React.Component {
           </div>
 
           <div className={this.state.popUp}>
-            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} setCurrentProduct={this.props.setCurrentProduct} 
+            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category} setCurrentProduct={this.props.setCurrentProduct}
+            showCartCount={this.props.showCartCount} 
             miniCartChanged={this.props.miniCartChanged} 
             //cartChanged={this.props.cartChanged} 
-            //setCartChanged={this.props.setCartChanged} 
+            setCartChanged={this.props.setCartChanged} 
             setMiniCartChanged={this.props.setMiniCartChanged}
             setCartProductChanged={this.props.setCartProductChanged}
             miniCartProductChanged={this.props.miniCartProductChanged}

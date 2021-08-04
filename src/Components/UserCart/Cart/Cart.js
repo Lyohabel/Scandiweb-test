@@ -11,7 +11,8 @@ class Cart extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
     this.state = {
-      jsonCart: ''
+      jsonCart: '',
+      //cartOpen: 'no'
     }
     
     this.createCartList = this.createCartList.bind(this)      
@@ -33,9 +34,37 @@ class Cart extends React.Component {
 
     this.setState({
       ...this.state,        
-      jsonCart: JSON.parse(cart)
-    })    
+      jsonCart: JSON.parse(cart),
+      cartOpen: 'yes'
+    })
+    console.log(this.props)
   }
+
+  // componentDidUpdate() {//  
+  //   if (!window.localStorage.getItem('cart')) return;
+
+  //   const prop = JSON.parse(JSON.stringify(this.props))
+
+  //   console.log(prop.cartChanged) 
+  //   if (this.props.cartChanged !== 'no' && this.state.cartOpen === 'yes') {
+  //     const cart = window.localStorage.getItem('cart');
+
+  //     this.setState({
+  //       ...this.state,        
+  //       jsonCart: JSON.parse(cart),
+  //       cartOpen: 'no'
+  //     })
+  //     this.props.setCartChanged('no')
+  //     console.log('Cart UPD!')           
+  //   } 
+  // }
+
+  // componentWillUnmount() {
+  //   this.setState({
+  //     ...this.state,
+  //     cartOpen: 'no'
+  //   })
+  // }  
 
   render() {
     return (

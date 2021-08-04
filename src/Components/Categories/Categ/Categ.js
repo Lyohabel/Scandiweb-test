@@ -45,7 +45,7 @@ class Categ extends React.Component {
   
     const query = new Query("category", true)
       .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices{amount}"]))
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
   
     client.post(query).then(result => {
       this.setState({
@@ -61,7 +61,7 @@ class Categ extends React.Component {
     
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id}", "inStock", "gallery", "prices{amount}"]))
+        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
     
       client.post(query).then(result => {
         this.setState({

@@ -12,10 +12,6 @@ class CartMiniProduct extends React.Component {
     this.state = {
       jsonCart: '',
       productsNumber: '',
-      // cartProductData: '',
-      // prices: '',
-      // img: '',
-      // attributes: '',
       productAmount: this.props.savedData.amount
     }
   }
@@ -35,7 +31,6 @@ class CartMiniProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        //this.props.setCartChanged('yes')
     } else if (sign === 'minus' && productAmount > 0){
           const newAmount = productAmount - 1
       this.setState({
@@ -44,8 +39,23 @@ class CartMiniProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        //this.props.setCartChanged('yes') 
       } 
+  }
+
+  showChosedAttribute() {
+    if (this.props.savedData.attrNames === "") return ""
+    else return (
+      <div className={styles.colorButtons}>
+        <button onClick={console.log(this.props.savedData)} className={styles.sBut}>
+            <span>S</span>
+            <span className={styles.butPrompt}>
+              To view and change the selected attributes, click on the button VIEW BAG below to go to the cart 
+            </span>
+          </button>
+          <button className={styles.mBut}>M</button>
+          <button className={styles.sBut}>...</button>
+        </div>
+    )
   }
 
   componentDidUpdate() {
@@ -62,14 +72,17 @@ class CartMiniProduct extends React.Component {
     }    
   } 
 
-  render() { // onClick={console.log(this.props.savedData.prices[0].amount)}
+  render() { 
     return (
       <li className={styles.prodItem}>
               <div className={styles.prodInf}>
                 <h4>{this.props.savedData.brand}<br/>{this.props.savedData.name}</h4>              
                 <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span></div>
-                <div className={styles.colorButtons}>
-                  <button className={styles.sBut}>
+
+                {this.showChosedAttribute()}
+
+                {/* <div className={styles.colorButtons}>
+                  <button onClick={console.log(this.props.savedData)} className={styles.sBut}>
                     <span>S</span>
                     <span className={styles.butPrompt}>
                       To change the selected attributes, click on the button VIEW BAG below to go to the cart 
@@ -77,7 +90,7 @@ class CartMiniProduct extends React.Component {
                   </button>
                   <button className={styles.mBut}>M</button>
                   <button className={styles.sBut}>...</button>
-                </div>
+                </div> */}
               </div>
 
               <div className={styles.prodImage}>
@@ -89,7 +102,7 @@ class CartMiniProduct extends React.Component {
                 <img className={styles.imgProd} src={this.props.savedData.gallery[0]} alt="#"/>
               </div>            
             </li>        
-    ); // onClick={() => this.showAnotherImage('prev')} onClick={() => this.showAnotherImage('next')} 
+    ); 
   } 
 }      
 

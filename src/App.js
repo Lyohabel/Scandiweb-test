@@ -13,9 +13,7 @@ import {DEFAULT} from './CONST';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // startData: '',
-      // startData1: '',
+    this.state = {      
       categoriesList: [],
       currentCategory: '',
       currentProduct: '',
@@ -23,7 +21,7 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      //cartChanged: 'no',
+      cartChanged: 'no',      
       cartProductChanged: 'no',
       miniCartProductChanged: 'no',
       miniCartProductChangedId: 'noId',
@@ -31,13 +29,11 @@ class App extends React.Component {
       displayCountCart: 'no',      
       currencies: '',
       currency: '',
-      attrs: DEFAULT,
-      //attrNames: ''           
+      attrs: DEFAULT          
   }
 
     this.addToCart = this.addToCart.bind(this);
-    this.showCartCount = this.showCartCount.bind(this);
-    //this.setCartChanged = this.setCartChanged.bind(this);
+    this.setCartChanged = this.setCartChanged.bind(this);    
     this.setCartProductChanged = this.setCartProductChanged.bind(this);
     this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
     this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
@@ -47,14 +43,13 @@ class App extends React.Component {
     this.changeAttributes = this.changeAttributes.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
     this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
-  } //changeAttributes
+  } 
 
   changeCurrentCategory(categ) {   
     this.setState({
       ...this.state,
       currentCategory: categ,
-      categoryChanged: 'yes',
-      cartChanged: 'yes'         
+      categoryChanged: 'yes'    
       });
   }
   
@@ -65,18 +60,31 @@ class App extends React.Component {
       });
   }
 
-  // setCartChanged(arg) {      
-  //   this.setState({
-  //     ...this.state,
-  //     cartChanged: arg                 
-  //     });    
-  // }
-
-  setCartProductChanged(arg) {      
+  setCartChanged(arg) {      
     this.setState({
       ...this.state,
-      cartProductChanged: arg                 
+      cartChanged: arg                 
       });    
+  }
+
+  setCartProductChanged(arg) {
+    if (window.localStorage.getItem('cart')) {
+      const cart = window.localStorage.getItem('cart')
+      const cartCount = JSON.parse(cart).length
+      
+      this.setState({
+        ...this.state,
+        cartProductChanged: arg,
+        displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
+        countCart: cartCount                 
+      });
+    }     
+    // this.setState({
+    //   ...this.state,
+    //   cartProductChanged: arg,
+    //   displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
+    //   countCart: cartCount                 
+    // });
   }
 
   setMiniCartProductChanged(arg,id) {         
@@ -95,7 +103,6 @@ class App extends React.Component {
       });    
   }
 
-
   setDefaultCategoryChanged() {
     this.setState({
       ...this.state,      
@@ -103,67 +110,52 @@ class App extends React.Component {
       });
   }
 
-  createCartCount() {
-    const cart = window.localStorage.getItem('cart');
-    if (!cart) return
-
-    const jsonCart = JSON.parse(cart);
-    //console.log(jsonCart)
-    let cartCount = 0
-    jsonCart.forEach(element => {      
-      cartCount += element.amount
-    });
-    return cartCount;
-  }
+  
 
   showCartCount() {    
     if (!window.localStorage.getItem('cart')) return
-    const cartCount = this.createCartCount()
-    //console.log(cartCount)
+    const cart = window.localStorage.getItem('cart')
+    const cartCount = JSON.parse(cart).length
+    
     this.setState({
       ...this.state,
-      displayCountCart: 'yes',      
+      displayCountCart: (cartCount > 0 ? 'yes' : 'no'),      
       countCart: cartCount,            
       });
-     // console.log(this.state.countCart)
   }
 
-  changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand) {
+  changeLocalStorage(id, attributeNames, attributeItems, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
 
-    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
-   
-    //console.log(jsonCart);
+    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributeItems: attributeItems, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id, attributeNames, prices, gallery, prodName, brand) {
+  addToCart(inStock, id, attributeNames, attributeItems, prices, gallery, prodName, brand) {
     if (inStock === true) {
       if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id, attributeNames, prices, gallery, prodName, brand)
+        this.changeLocalStorage(id, attributeNames, attributeItems, prices, gallery, prodName, brand)
          } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
+        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributeItems: attributeItems, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
         }    
        
-      let newCount = this.state.countCart;
-      newCount++;
+      let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
+
       this.setState({
         ...this.state,
         countCart: newCount,
         displayCountCart: 'yes',
         miniCartChanged: 'yes'
       })
-      //this.showCartCount()
     } 
   }
 
   creatControl(item) {
     const preControl = JSON.stringify(item).split('"')[1]
-    const control = preControl.slice(0, preControl.length)    
-    //console.log(control)
+    const control = preControl.slice(0, preControl.length)
     return control
   }
 
@@ -176,12 +168,8 @@ class App extends React.Component {
     if (this.state.attrs === DEFAULT) {
       newAttrs = [newAttr]
     } else {
-        newAttrs = this.state.attrs;
-        //const control = JSON.stringify(item).split('"')[1].slice(0, control.length)
+        newAttrs = this.state.attrs;        
         const newArr = newAttrs.filter(item => this.creatControl(item) !== key);
-
-        // console.log(key)
-        // console.log(newArr)
        
         newAttrs = newArr
         newAttrs.push(newAttr)
@@ -191,8 +179,6 @@ class App extends React.Component {
       ...this.state,
       attrs: newAttrs    
     })
-    // console.log(attrName)
-    // console.log(attrValue)
   }
 
   setDefaultAttributes() {
@@ -232,23 +218,6 @@ class App extends React.Component {
       this.showCartCount()
     });
 
-    // const queryStartData = new Query("categories", true)     
-    //   .addField(new Field("name"))
-    //   .addField(new Field("products{id, name, inStock, gallery, prices {currency,amount}, brand }"))
-
-    //   // .addField(new Field("products{id, name, inStock, gallery, description, category, attributes {id, name, type, items {displayValue, value, id}}, prices {currency,amount}, brand }"))
-  
-    //   client.post(queryStartData).then(result => {
-    //     const newData = result.categories
-    //     const newData1 = JSON.parse(JSON.stringify(result.categories))
-
-    //     this.setState({
-    //     ...this.state,        
-    //     startData: newData,
-    //     startData1: newData1          
-    //     });        
-    // });
-
     const queryCurrencies = new Query("currencies", true)      
       client.post(queryCurrencies).then(result => {        
         this.setState({
@@ -262,17 +231,16 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter >
-          <OverallData.Provider value={{
-            //startData: this.state.startData,
+          <OverallData.Provider value={{            
             categoriesList: this.state.categoriesList,            
             currencySimbol: this.state.currencySimbol,
             currencyNumber: this.state.currencyNumber,
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} miniCartChanged={this.state.miniCartChanged} 
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged} 
-            //setCartChanged={this.setCartChanged}
+            setCartChanged={this.setCartChanged}
             setCartProductChanged={this.setCartProductChanged}
             miniCartProductChanged={this.state.miniCartProductChanged}
             miniCartProductChangedId={this.state.miniCartProductChangedId}
@@ -294,9 +262,10 @@ class App extends React.Component {
                 <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}/>
               </Route>
               <Route path='/cart'>
-                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes} setCartChanged={this.setCartChanged}
+                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}
                 cartProductChanged={this.state.cartProductChanged} 
-                //сartChanged={this.state.cartChanged}
+                сartChanged={this.state.cartChanged}
+                setCartChanged={this.setCartChanged}
                 setCartProductChanged={this.setCartProductChanged}
                 setMiniCartProductChanged={this.setMiniCartProductChanged}/>
               </Route>

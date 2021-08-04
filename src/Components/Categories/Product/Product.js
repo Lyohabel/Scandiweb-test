@@ -141,7 +141,7 @@ class Product extends React.Component {
 
       const query = new Query("product", true)
     .addArgument("id", "String!", product)   
-    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, type, items {displayValue, value, id}}", "prices {amount}"])
+    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, name, items {displayValue, value, id}}", "prices {amount}"])
 
       client.post(query).then(result => {        
 
