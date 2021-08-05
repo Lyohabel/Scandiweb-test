@@ -124,14 +124,31 @@
     display: block;
 }
 
-/* all, screen, print, speech;
-not, only; ,=or, and=both;
-orientation: landscape; - <1024
-
-! 1280; 1152; 800 
-
-@media screen and (max-width: 768px) {} */
-
 @media screen and (max-width: 800px) {
-    
+    .title {
+        margin-bottom: 40px;
+    }
+
+    .productItem {
+        min-height: 380px;
+        margin-bottom: 30px;
+    }
+
+    .prodPrice {        
+        margin-bottom: 5px;
+    }    
+}
+
+@media screen and (max-width: 600px) {
+    .productItem {
+        min-height: 350px;
+        width: 45%;
+    }    
+}
+
+@media screen and (max-width: 480px) {
+    .productItem {
+        min-height: 400px;
+        width: 95%;
+    }    
 }

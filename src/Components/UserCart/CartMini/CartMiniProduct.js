@@ -81,16 +81,6 @@ class CartMiniProduct extends React.Component {
 
                 {this.showChosedAttribute()}
 
-                {/* <div className={styles.colorButtons}>
-                  <button onClick={console.log(this.props.savedData)} className={styles.sBut}>
-                    <span>S</span>
-                    <span className={styles.butPrompt}>
-                      To change the selected attributes, click on the button VIEW BAG below to go to the cart 
-                    </span>
-                  </button>
-                  <button className={styles.mBut}>M</button>
-                  <button className={styles.sBut}>...</button>
-                </div> */}
               </div>
 
               <div className={styles.prodImage}>
@@ -99,7 +89,10 @@ class CartMiniProduct extends React.Component {
                   <span>{this.state.productAmount}</span>
                   <button onClick={() => this.changeProductAmount('minus')} className={styles.minusBut}>&#8722;</button>
                 </div>
-                <img className={styles.imgProd} src={this.props.savedData.gallery[0]} alt="#"/>
+                <div className={styles.imgProd}>
+                  <img src={this.props.savedData.gallery[0]} alt="#"/>
+                </div>
+                
               </div>            
             </li>        
     ); 

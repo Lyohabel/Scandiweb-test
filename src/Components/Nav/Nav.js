@@ -12,7 +12,10 @@ class Nav extends React.Component {
     this.state = {
       category: '',
       count: this.props.countCart,      
-      popUp: styles.hidden
+      popUp: styles.hidden,
+      menu: '',
+      btnShow: '',
+      btnClose: ''
     }
 
     this.hideCartMini = this.hideCartMini.bind(this)    
@@ -77,19 +80,34 @@ class Nav extends React.Component {
     )
   }
 
-  // showMenu(event) {}
+  showMenu() {
+    this.setState({
+      ...this.state,
+      menu: 'visible',
+      btnClose: 'visible',
+      btnShow: 'hidden'     
+    })
+  }
 
-  // closeMenu(event) {}
-
-  render() {
+  closeMenu() {
+    this.setState({
+      ...this.state,
+      menu: 'hidden',
+      btnClose: 'hidden',
+      btnShow: 'visible'     
+    })
+  }
+  render() {//onClick={console.log(this.state)}
     return (
       <nav className={styles.nav}>
           <div className="container">
             <div className={styles.wrapper}>
-              <button onClick= {(event) => this.showMenu(event)} className={styles.showMenu}>Menu</button>                    
+              <button onClick= {() => this.showMenu()} style={this.state.btnShow === 'visible' ? {display: 'block'} : {display: 'none'}}  className={styles.showMenu}>Menu</button>
+
+              <button onClick= {() => this.closeMenu()} style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'flex'}} className={styles.closeMenu}>Close menu</button>                   
 
               <div className={styles.menuWrapper}>
-                <ul className={styles.menu}>                
+                <ul className={styles.menu} style={this.state.menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
                   {this.createLinksList()}                
                 </ul>
               </div>              

@@ -122,8 +122,14 @@
 }
 
 .imgProd {
-    max-width: 105px;
+    width: 105px;
     min-height: 135px;
+    display: flex;
+    align-items: center;
+}
+
+.imgProd > img {
+    width: 100%;
 }
 
 .prodSumm {
