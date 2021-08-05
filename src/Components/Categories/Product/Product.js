@@ -3,7 +3,7 @@ import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 import {COLOR} from '../../../CONST';
-class Product extends React.Component {
+class Product extends React.Component { 
   constructor(props) {
     super(props);
     this.state = {      
@@ -90,7 +90,7 @@ class Product extends React.Component {
         {btnStyle !== COLOR ? item.value : ''}
         <span className={styles.displayValue}>{item.id}</span>
       </button>
-      )// , color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'
+      )
   }
 
   setAttributes(order) {
@@ -165,11 +165,15 @@ class Product extends React.Component {
       <section className="Product">
           <div className="container">                       
             <div className={styles.productItem}>
-              <ul>
-                {this.creatGallery()}
-              </ul>              
+              <div className={styles.galleryWrapper}>
+                <ul className={styles.galleryList}>
+                  {this.creatGallery()}
+                </ul>
 
-              <img className={styles.imgProd} src={this.state.gallery[0]} alt="#"/>
+                <div className={styles.imgProd}>
+                  <img src={this.state.gallery[0]} alt="#"/>
+                </div>
+              </div>
 
               <div className={styles.prodWrapper}>
                 <h3 className={styles.title}>{this.state.product.brand}</h3>
@@ -183,7 +187,6 @@ class Product extends React.Component {
 
                 <button onClick={() => {
                   this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
-                  //this.props.setCartChanged('yes'); 
                   this.resetProduct()}}
                 className={(this.state.instock ? styles.add : styles.inStockFalse)}>
                   <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>
