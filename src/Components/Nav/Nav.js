@@ -34,7 +34,7 @@ class Nav extends React.Component {
     this.setState({
       ...this.state,
       popUp: styles.hidden      
-    }) 
+    })
   }
 
   markActive(category) {

@@ -11,10 +11,7 @@ class CartMini extends React.Component {
       jsonCart: '',
       currencySimbol: '$',
       total: '00.00'
-    }
-    
-    //this.methodeName = this.methodeName.bind(this)
-	
+    }	
   }
 
   createCartMiniList() {        
@@ -36,6 +33,9 @@ class CartMini extends React.Component {
     let total = 0
 
     const checkDeleted =  jsonCart.filter(item => item.amount > 0);
+
+    // console.log(jsonCart)
+    // console.log(checkDeleted)
 
     checkDeleted.forEach((element) => {      
       total += element.prices[this.context.currencyNumber] * element.amount     
@@ -73,6 +73,7 @@ class CartMini extends React.Component {
         ...this.state,        
         jsonCart: JSON.parse(cart)
       })
+
       this.props.setMiniCartChanged('no')           
     }    
   } 
@@ -100,11 +101,8 @@ class CartMini extends React.Component {
                 View bag
               </NavLink>              
             </button>
-            <button onClick={() => this.checkOut()} className={styles.checkButton}>
-              <NavLink className={styles.cartLink} to={"/categ/" + this.props.category}>
-                Check out
-              </NavLink>              
-            </button>
+
+            <button onClick={() => this.checkOut()} className={styles.checkButton}>Check out</button>
           </div>
         </div>
       </div>     

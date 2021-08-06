@@ -2,7 +2,7 @@ import React from 'react';
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
 class CartMiniProduct extends React.Component {
-  constructor(props) { // eslint-disable-line
+  constructor(props) { 
     super(props);
     this.state = {
       jsonCart: '',
@@ -37,7 +37,7 @@ class CartMiniProduct extends React.Component {
       } 
   }
 
-  showChosedAttribute() { // onClick={console.log(this.props.savedData)}
+  showChosedAttribute() {
     if (this.props.savedData.attrNames === "") return ""
     else return (
       <div className={styles.attrButtons}>
@@ -52,6 +52,18 @@ class CartMiniProduct extends React.Component {
     )
   }
 
+  componentDidMount() {    
+    const cart = window.localStorage.getItem('cart');
+    const newAmount = JSON.parse(cart)[this.props.id].amount
+
+    this.setState({
+      ...this.state,
+      jsonCart: 'JSON.parse(cart)[this.props.id]',
+      productAmount: newAmount
+      })
+    console.log(this.state.jsonCart)
+  } 
+
   componentDidUpdate() {
     if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no' && this.props.miniCartProductChangedId === this.props.id) {
       const cart = window.localStorage.getItem('cart');
@@ -62,7 +74,6 @@ class CartMiniProduct extends React.Component {
         productAmount: newAmount
         })
         this.props.setMiniCartProductChanged('no')
-      console.log('MiniProd UPD!')      
     }    
   } 
 
@@ -89,8 +100,8 @@ class CartMiniProduct extends React.Component {
                 
               </div>            
             </li>        
-    ); 
-  } 
+    );  // this.props.savedData.amount 
+  } // 
 }      
 
 CartMiniProduct.contextType = OverallData;

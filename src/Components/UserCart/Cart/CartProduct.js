@@ -87,7 +87,7 @@ class CartProduct extends React.Component {
     return ind
   }
 
-  creatButtons(attrs, btnStyle, order) {
+  createButtons(attrs, btnStyle, order) {
     const attributeName = this.state.cartProductData.attributes[order].id
     const attrName = attributeName.toLowerCase()    
     
@@ -123,22 +123,20 @@ class CartProduct extends React.Component {
     )
   }
 
-  setAttributes(order) { // Почему-то в этом компоненте не работает ?????????  
+  setAttributes(order) { 
     if (!this.state.cartProductData.attributes || this.state.cartProductData.attributes.length < order + 1) return ''   
-    return (
-      <div className={styles.attributeTypeWrapper}>
-        {this.createButtons(this.state.cartProductData.attributes[order].items, this.state.cartProductData.attributes[order].id, order)}
-      </div> 
+    return (      
+        this.createButtons(this.state.cartProductData.attributes[order].items, this.state.cartProductData.attributes[order].id, order)      
     )    
   }
 
-  // returnAttributes(arr) {
-  //   return arr && arr.map((item, index) =>
-  //     <div key={item.id} className="attrWrapper">  //       
-  //       {this.setAttributes(index)}
-  //     </div>
-  //   )    
-  // }  =========================================================
+  returnAttributes(arr) {
+    return arr && arr.map((item, index) =>
+      <div key={item.id} className={styles.attributeTypeWrapper}>       
+        {this.setAttributes(index)}
+      </div>
+    )    
+  } 
 
   creatGallery() {
     const gl = this.state.gallery;
@@ -233,7 +231,8 @@ class CartProduct extends React.Component {
               gallery: result.product.gallery,
               attributes: JSON.parse(JSON.stringify(result.product.attributes))
             })  
-            //console.log(this.state.cartProductData.attributes)
+            // console.log(this.state.cartProductData.attributes)
+            // console.log(this.state.attributes)
             //console.log(this.props.savedData.name)
           })
         }
@@ -264,27 +263,17 @@ class CartProduct extends React.Component {
         <span className={styles.cartLine}></span>     
         <div className={styles.cartWrapper}>
           <div className={styles.prodInf}>
-            <h4 className={styles.cartItemTitle}>{this.state.cartProductData.brand}</h4>
-            <span className={styles.cartItemSubtitle}>{this.state.cartProductData.name}</span>
+            <div className={styles.prodInfWrapper}>
+              <h4 className={styles.cartItemTitle}>{this.state.cartProductData.brand}</h4>
+              <span className={styles.cartItemSubtitle}>{this.state.cartProductData.name}</span>
 
-            <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span>
+              <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span>
+              </div>
             </div>
 
             <div className={styles.attributesWrapper}>
 
-              {/* {this.setAttributes(0)} */}
-
-              <div className={styles.attributeTypeWrapper}>
-                {(this.state.cartProductData.attributes && this.state.cartProductData.attributes[0]) ? this.creatButtons(this.state.cartProductData.attributes[0].items, this.state.cartProductData.attributes[0].id, 0) : ''}
-              </div>
-
-              <div className={styles.attributeTypeWrapper}>
-                {(this.state.cartProductData.attributes && this.state.cartProductData.attributes[1]) ? this.creatButtons(this.state.cartProductData.attributes[1].items, this.state.cartProductData.attributes[1].id, 1) : ''}
-              </div>              
-
-              <div className={styles.attributeTypeWrapper}>
-                {(this.state.cartProductData.attributes && this.state.cartProductData.attributes[2]) ? this.creatButtons(this.state.cartProductData.attributes[2].items, this.state.cartProductData.attributes[2].id, 2) : ''}
-              </div>
+            {this.state.cartProductData.attributes ? this.returnAttributes(this.state.cartProductData.attributes) : ''}
             </div>
           </div>        
 
@@ -307,7 +296,7 @@ class CartProduct extends React.Component {
           
         </div>
       </section>          
-    ); // onClick={() => this.showAnotherImage('prev')} onClick={() => this.showAnotherImage('next')} 
+    );  
   } 
 }      
 

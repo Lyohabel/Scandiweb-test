@@ -4,7 +4,6 @@ import { client, Query, Field } from "@tilework/opus";
 import './App.css';
 import Nav from './Components/Nav/Nav';
 import StartPage from './Components/Categories/StartPage/StartPage';
-//import Test from './Components/Categories/Test/Test';
 import Categ from './Components/Categories/Categ/Categ';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
@@ -60,9 +59,8 @@ class App extends React.Component {
       ...this.state,
       position: arg                 
       });
-    //console.log(this.state.position)  
   }
-  
+
   setCurrentProduct(prod) {      
     this.setState({
       ...this.state,
@@ -70,10 +68,16 @@ class App extends React.Component {
       });
   }
 
-  setCartChanged(arg) {      
+  setCartChanged(arg) {
+    if (!window.localStorage.getItem('cart')) return
+    const cart = window.localStorage.getItem('cart')
+    const cartCount = JSON.parse(cart).length
+
     this.setState({
       ...this.state,
-      cartChanged: arg                 
+      cartChanged: arg,
+      displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
+      countCart: cartCount                 
       });    
   }
 
@@ -103,8 +107,7 @@ class App extends React.Component {
       ...this.state,
       miniCartProductChangedId: id,
       miniCartProductChanged: arg                 
-      });
-      console.log(this.state.miniCartProductChangedId)   
+      });   
   }
 
   setMiniCartChanged(arg) {      
@@ -119,9 +122,7 @@ class App extends React.Component {
       ...this.state,      
       categoryChanged: 'no',            
       });
-  }
-
-  
+  }  
 
   showCartCount() {    
     if (!window.localStorage.getItem('cart')) return
@@ -280,7 +281,7 @@ class App extends React.Component {
               <Route path='/cart'>
                 <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}
                 cartProductChanged={this.state.cartProductChanged} 
-                сartChanged={this.state.cartChanged}
+                cartChanged={this.state.cartChanged}
                 setCartChanged={this.setCartChanged}
                 setCartProductChanged={this.setCartProductChanged}
                 setMiniCartProductChanged={this.setMiniCartProductChanged}
