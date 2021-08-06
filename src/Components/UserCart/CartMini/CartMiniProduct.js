@@ -1,11 +1,6 @@
 import React from 'react';
-// import * as _ from 'lodash';
-//import {NavLink} from 'react-router-dom'; // eslint-disable-line
-//import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
-import * as styles from './CartMiniProduct.module.css'
-//import {COLOR, DEFAULT} from '../../../CONST';
-
+import * as styles from './CartMiniProduct.module.css';
 class CartMiniProduct extends React.Component {
   constructor(props) { // eslint-disable-line
     super(props);
@@ -45,15 +40,14 @@ class CartMiniProduct extends React.Component {
   showChosedAttribute() { // onClick={console.log(this.props.savedData)}
     if (this.props.savedData.attrNames === "") return ""
     else return (
-      <div className={styles.colorButtons}>
-        <button className={styles.sBut}>
+      <div className={styles.attrButtons}>
+        <button className={styles.firstBut}>
             <span>{this.props.savedData.attributes_1[0].value}</span>
             <span className={styles.butPrompt}>
               To view and change the selected attributes, click on the button VIEW BAG below to go to the cart 
             </span>
           </button>
-          <button className={styles.mBut}>{this.props.savedData.attributes_1[1].value}</button>
-          {/* <button className={styles.sBut}>...</button> */}
+          <button className={styles.choosedBut}>{this.props.savedData.attributes_1[1].value}</button>          
         </div>
     )
   }
@@ -76,7 +70,7 @@ class CartMiniProduct extends React.Component {
     return (
       <li className={styles.prodItem}>
               <div className={styles.prodInf}>
-                <h4>{this.props.savedData.brand}<br/>{this.props.savedData.name}</h4>              
+                <h4>{this.props.savedData.brand}<br/>{this.props.savedData.prodName}</h4>              
                 <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span></div>
 
                 {this.showChosedAttribute()}

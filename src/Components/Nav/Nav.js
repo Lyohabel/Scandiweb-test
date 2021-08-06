@@ -104,7 +104,7 @@ class Nav extends React.Component {
             <div className={styles.wrapper}>
               <button onClick= {() => this.showMenu()} style={this.state.btnShow === 'visible' ? {display: 'block'} : {display: 'none'}}  className={styles.showMenu}>Menu</button>
 
-              <button onClick= {() => this.closeMenu()} style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'flex'}} className={styles.closeMenu}>Close menu</button>                   
+              <button onClick= {() => this.closeMenu()} style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Close menu</button>                   
 
               <div className={styles.menuWrapper}>
                 <ul className={styles.menu} style={this.state.menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                

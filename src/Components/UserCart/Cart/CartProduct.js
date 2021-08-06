@@ -7,7 +7,7 @@ import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
 //import Product from '../../Categories/Product/Product';
 class CartProduct extends React.Component {
-  constructor(props) { // eslint-disable-line
+  constructor(props) { // eslint-disable-line  
     super(props);
     this.state = {
       jsonCart: '',
@@ -123,7 +123,7 @@ class CartProduct extends React.Component {
     )
   }
 
-  setAttributes(order) { // Почему-то в этом компоненте не работает ?????????
+  setAttributes(order) { // Почему-то в этом компоненте не работает ?????????  
     if (!this.state.cartProductData.attributes || this.state.cartProductData.attributes.length < order + 1) return ''   
     return (
       <div className={styles.attributeTypeWrapper}>

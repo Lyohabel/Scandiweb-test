@@ -1,7 +1,4 @@
 import React from 'react';
-//import * as _ from 'lodash';
-// import {NavLink} from 'react-router-dom'; // eslint-disable-line
-// import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Cart.module.css';
 import CartProduct from './CartProduct';

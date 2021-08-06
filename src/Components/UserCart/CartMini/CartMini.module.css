@@ -9,7 +9,7 @@
     color: #1D1F22;
     background-color: #fff;
     padding: 15px;
-    padding-bottom: 120px;
+    padding-bottom: 100px;
     position: absolute;
     left: 65%;
 }
@@ -91,19 +91,21 @@
 
 @media screen and (max-width: 425px) {
     .cartMini {
-        left: 10%;
+        left: 15%;
+        width: 300px;
+        padding: 7px;
     }
 }
 
 @media screen and (max-width: 375px) {
-    .cartMini {
-        left: 5%;
+    .cartMini {        
+        width: 280px;
     }
 }
 
 @media screen and (max-width: 320px) {
     .cartMini {
-        width: 290px;
-        left: 0;
+        width: 250px;
+        left: 10%;
     }
 }

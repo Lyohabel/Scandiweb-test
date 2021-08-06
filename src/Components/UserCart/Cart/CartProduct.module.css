@@ -9,27 +9,10 @@
     width: 75%;
 }
 
-.cartTitle {
-    font-weight: bold;
-    font-size: 32px;
-    text-transform: uppercase;
-    margin-bottom: 60px;
-}
-
-.cartItem {
-    list-style: none;
-    margin-bottom: 20px;
-}
-
 .cartLine {
     display: block;
     border-bottom: 1px solid #E5E5E5;
     margin-bottom: 20px;
-}
-
-.cartItemWrapper {
-    display: flex;
-    justify-content: space-between;
 }
 
 .cartItemTitle {
@@ -145,37 +128,14 @@
     display: block;
 }
 
-/* ======================================================================= */
-
-.attrBut {
-    width: 63px;
-    height: 45px;
-    font-family: Source Sans Pro;
-    font-size: 18px;    
-}
-
-.attrBut:first-child {
-    margin-right: 5px;
-}
-
-.sBut {
-    background-color: #ffffff;
-    margin-right: 10px;
-    border: 1px solid #1D1F22;
-}
-
-.mBut {
-    color: #fff;
-    background-color: #1D1F22;
-    border: none;
-}
-
 .prodImage {
     display: flex;
 }
 
 .galleryWrapper {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .sliderDisplayLeft {
@@ -229,25 +189,17 @@
 
 .galleryItem {
     min-width: 140px;
-    
-    /* display: block;    */
 }
 
 .imgDisplay {
-    width: 140px;
-       
+    width: 100%;       
     display: block;
-
 }
 
 .imgHidden {    
     display: none;
 
 }
-
-/* .prodImage {
-    display: flex;
-} */
 
 .countButtons {
     display: flex;
@@ -273,8 +225,69 @@
     font-size: 16px;
 }
 
-.imgProd {
-    width: 140px;
-    min-height: 185px;
+@media screen and (max-width: 800px) {
+    .attributesWrapper {
+        flex-direction: column;
+    }
+
+    .attributeTypeWrapper {
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .attributeTypeWrapper {
+       width: 250px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .attributeTypeWrapper {
+       width: 200px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .cartItemTitle,
+    .cartItemSubtitle {
+        font-size: 22px;
+    }
+    .attributeTypeWrapper {
+       width: 150px;
+    }
+
+    .color:not(:last-child),
+    .colorActive:not(:last-child),
+    .size:not(:last-child),
+    .sizeActive:not(:last-child) {
+        margin-right: 3px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .cartItemTitle,
+    .cartItemSubtitle {
+        font-size: 20px;
+    }
+    .attributeTypeWrapper {
+       width: 130px;
+    }
+
+    .galleryItem {
+        min-width: 120px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .cartWrapper {
+        flex-direction: column;
+    }
+    .cartItemTitle,
+    .cartItemSubtitle {
+        font-size: 24px;
+    }
+    .attributeTypeWrapper {
+       width: 200px;
+    }
 }
 
