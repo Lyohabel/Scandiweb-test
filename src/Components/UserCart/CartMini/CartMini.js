@@ -16,7 +16,11 @@ class CartMini extends React.Component {
 
   createCartMiniList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartMiniProduct key={index} id={index} savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} setCurrentProduct={this.props.setCurrentProduct}
+      <CartMiniProduct key={index} id={index} 
+      savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} 
+      setCurrentProduct={this.props.setCurrentProduct}
+      cartChanged={this.props.cartChanged}
+      deleteProduct={this.props.deleteProduct} 
       miniCartChanged={this.props.miniCartChanged} 
       setMiniCartChanged={this.props.setMiniCartChanged}
       miniCartProductChanged={this.props.miniCartProductChanged}
@@ -73,9 +77,10 @@ class CartMini extends React.Component {
         ...this.state,        
         jsonCart: JSON.parse(cart)
       })
+      //this.createCartMiniList()
 
       this.props.setMiniCartChanged('no')           
-    }    
+    }
   } 
 
   render() {

@@ -106,8 +106,10 @@
     border: 1px solid #1D1F22;
     border-radius: 5px;
     top: 50px;
+    background-color: #fff;
     color: #1D1F22;
     display: none;
+    z-index: 8;
 }
 
 .colorActive .displayValue,

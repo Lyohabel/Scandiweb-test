@@ -11,6 +11,7 @@ class CartProduct extends React.Component {
     super(props);
     this.state = {
       jsonCart: '',
+      jsonPrices: '',
       productsNumber: '',
       cartProductData: '',
       prices: '',
@@ -88,7 +89,7 @@ class CartProduct extends React.Component {
   }
 
   createButtons(attrs, btnStyle, order) {
-    const attributeName = this.state.cartProductData.attributes[order].id
+    const attributeName = this.state.jsonCart.attrNames[order]
     const attrName = attributeName.toLowerCase()    
     
     return attrs && attrs.map((item, index, array) =>
@@ -139,8 +140,8 @@ class CartProduct extends React.Component {
   } 
 
   creatGallery() {
-    const gl = this.state.gallery;
-    const id = this.state.cartProductData.id    
+    const gl = this.state.jsonCart.gallery;
+    const id = this.state.jsonCart.name    
     
     return gl && gl.map((item, index, array) =>
       (array.length === 1)
@@ -207,6 +208,10 @@ class CartProduct extends React.Component {
   
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
+
+    const cart = window.localStorage.getItem('cart');
+    const product = JSON.parse(cart)[this.props.id]
+    const jsonPrices = JSON.parse(cart)[this.props.id].prices
     
     const name = this.props.savedData.name
 
@@ -227,13 +232,16 @@ class CartProduct extends React.Component {
             this.setState({
               ...this.state,        
               cartProductData: JSON.parse(JSON.stringify(result.product)),
+              jsonCart: JSON.parse(JSON.stringify(product)),
+              jsonPrices: jsonPrices,
               prices: result.product.prices.map(item => item.amount),
               gallery: result.product.gallery,
               attributes: JSON.parse(JSON.stringify(result.product.attributes))
             })  
             // console.log(this.state.cartProductData.attributes)
             // console.log(this.state.attributes)
-            //console.log(this.props.savedData.name)
+            console.log(this.state.jsonCart)
+            console.log(this.state.cartProductData)
           })
         }
     })
@@ -264,10 +272,10 @@ class CartProduct extends React.Component {
         <div className={styles.cartWrapper}>
           <div className={styles.prodInf}>
             <div className={styles.prodInfWrapper}>
-              <h4 className={styles.cartItemTitle}>{this.state.cartProductData.brand}</h4>
-              <span className={styles.cartItemSubtitle}>{this.state.cartProductData.name}</span>
+              <h4 className={styles.cartItemTitle}>{this.state.jsonCart.brand}</h4>
+              <span className={styles.cartItemSubtitle}>{this.state.jsonCart.prodName}</span>
 
-              <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span>
+              <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.jsonPrices[this.context.currencyNumber]}</span>
               </div>
             </div>
 

@@ -34,7 +34,16 @@ class CartMiniProduct extends React.Component {
         })
         jsonCart[this.props.id].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-      } 
+      } else if (sign === 'check'){
+          const cart = window.localStorage.getItem('cart');
+          const newAmount = JSON.parse(cart)[this.props.id].amount
+          this.setState({
+            ...this.state,
+            productAmount: newAmount
+            })
+          jsonCart[this.props.id].amount = newAmount
+          window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        } 
   }
 
   showChosedAttribute() {
@@ -55,17 +64,19 @@ class CartMiniProduct extends React.Component {
   componentDidMount() {    
     const cart = window.localStorage.getItem('cart');
     const newAmount = JSON.parse(cart)[this.props.id].amount
+    const newData = JSON.parse(cart)[this.props.id].amount
 
     this.setState({
       ...this.state,
-      jsonCart: 'JSON.parse(cart)[this.props.id]',
+      jsonCart: newData,
       productAmount: newAmount
       })
-    console.log(this.state.jsonCart)
+    console.log(this.props.id)
   } 
 
-  componentDidUpdate() {
-    if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no' && this.props.miniCartProductChangedId === this.props.id) {
+  componentDidUpdate() {//&& this.props.cartChanged === 'no' 
+    //console.log(this.props.deleteProduct) 
+    if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no' && this.props.cartChanged === 'no') {
       const cart = window.localStorage.getItem('cart');
       const newAmount = JSON.parse(cart)[this.props.id].amount
 
@@ -74,7 +85,11 @@ class CartMiniProduct extends React.Component {
         productAmount: newAmount
         })
         this.props.setMiniCartProductChanged('no')
-    }    
+    } 
+    // else if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no' && this.props.deleteProduct === 'yes') {
+    //     console.log(this.props.deleteProduct)
+    //     this.props.setMiniCartProductChanged('no')
+    //   }      
   } 
 
   render() { 

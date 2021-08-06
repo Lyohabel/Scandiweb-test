@@ -20,7 +20,8 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      cartChanged: 'no',      
+      cartChanged: 'no',
+      deleteProduct: 'no',     
       cartProductChanged: 'no',
       miniCartProductChanged: 'no',
       miniCartProductChangedId: 'noId',
@@ -76,6 +77,7 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       cartChanged: arg,
+      deleteProduct: 'yes',
       displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
       countCart: cartCount                 
       });    
@@ -253,7 +255,9 @@ class App extends React.Component {
             <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct}
             setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
-            setMiniCartChanged={this.setMiniCartChanged} 
+            setMiniCartChanged={this.setMiniCartChanged}
+            cartChanged={this.state.cartChanged}
+            deleteProduct={this.state.deleteProduct}
             setCartChanged={this.setCartChanged}
             setCartProductChanged={this.setCartProductChanged}
             miniCartProductChanged={this.state.miniCartProductChanged}
