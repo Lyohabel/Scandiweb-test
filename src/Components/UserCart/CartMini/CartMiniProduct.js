@@ -75,25 +75,25 @@ class CartMiniProduct extends React.Component {
     console.log('xxx')
   } 
 
-  // componentDidUpdate() { //jsonCart[this.props.id +1].amount
-  //   console.log(this.props.miniCartProductChanged)
-  //   if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no') {
-  //     const cart = window.localStorage.getItem('cart');
-  //     const jsonCart = JSON.parse(cart)
+  componentDidUpdate() { //jsonCart[this.props.id +1].amount
+    console.log(this.props.miniCartProductChanged)
+    if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no') {
+      const cart = window.localStorage.getItem('cart');
+      const jsonCart = JSON.parse(cart)
 
-  //     let x = jsonCart.find(item => item.uniqueId === this.state.uniqueId);
+      let x = jsonCart.find(item => item.uniqueId === this.state.uniqueId);
       
-  //     const newAmount = x ? x.amount : ''
+      const newAmount = x ? x.amount : ''
       
-  //     this.setState({
-  //       ...this.state,
-  //       productAmount: newAmount
-  //       })
-  //       console.log(newAmount)
-  //       console.log(this.state.productAmount)
-  //       this.props.setMiniCartProductChanged('no')
-  //   } 
-  // } 
+      this.setState({
+        ...this.state,
+        productAmount: newAmount
+        })
+        console.log(newAmount)
+        console.log(this.state.productAmount)
+        this.props.setMiniCartProductChanged('no')
+    } 
+  } 
 
   render() { 
     return (
