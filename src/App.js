@@ -9,7 +9,7 @@ import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import OverallData from './Context';
 import {DEFAULT, POPUP} from './CONST';
-class App extends React.Component {
+class App extends React.Component { 
   constructor(props) {
     super(props);
     this.state = {      
@@ -20,8 +20,7 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      cartChanged: 'no',
-      deleteProduct: 'no',     
+      cartChanged: 'no',     
       cartProductChanged: 'no',
       miniCartProductChanged: 'no',
       miniCartProductChangedId: 'noId',
@@ -70,6 +69,16 @@ class App extends React.Component {
       });
   }
 
+  set_4_StatesChanged() {
+    this.setState({
+      ...this.state,
+      cartChanged: 'yes',
+      cartProductChanged: 'yes',
+      miniCartChanged: 'yes',
+      miniCartProductChanged: 'yes'                       
+    }); 
+  }
+
   setCartChanged(arg) {
     if (!window.localStorage.getItem('cart')) return
     const cart = window.localStorage.getItem('cart')
@@ -78,7 +87,6 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       cartChanged: arg,
-      deleteProduct: 'yes',
       displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
       countCart: cartCount                 
       });    
@@ -103,8 +111,11 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       miniCartProductChangedId: id,
-      miniCartProductChanged: arg                 
-      });   
+      miniCartProductChanged: arg,
+      cartProductChanged: 'yes',
+      cartChanged: 'yes'                
+      });
+      console.log(this.state.cartProductChanged)   
   }
 
   setMiniCartChanged(arg) {      
@@ -134,8 +145,8 @@ class App extends React.Component {
   }
 
   createUniqueId(arg) {
-    const x = Math.floor(Math.random() * 20)
-    const y = Math.floor(Math.random() * 20)
+    const x = Math.floor(Math.random() * 99)
+    const y = Math.floor(Math.random() * 99)
     const uniqueId = x + '-' + y + '-' + arg
     return uniqueId
   }
@@ -146,15 +157,14 @@ class App extends React.Component {
     const newId = jsonCart.length
     const uniqueId = this.createUniqueId(prodName)
 
-    jsonCart.push({uniqueId: uniqueId, id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
+    jsonCart.push({uniqueId: uniqueId, id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})    
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
   addToCart(inStock, id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
     if (inStock === true) {
-      const uniqueId = this.createUniqueId(prodName)
-      console.log(uniqueId)
+      const uniqueId = this.createUniqueId(prodName)      
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
          } else {
@@ -261,8 +271,7 @@ class App extends React.Component {
             setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged}
-            cartChanged={this.state.cartChanged}
-            deleteProduct={this.state.deleteProduct}
+            cartChanged={this.state.cartChanged}            
             setCartChanged={this.setCartChanged}
             setCartProductChanged={this.setCartProductChanged}
             miniCartProductChanged={this.state.miniCartProductChanged}
@@ -273,10 +282,6 @@ class App extends React.Component {
               <Route exact path='/'>
                 <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
               </Route>
-
-              {/* <Route path='/test'>
-                <Test />                
-              </Route> */}
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
                 <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}
@@ -299,7 +304,7 @@ class App extends React.Component {
             </Switch>
           </OverallData.Provider>
       </BrowserRouter >
-    ); // def={this.state.attrs}
+    ); 
   } 
 } 
 

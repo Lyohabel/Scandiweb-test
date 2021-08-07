@@ -1,13 +1,12 @@
 import React from 'react';
-// import * as _ from 'lodash';
-import {NavLink} from 'react-router-dom'; // eslint-disable-line
+import {NavLink} from 'react-router-dom'; 
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
-//import Product from '../../Categories/Product/Product';
+
 class CartProduct extends React.Component {
-  constructor(props) { // eslint-disable-line  
+  constructor(props) {  
     super(props);
     this.state = {
       jsonCart: '',
@@ -55,19 +54,19 @@ class CartProduct extends React.Component {
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-
+    const x = jsonCart.findIndex(item => item.uniqueId === this.props.id);    
     const key = attr.toLowerCase()
     let newAttr = {}
     newAttr[key] = value
 
-    if (jsonCart[index].attrs === DEFAULT) {
-      jsonCart[index].attrs = [newAttr]
-    } else {      
-      let x = jsonCart[index].attrs.findIndex(item => JSON.stringify(item).includes(key) === true)
-      if(x !== -1) jsonCart[index].attrs.splice(x, 1)
-      jsonCart[index].attrs.push(newAttr)      
-    }
-    window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+    if (this.state.jsonCart.attrs === DEFAULT) {
+      jsonCart[x].attrs = [newAttr]
+    } else {
+      let y = jsonCart[x].attrs.findIndex(item => JSON.stringify(item).includes(key) === true)
+      if(y !== -1) jsonCart[x].attrs.splice(y, 1)
+      jsonCart[x].attrs.push(newAttr)
+      }
+     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
   markAttribute(value, order) {
@@ -90,34 +89,34 @@ class CartProduct extends React.Component {
 
   createButtons(attrs, btnStyle, order) {
     const attributeName = this.state.jsonCart.attrNames[order]
-    const attrName = attributeName.toLowerCase()    
+    const attrName = attributeName ? attributeName.toLowerCase() : ''   
     
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value}
       className={(btnStyle !== COLOR) ? 
         ((this.state[`activeAttribute_${order}`] === item.value) ? // ok
         this.state.sizeButton.b : 
-        ((this.props.savedData.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
-        this.state.sizeButton.b : // ok
-        ((this.props.savedData.attrs !== DEFAULT && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        this.state.sizeButton.b : 
+        ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
         this.state.sizeButton.b :
-        (((index === 0 && this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
+        (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
         this.state.sizeButton.b :
         this.state.sizeButton.a))        
         :        
         ((this.state[`activeAttribute_${order}`] === item.value) ? 
         this.state.colorButton.b : 
-        ((this.props.savedData.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
         this.state.colorButton.b :
-        ((this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)] && this.props.savedData.attrs[this.findAttrIndex(this.props.savedData.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        ((this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
         this.state.colorButton.b :
-        (((index === 0 && this.props.savedData.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.props.savedData.attrs, attrName) === ''))) ? 
+        (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
         this.state.colorButton.b :
         this.state.colorButton.a))}
       
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
       
-      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.props.savedData.attrNames[order], item.value, this.props.id);}}> 
+      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.jsonCart.attrNames[order], item.value, this.props.id);}}> 
         {btnStyle !== COLOR ? item.value : ''}      
       <span className={styles.displayValue}>{attributeName}</span>
       </button>    
@@ -125,9 +124,9 @@ class CartProduct extends React.Component {
   }
 
   setAttributes(order) { 
-    if (!this.state.cartProductData.attributes || this.state.cartProductData.attributes.length < order + 1) return ''   
+    if (!this.state.jsonCart.attributes || this.state.jsonCart.attributes.length < order + 1) return ''   
     return (      
-        this.createButtons(this.state.cartProductData.attributes[order].items, this.state.cartProductData.attributes[order].id, order)      
+        this.createButtons(this.state.jsonCart.attributes[order].items, this.state.jsonCart.attributes[order].id, order)      
     )    
   }
 
@@ -183,7 +182,8 @@ class CartProduct extends React.Component {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     if (jsonCart.length === 0) return
-    let productAmount = jsonCart[this.props.id].amount
+    const x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
+    let productAmount = jsonCart[x].amount
 
     if (sign === 'plus') {
       const newAmount = productAmount + 1
@@ -191,7 +191,7 @@ class CartProduct extends React.Component {
         ...this.state,
         productAmount: newAmount
         })
-        jsonCart[this.props.id].amount = newAmount
+        jsonCart[x].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
         this.props.setMiniCartProductChanged('yes',id) 
     } else if (sign === 'minus' && productAmount > 0){
@@ -200,7 +200,7 @@ class CartProduct extends React.Component {
         ...this.state,
         productAmount: newAmount
         })
-        jsonCart[this.props.id].amount = newAmount
+        jsonCart[x].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
         this.props.setMiniCartProductChanged('yes',id) 
       } 
@@ -210,44 +210,33 @@ class CartProduct extends React.Component {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
-    const product = JSON.parse(cart)[this.props.id]
-    const jsonPrices = JSON.parse(cart)[this.props.id].prices
+    const jsonCart = JSON.parse(cart)
+    let x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
+    const product = jsonCart[x]
+    const jsonPrices = JSON.parse(cart)[x].prices
     
     const name = this.props.savedData.name
 
     client.setEndpoint("http://localhost:4000/graphql");
 
-    const queryInStock = new Query("product", true)  // ! checking for inStock before displaying in the cart
+    const queryInStock = new Query("product", true)  
       .addArgument("id", "String!", name)   
       .addField("inStock")
 
     client.post(queryInStock).then(result => {
       if (result.product.inStock !== true) return ''
         else {
-          const queryName = new Query("product", true)
-            .addArgument("id", "String!", name)   
-            .addFieldList(["id", "name", "gallery", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
-
-          client.post(queryName).then(result => {
-            this.setState({
-              ...this.state,        
-              cartProductData: JSON.parse(JSON.stringify(result.product)),
-              jsonCart: JSON.parse(JSON.stringify(product)),
-              jsonPrices: jsonPrices,
-              prices: result.product.prices.map(item => item.amount),
-              gallery: result.product.gallery,
-              attributes: JSON.parse(JSON.stringify(result.product.attributes))
-            })  
-            // console.log(this.state.cartProductData.attributes)
-            // console.log(this.state.attributes)
-            console.log(this.state.jsonCart)
-            console.log(this.state.cartProductData)
+          this.setState({ 
+            ...this.state,
+            jsonCart: JSON.parse(JSON.stringify(product)),
+            jsonPrices: jsonPrices
           })
         }
     })
   }
 
-  componentDidUpdate() {    
+  componentDidUpdate() {
+    console.log(this.props.cartProductChanged)      
     if (!window.localStorage.getItem('cart')) return;
 
     if (this.props.cartProductChanged !== 'no') {
@@ -261,7 +250,7 @@ class CartProduct extends React.Component {
         productAmount: newAmount
         })
       this.props.setCartProductChanged('no')
-      //console.log('CartProduct UPD!')      
+      console.log('CART_PROD UPD !')            
     }    
   } 
 
@@ -281,7 +270,7 @@ class CartProduct extends React.Component {
 
             <div className={styles.attributesWrapper}>
 
-            {this.state.cartProductData.attributes ? this.returnAttributes(this.state.cartProductData.attributes) : ''}
+            {this.state.jsonCart.attributes ? this.returnAttributes(this.state.jsonCart.attributes) : ''}
             </div>
           </div>        
 

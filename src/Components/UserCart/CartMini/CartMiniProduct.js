@@ -6,17 +6,19 @@ class CartMiniProduct extends React.Component {
     super(props);
     this.state = {
       jsonCart: '',
+      uniqueId: '',
       productsNumber: '',
       productAmount: this.props.savedData.amount
     }
   }
 
-  changeProductAmount(sign) {
+  changeProductAmount(sign, uniqueId) {  
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    let productAmount = jsonCart[this.props.id].amount
+    let x = jsonCart.findIndex(item => item.uniqueId === uniqueId);
+    let productAmount = jsonCart[x].amount
 
     if (sign === 'plus') {
       const newAmount = productAmount + 1
@@ -24,26 +26,21 @@ class CartMiniProduct extends React.Component {
         ...this.state,
         productAmount: newAmount
         })
-        jsonCart[this.props.id].amount = newAmount
+
+        jsonCart[x].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        this.props.setMiniCartChanged('yes')
     } else if (sign === 'minus' && productAmount > 0){
           const newAmount = productAmount - 1
       this.setState({
         ...this.state,
         productAmount: newAmount
         })
-        jsonCart[this.props.id].amount = newAmount
+
+        jsonCart[x].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-      } else if (sign === 'check'){
-          const cart = window.localStorage.getItem('cart');
-          const newAmount = JSON.parse(cart)[this.props.id].amount
-          this.setState({
-            ...this.state,
-            productAmount: newAmount
-            })
-          jsonCart[this.props.id].amount = newAmount
-          window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        } 
+        this.props.setMiniCartChanged('yes')
+      } 
   }
 
   showChosedAttribute() {
@@ -63,20 +60,20 @@ class CartMiniProduct extends React.Component {
 
   componentDidMount() {    
     const cart = window.localStorage.getItem('cart');
-    const newAmount = JSON.parse(cart)[this.props.id].amount
-    const newData = JSON.parse(cart)[this.props.id]
-    const uniqueId = JSON.parse(cart)[this.props.id].uniqueId
+    const jsonCart = JSON.parse(cart)
+    let x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
+    const newAmount = JSON.parse(cart)[x].amount
+    const newData = JSON.parse(cart)[x]
+    const uniqueId = JSON.parse(cart)[x].uniqueId
     this.setState({
       ...this.state,
       jsonCart: newData,
       productAmount: newAmount,
       uniqueId: uniqueId
       })
-    console.log('xxx')
   } 
 
-  componentDidUpdate() { //jsonCart[this.props.id +1].amount
-    console.log(this.props.miniCartProductChanged)
+  componentDidUpdate() {     
     if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no') {
       const cart = window.localStorage.getItem('cart');
       const jsonCart = JSON.parse(cart)
@@ -89,8 +86,7 @@ class CartMiniProduct extends React.Component {
         ...this.state,
         productAmount: newAmount
         })
-        console.log(newAmount)
-        console.log(this.state.productAmount)
+
         this.props.setMiniCartProductChanged('no')
     } 
   } 
@@ -98,28 +94,34 @@ class CartMiniProduct extends React.Component {
   render() { 
     return (
       <li className={styles.prodItem}>
-              <div className={styles.prodInf}>
-                <h4>{this.props.savedData.brand}<br/>{this.props.savedData.prodName}</h4>              
-                <div className={styles.prodPrice}><span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span></div>
+        <div className={styles.prodInf}>
+          <h4>{this.props.savedData.brand}<br/>{this.props.savedData.prodName}</h4>
 
-                {this.showChosedAttribute()}
+          <div className={styles.prodPrice}>
+            <span>{this.context.currencySimbol}</span>
+            <span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span>
+          </div>
 
-              </div>
+          {this.showChosedAttribute()}
 
-              <div className={styles.prodImage}>
-                <div className={styles.countButtons}>
-                  <button onClick={() => this.changeProductAmount('plus')} className={styles.plusBut}>&#43;</button>
-                  <span>{this.state.productAmount}</span>
-                  <button onClick={() => this.changeProductAmount('minus')} className={styles.minusBut}>&#8722;</button>
-                </div>
-                <div className={styles.imgProd}>
-                  <img src={this.props.savedData.gallery[0]} alt="#"/>
-                </div>
-                
-              </div>            
-            </li>        
-    );  // this.props.savedData.amount 
-  } // 
+        </div>
+
+        <div className={styles.prodImage}>
+          <div className={styles.countButtons}>
+            <button onClick={() => this.changeProductAmount('plus', this.state.uniqueId)} className={styles.plusBut}>&#43;</button>
+
+            <span>{this.state.productAmount}</span>
+            
+            <button onClick={() => this.changeProductAmount('minus', this.state.uniqueId)} className={styles.minusBut}>&#8722;</button>
+          </div>
+
+          <div className={styles.imgProd}>
+            <img src={this.props.savedData.gallery[0]} alt="#"/>
+          </div>                
+        </div>            
+      </li>        
+    );  
+  }  
 }      
 
 CartMiniProduct.contextType = OverallData;

@@ -4,8 +4,8 @@ import OverallData from '../../../Context';
 import * as styles from './CartMini.module.css';
 import CartMiniProduct from './CartMiniProduct';
 
-class CartMini extends React.Component {
-  constructor(props) { // eslint-disable-line
+class CartMini extends React.Component { 
+  constructor(props) { 
     super(props);
     this.state = {
       jsonCart: '',
@@ -16,11 +16,10 @@ class CartMini extends React.Component {
 
   createCartMiniList(data) {        
     return data && data.map((item, index) =>
-      <CartMiniProduct key={index} id={index} 
+      <CartMiniProduct key={item.uniqueId} id={item.uniqueId} 
       savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} 
       setCurrentProduct={this.props.setCurrentProduct}
-      cartChanged={this.props.cartChanged}
-      deleteProduct={this.props.deleteProduct} 
+      cartChanged={this.props.cartChanged}       
       miniCartChanged={this.props.miniCartChanged} 
       setMiniCartChanged={this.props.setMiniCartChanged}
       miniCartProductChanged={this.props.miniCartProductChanged}
@@ -38,9 +37,6 @@ class CartMini extends React.Component {
 
     const checkDeleted =  jsonCart.filter(item => item.amount > 0);
 
-    // console.log(jsonCart)
-    // console.log(checkDeleted)
-
     checkDeleted.forEach((element) => {      
       total += element.prices[this.context.currencyNumber] * element.amount     
     });
@@ -52,19 +48,21 @@ class CartMini extends React.Component {
       total: total.toFixed(2),
       jsonCart: checkDeleted    
     })
-    //this.createCartMiniList(checkDeleted)
-    //this.props.setMiniCartProductChanged('yes')
+
+    this.props.setMiniCartProductChanged('yes')
   }
 
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
+    let jsonCart = JSON.parse(cart)
 
     this.setState({
       ...this.state,        
-      jsonCart: JSON.parse(cart)
+      jsonCart: JSON.parse(JSON.stringify(jsonCart))
     })
+    
     this.props.setMiniCartChanged('no')
   }
 
@@ -73,12 +71,12 @@ class CartMini extends React.Component {
 
     if (this.props.miniCartChanged !== 'no') {
       const cart = window.localStorage.getItem('cart');
+      let jsonCart = JSON.parse(cart)
 
       this.setState({
         ...this.state,        
-        jsonCart: JSON.parse(cart)
+        jsonCart: JSON.parse(JSON.stringify(jsonCart))
       })
-      //this.createCartMiniList(this.state.jsonCart)
 
       this.props.setMiniCartChanged('no')           
     }
@@ -89,10 +87,9 @@ class CartMini extends React.Component {
       <div className={styles.cartMiniWrapper}>                                     
         <div className={styles.cartMini}>
           <div className={styles.cartTitle}>My bag, <span>{this.state.jsonCart.length}</span><span> items</span></div>
-          <ul className={styles.productList}>          
 
+          <ul className={styles.productList}>
             {this.createCartMiniList(this.state.jsonCart)}
-
           </ul>
 
           <div className={styles.prodSumm}>
@@ -112,7 +109,7 @@ class CartMini extends React.Component {
           </div>
         </div>
       </div>     
-    ); // ; this.props.showCartCount()}
+    ); 
   } 
 }
 

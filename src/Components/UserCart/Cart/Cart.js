@@ -5,7 +5,7 @@ import CartProduct from './CartProduct';
 
 
 class Cart extends React.Component {
-  constructor(props) { // eslint-disable-line
+  constructor(props) { 
     super(props);
     this.state = {
       jsonCart: ''
@@ -15,7 +15,7 @@ class Cart extends React.Component {
   }
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartProduct key={index} id={index} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct}
+      <CartProduct key={item.uniqueId} id={item.uniqueId} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct}
       cartProductChanged={this.props.cartProductChanged}
       setCartProductChanged={this.props.setCartProductChanged}
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
@@ -26,25 +26,29 @@ class Cart extends React.Component {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
+    let jsonCart = JSON.parse(cart)
 
     this.setState({
       ...this.state,        
-      jsonCart: JSON.parse(cart),
+      jsonCart: JSON.parse(JSON.stringify(jsonCart)),
       cartOpen: 'yes'
     })
   }
 
-  componentDidUpdate() { 
+  componentDidUpdate() {    
     if (!window.localStorage.getItem('cart')) return;
     
     if (this.props.cartChanged !== 'no' ) {
       const cart = window.localStorage.getItem('cart');
+      let jsonCart = JSON.parse(cart)
 
       this.setState({
         ...this.state,        
-        jsonCart: JSON.parse(cart)
+        jsonCart: JSON.parse(JSON.stringify(jsonCart)),
       })
-      this.props.setCartChanged('no')   
+
+      this.props.setCartChanged('no') 
+      console.log('CART UPD !')  
     } 
   }
 
@@ -54,11 +58,9 @@ class Cart extends React.Component {
         <div className='container'>
           <div className={styles.cartWrapper}>
             <h3 className={styles.cartTitle}>Cart</h3>
-            {/* <button onClick={() => console.log(this.state.cartData[0].name)}>XXXXX</button> */}
+            
             <ul className={styles.productList}>
-
-              {this.createCartList()}
-              
+              {this.createCartList()}              
             </ul>            
           </div>
         </div>
