@@ -14,8 +14,8 @@ class CartMini extends React.Component {
     }	
   }
 
-  createCartMiniList() {        
-    return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
+  createCartMiniList(data) {        
+    return data && data.map((item, index) =>
       <CartMiniProduct key={index} id={index} 
       savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} 
       setCurrentProduct={this.props.setCurrentProduct}
@@ -52,7 +52,8 @@ class CartMini extends React.Component {
       total: total.toFixed(2),
       jsonCart: checkDeleted    
     })
-    this.props.setCartChanged('yes')
+    //this.createCartMiniList(checkDeleted)
+    //this.props.setMiniCartProductChanged('yes')
   }
 
   componentDidMount() {
@@ -77,7 +78,7 @@ class CartMini extends React.Component {
         ...this.state,        
         jsonCart: JSON.parse(cart)
       })
-      //this.createCartMiniList()
+      //this.createCartMiniList(this.state.jsonCart)
 
       this.props.setMiniCartChanged('no')           
     }
@@ -90,7 +91,7 @@ class CartMini extends React.Component {
           <div className={styles.cartTitle}>My bag, <span>{this.state.jsonCart.length}</span><span> items</span></div>
           <ul className={styles.productList}>          
 
-            {this.createCartMiniList()}
+            {this.createCartMiniList(this.state.jsonCart)}
 
           </ul>
 

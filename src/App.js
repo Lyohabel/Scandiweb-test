@@ -33,7 +33,8 @@ class App extends React.Component {
       position: ''         
   }
 
-    this.addToCart = this.addToCart.bind(this); 
+    this.addToCart = this.addToCart.bind(this);
+    this.createUniqueId = this.createUniqueId.bind(this);
     this.setPopUpPosition = this.setPopUpPosition.bind(this);
     this.setCartChanged = this.setCartChanged.bind(this);    
     this.setCartProductChanged = this.setCartProductChanged.bind(this);
@@ -95,13 +96,7 @@ class App extends React.Component {
         countCart: cartCount,
         position: ''                
       });
-    }     
-    // this.setState({
-    //   ...this.state,
-    //   cartProductChanged: arg,
-    //   displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
-    //   countCart: cartCount                 
-    // });
+    }
   }
 
   setMiniCartProductChanged(arg,id) {         
@@ -138,22 +133,32 @@ class App extends React.Component {
       });
   }
 
+  createUniqueId(arg) {
+    const x = Math.floor(Math.random() * 20)
+    const y = Math.floor(Math.random() * 20)
+    const uniqueId = x + '-' + y + '-' + arg
+    return uniqueId
+  }
+
   changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const newId = jsonCart.length
+    const uniqueId = this.createUniqueId(prodName)
 
-    jsonCart.push({id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
+    jsonCart.push({uniqueId: uniqueId, id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
   addToCart(inStock, id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
     if (inStock === true) {
+      const uniqueId = this.createUniqueId(prodName)
+      console.log(uniqueId)
       if (window.localStorage.getItem('cart')) {
         this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
          } else {
-        window.localStorage.setItem('cart', JSON.stringify([{id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
+        window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
         }    
        
       let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
@@ -216,7 +221,7 @@ class App extends React.Component {
   //   console.log(document.cookie)
   // }
 
-  componentDidMount() {
+  componentDidMount() {    
     client.setEndpoint("http://localhost:4000/graphql");
 
     const queryCategoriesList = new Query("category", true)    
