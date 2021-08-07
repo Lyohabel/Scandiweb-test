@@ -97,7 +97,7 @@ class Nav extends React.Component {
       btnShow: 'visible'     
     })
   }
-  render() {//onClick={console.log(this.state)}
+  render() {
     return (
       <nav className={styles.nav}>
           <div className="container">
@@ -127,24 +127,23 @@ class Nav extends React.Component {
                   </ul>
                 </div>
 
-                <div onClick={() => this.showCartMini()} className={styles.cartLink}>
+                <div onClick={() => this.showCartMini()} className={styles.cartLink}>                  
                   <span className={styles.cartLinkIcon} style={this.props.displayCountCart === "yes" ? {display: 'flex'} : {display: 'none'}}>{this.props.countCart}</span>
+
+                  <NavLink className={styles.fromCartLink}  to={"/categ/" + this.state.category}>                  
+                  </NavLink>                  
                 </div>
               </div>
             </div>
           </div>
 
           <div className={this.state.popUp}>
-            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category} setCurrentProduct={this.props.setCurrentProduct}
-            showCartCount={this.props.showCartCount} 
-            miniCartChanged={this.props.miniCartChanged} 
-            cartChanged={this.props.cartChanged}            
-            setCartChanged={this.props.setCartChanged} 
-            setMiniCartChanged={this.props.setMiniCartChanged}
-            setCartProductChanged={this.props.setCartProductChanged}
-            miniCartProductChanged={this.props.miniCartProductChanged}
-            miniCartProductChangedId={this.props.miniCartProductChangedId}
-            setMiniCartProductChanged={this.props.setMiniCartProductChanged}/></div>
+            <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category}          
+            miniCartChanged={this.props.miniCartChanged}
+            setMiniCartChanged={this.props.setMiniCartChanged}            
+            miniCartProductChanged={this.props.miniCartProductChanged}           
+            setMiniCartProductChanged={this.props.setMiniCartProductChanged}
+            /></div>
           </div>
       </nav>
     );

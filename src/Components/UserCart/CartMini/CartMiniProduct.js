@@ -1,14 +1,17 @@
 import React from 'react';
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
-class CartMiniProduct extends React.Component {
+class CartMiniProduct extends React.Component { // 
   constructor(props) { 
     super(props);
     this.state = {
       jsonCart: '',
       uniqueId: '',
-      productsNumber: '',
-      productAmount: this.props.savedData.amount
+      productAmount: '',
+      gallery: '',
+      prices: '',
+      attributes_1: '',
+      attrNames: ''
     }
   }
 
@@ -44,16 +47,16 @@ class CartMiniProduct extends React.Component {
   }
 
   showChosedAttribute() {
-    if (this.props.savedData.attrNames === "") return ""
+    if (this.state.attrNames === "") return ""
     else return (
       <div className={styles.attrButtons}>
         <button className={styles.firstBut}>
-            <span>{this.props.savedData.attributes_1[0].value}</span>
+            <span>{this.state.attributes_1[0].value}</span>
             <span className={styles.butPrompt}>
               To view and change the selected attributes, click on the button VIEW BAG below to go to the cart 
             </span>
           </button>
-          <button className={styles.choosedBut}>{this.props.savedData.attributes_1[1].value}</button>          
+          <button className={styles.choosedBut}>{this.state.attributes_1[1].value}</button>          
         </div>
     )
   }
@@ -65,12 +68,20 @@ class CartMiniProduct extends React.Component {
     const newAmount = JSON.parse(cart)[x].amount
     const newData = JSON.parse(cart)[x]
     const uniqueId = JSON.parse(cart)[x].uniqueId
+    const gallery = JSON.parse(cart)[x].gallery
+    const prices = JSON.parse(cart)[x].prices 
+    const attributes_1 = JSON.parse(cart)[x].attributes_1
+    const attrNames = JSON.parse(cart)[x].attrNames
     this.setState({
       ...this.state,
-      jsonCart: newData,
+      jsonCart: JSON.parse(JSON.stringify(newData)),
       productAmount: newAmount,
-      uniqueId: uniqueId
-      })
+      uniqueId: uniqueId,
+      gallery: gallery,
+      prices: prices,
+      attributes_1: attributes_1,
+      attrNames: attrNames
+    })      
   } 
 
   componentDidUpdate() {     
@@ -86,7 +97,6 @@ class CartMiniProduct extends React.Component {
         ...this.state,
         productAmount: newAmount
         })
-
         this.props.setMiniCartProductChanged('no')
     } 
   } 
@@ -95,11 +105,11 @@ class CartMiniProduct extends React.Component {
     return (
       <li className={styles.prodItem}>
         <div className={styles.prodInf}>
-          <h4>{this.props.savedData.brand}<br/>{this.props.savedData.prodName}</h4>
+          <h4>{this.state.jsonCart.brand}<br/>{this.state.jsonCart.prodName}</h4>
 
           <div className={styles.prodPrice}>
             <span>{this.context.currencySimbol}</span>
-            <span className={styles.priceNumber}>{this.props.savedData.prices[this.context.currencyNumber]}</span>
+            <span className={styles.priceNumber}>{this.state.prices[this.context.currencyNumber]}</span>
           </div>
 
           {this.showChosedAttribute()}
@@ -115,8 +125,8 @@ class CartMiniProduct extends React.Component {
             <button onClick={() => this.changeProductAmount('minus', this.state.uniqueId)} className={styles.minusBut}>&#8722;</button>
           </div>
 
-          <div className={styles.imgProd}>
-            <img src={this.props.savedData.gallery[0]} alt="#"/>
+          <div className={styles.imgProd}>           
+              <img src={this.state.gallery[0]} alt="#"/>            
           </div>                
         </div>            
       </li>        
@@ -127,3 +137,4 @@ class CartMiniProduct extends React.Component {
 CartMiniProduct.contextType = OverallData;
 
 export default CartMiniProduct;
+

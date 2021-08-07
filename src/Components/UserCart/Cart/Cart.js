@@ -2,8 +2,6 @@ import React from 'react';
 import OverallData from '../../../Context';
 import * as styles from './Cart.module.css';
 import CartProduct from './CartProduct';
-
-
 class Cart extends React.Component {
   constructor(props) { 
     super(props);
@@ -14,10 +12,10 @@ class Cart extends React.Component {
     this.createCartList = this.createCartList.bind(this)      
   }
   createCartList() {        
-    return this.state.jsonCart && this.state.jsonCart.map((item, index) =>
-      <CartProduct key={item.uniqueId} id={item.uniqueId} savedData={this.state.jsonCart[index]} setCurrentProduct={this.props.setCurrentProduct}
-      cartProductChanged={this.props.cartProductChanged}
-      setCartProductChanged={this.props.setCartProductChanged}
+    return this.state.jsonCart && this.state.jsonCart.map((item) =>
+      <CartProduct key={item.uniqueId} id={item.uniqueId} name={item.name} setCurrentProduct={this.props.setCurrentProduct}
+      //cartProductChanged={this.props.cartProductChanged}
+      //setCartProductChanged={this.props.setCartProductChanged}
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
     )
   }
@@ -30,8 +28,7 @@ class Cart extends React.Component {
 
     this.setState({
       ...this.state,        
-      jsonCart: JSON.parse(JSON.stringify(jsonCart)),
-      cartOpen: 'yes'
+      jsonCart: JSON.parse(JSON.stringify(jsonCart))
     })
   }
 
@@ -47,8 +44,7 @@ class Cart extends React.Component {
         jsonCart: JSON.parse(JSON.stringify(jsonCart)),
       })
 
-      this.props.setCartChanged('no') 
-      console.log('CART UPD !')  
+      this.props.setCartChanged('no')       
     } 
   }
 

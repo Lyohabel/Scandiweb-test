@@ -69,16 +69,6 @@ class App extends React.Component {
       });
   }
 
-  set_4_StatesChanged() {
-    this.setState({
-      ...this.state,
-      cartChanged: 'yes',
-      cartProductChanged: 'yes',
-      miniCartChanged: 'yes',
-      miniCartProductChanged: 'yes'                       
-    }); 
-  }
-
   setCartChanged(arg) {
     if (!window.localStorage.getItem('cart')) return
     const cart = window.localStorage.getItem('cart')
@@ -107,21 +97,29 @@ class App extends React.Component {
     }
   }
 
-  setMiniCartProductChanged(arg,id) {         
-    this.setState({
-      ...this.state,
-      miniCartProductChangedId: id,
-      miniCartProductChanged: arg,
-      cartProductChanged: 'yes',
-      cartChanged: 'yes'                
-      });
-      console.log(this.state.cartProductChanged)   
+  setMiniCartProductChanged(arg,id) {
+    if (window.localStorage.getItem('cart')) {
+      const cart = window.localStorage.getItem('cart')
+      const cartCount = JSON.parse(cart).length
+
+      this.setState({
+        ...this.state,
+        miniCartProductChangedId: id,
+        miniCartProductChanged: arg,
+        cartProductChanged: 'yes',
+        cartChanged: 'yes',
+        displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
+        countCart: cartCount                 
+        });
+    } 
   }
 
   setMiniCartChanged(arg) {      
     this.setState({
       ...this.state,
-      miniCartChanged: arg                 
+      miniCartChanged: arg,
+      cartProductChanged: 'yes',
+      cartChanged: 'yes'                 
       });    
   }
 

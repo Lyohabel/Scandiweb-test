@@ -11,11 +11,7 @@ class CartProduct extends React.Component {
     this.state = {
       jsonCart: '',
       jsonPrices: '',
-      productsNumber: '',
-      cartProductData: '',
-      prices: '',
       gallery: '',
-      attributes: '',
 
       activeAttribute_0: '',
       activeAttribute_1: '',
@@ -42,14 +38,14 @@ class CartProduct extends React.Component {
         a : styles.color,
         b : styles.colorActive
       },
-      productAmount: this.props.savedData.amount
+      productAmount: ''
     }   
     
     this.addAttrToCart = this.addAttrToCart.bind(this)
     this.setAttributes = this.setAttributes.bind(this)
   }
 
-  addAttrToCart(attr, value, index) {
+  addAttrToCart(attr, value) {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
@@ -94,7 +90,7 @@ class CartProduct extends React.Component {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value}
       className={(btnStyle !== COLOR) ? 
-        ((this.state[`activeAttribute_${order}`] === item.value) ? // ok
+        ((this.state[`activeAttribute_${order}`] === item.value) ?
         this.state.sizeButton.b : 
         ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
         this.state.sizeButton.b : 
@@ -116,7 +112,7 @@ class CartProduct extends React.Component {
       
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
       
-      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.jsonCart.attrNames[order], item.value, this.props.id);}}> 
+      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.jsonCart.attrNames[order], item.value, );}}> 
         {btnStyle !== COLOR ? item.value : ''}      
       <span className={styles.displayValue}>{attributeName}</span>
       </button>    
@@ -214,12 +210,13 @@ class CartProduct extends React.Component {
     let x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
     const product = jsonCart[x]
     const jsonPrices = JSON.parse(cart)[x].prices
+    const gallery = JSON.parse(cart)[x].gallery
     
-    const name = this.props.savedData.name
+    const name = this.props.name
 
     client.setEndpoint("http://localhost:4000/graphql");
 
-    const queryInStock = new Query("product", true)  
+    const queryInStock = new Query("product", true) // checking for inStock  
       .addArgument("id", "String!", name)   
       .addField("inStock")
 
@@ -229,30 +226,13 @@ class CartProduct extends React.Component {
           this.setState({ 
             ...this.state,
             jsonCart: JSON.parse(JSON.stringify(product)),
-            jsonPrices: jsonPrices
+            jsonPrices: jsonPrices,
+            gallery: gallery,
+            productAmount: product.amount
           })
         }
     })
   }
-
-  componentDidUpdate() {
-    console.log(this.props.cartProductChanged)      
-    if (!window.localStorage.getItem('cart')) return;
-
-    if (this.props.cartProductChanged !== 'no') {
-      const cart = window.localStorage.getItem('cart');
-      const product = JSON.parse(cart)[this.props.id]
-      if (!product) return
-      const newAmount = product.amount
-
-      this.setState({
-        ...this.state,
-        productAmount: newAmount
-        })
-      this.props.setCartProductChanged('no')
-      console.log('CART_PROD UPD !')            
-    }    
-  } 
 
   render() {
     return (

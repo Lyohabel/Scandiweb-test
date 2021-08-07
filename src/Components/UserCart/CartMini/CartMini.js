@@ -4,7 +4,7 @@ import OverallData from '../../../Context';
 import * as styles from './CartMini.module.css';
 import CartMiniProduct from './CartMiniProduct';
 
-class CartMini extends React.Component { 
+class CartMini extends React.Component { //
   constructor(props) { 
     super(props);
     this.state = {
@@ -15,15 +15,10 @@ class CartMini extends React.Component {
   }
 
   createCartMiniList(data) {        
-    return data && data.map((item, index) =>
-      <CartMiniProduct key={item.uniqueId} id={item.uniqueId} 
-      savedData={JSON.parse(JSON.stringify(this.state.jsonCart[index]))} 
-      setCurrentProduct={this.props.setCurrentProduct}
-      cartChanged={this.props.cartChanged}       
-      miniCartChanged={this.props.miniCartChanged} 
+    return data && data.map((item) =>
+      <CartMiniProduct key={item.uniqueId} id={item.uniqueId}
       setMiniCartChanged={this.props.setMiniCartChanged}
-      miniCartProductChanged={this.props.miniCartProductChanged}
-      miniCartProductChangedId={this.props.miniCartProductChangedId}      
+      miniCartProductChanged={this.props.miniCartProductChanged}           
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
     )
   }
@@ -98,8 +93,7 @@ class CartMini extends React.Component {
           </div>
 
           <div className={styles.prodButtons}>
-            <button onClick={() => {this.props.hideCartMini();
-            this.props.setCartProductChanged('yes')}} className={styles.viewButton}>
+            <button onClick={() => this.props.hideCartMini()} className={styles.viewButton}>
               <NavLink className={styles.cartLink} to="/cart">
                 View bag
               </NavLink>              
