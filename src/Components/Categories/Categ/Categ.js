@@ -12,6 +12,12 @@ class Categ extends React.Component {
       prices: '',
       attributes_1: ''
     }        
+    this.signIn = this.signIn.bind(this)     
+  }  
+
+  signIn() {
+    document.cookie = 'login=user;'
+    this.props.setDisplaySignIn('no')
   }
   
   creatAttributeNameList(index) {
@@ -36,14 +42,19 @@ class Categ extends React.Component {
           <div className={styles.prodPrice}>
             <span>{this.context.currencySimbol}</span><span className={styles.priceNumber}>{item.prices[this.context.currencyNumber].amount}</span>
           </div>
-        </div> 
+        </div>
 
+        <div className={styles.prodAddWrapper}>
         <button onClick={() => {
           this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);}}
-        className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
+        className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
+
+        <button className={styles.prodSignIn} onClick={() => this.signIn()} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
+
+        </div>    
       </li>
     )
-  }  
+  } 
   
   componentDidMount() { 
     client.setEndpoint("http://localhost:4000/graphql");    

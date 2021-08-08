@@ -82,6 +82,20 @@
     cursor: cell;
 }
 
+.prodSignIn {
+    width: 55px;
+    height: 55px;
+    padding: 2px;
+    color: crimson;
+    border: 2px solid rgba(0,0,0,0);
+    border-radius: 50%;
+    background-color: rgba(227, 240, 196, 0.8);
+    position: absolute;
+    top: 70%;
+    left: 70%;    
+    cursor: pointer;
+}
+
 .prodAdd:hover {
     border: 2px solid #31a550;
 }

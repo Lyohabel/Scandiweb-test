@@ -25,16 +25,18 @@ class App extends React.Component {
       cartChanged: 'no',     
       cartProductChanged: 'no',
       miniCartProductChanged: 'no',
-      miniCartProductChangedId: 'noId',
       miniCartChanged: 'no',
-      displayCountCart: 'no',      
+      displayCountCart: 'no',
+      displaySignIn: 'no',      
       currencies: '',
       currency: '',
       attrs: DEFAULT,
       position: ''         
   }
 
-    this.addToCart = this.addToCart.bind(this);
+    this.addToCart = this.addToCart.bind(this); //checkForSignIn()
+    this.checkForSignIn = this.checkForSignIn.bind(this);
+    this.setDisplaySignIn = this.setDisplaySignIn.bind(this);
     this.createUniqueId = this.createUniqueId.bind(this);
     this.setPopUpPosition = this.setPopUpPosition.bind(this);
     this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
@@ -46,7 +48,20 @@ class App extends React.Component {
     this.changeAttributes = this.changeAttributes.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
     this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
-  } 
+  }
+
+  checkForSignIn() {
+    const cookie = document.cookie.split(';')
+    let user = cookie.find(item => item === 'login=user');
+    return user
+  }
+
+  setDisplaySignIn(arg) {
+    this.setState({
+      ...this.state,
+      displaySignIn: arg    
+      });   
+  }
 
   changeCurrentCategory(categ) {   
     this.setState({
@@ -86,7 +101,6 @@ class App extends React.Component {
 
       this.setState({
         ...this.state,
-        miniCartProductChangedId: id,
         miniCartProductChanged: arg,
         cartProductChanged: 'yes',
         cartChanged: 'yes',
@@ -143,23 +157,26 @@ class App extends React.Component {
   }
 
   addToCart(inStock, id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
-    if (inStock === true) {
-      const uniqueId = this.createUniqueId(prodName)      
-      if (window.localStorage.getItem('cart')) {
-        this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
-         } else {
-        window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
-        }    
-       
-      let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
+    if (this.checkForSignIn() !== 'login=user') {
+      this.setDisplaySignIn('yes')
+      return;
+    } else if (inStock === true) {
+        const uniqueId = this.createUniqueId(prodName)      
+        if (window.localStorage.getItem('cart')) {
+          this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
+          } else {
+          window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
+          }    
+        
+        let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
 
-      this.setState({
-        ...this.state,
-        countCart: newCount,
-        displayCountCart: 'yes',
-        miniCartChanged: 'yes'
-      })
-    } 
+        this.setState({
+          ...this.state,
+          countCart: newCount,
+          displayCountCart: 'yes',        
+          miniCartChanged: 'yes'
+        })
+      } 
   }
 
   creatControl(item) {
@@ -252,21 +269,20 @@ class App extends React.Component {
             miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged}            
             miniCartProductChanged={this.state.miniCartProductChanged}
-            miniCartProductChangedId={this.state.miniCartProductChangedId}
             setMiniCartProductChanged={this.setMiniCartProductChanged}
             style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}/>
+                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}/>
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart}
+                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>                
               </Route>
 
               <Route path='/product'>
-                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}
+                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
 

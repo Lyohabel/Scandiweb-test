@@ -38,9 +38,13 @@ class Product extends React.Component {
       productAdded: 'no',
       add: styles.add     
     }
-  }
+    this.signIn = this.signIn.bind(this)     
+  }  
 
-  
+  signIn() {
+    document.cookie = 'login=user;'
+    this.props.setDisplaySignIn('no')
+  }
 
   resetProduct() {
     this.setState({
@@ -185,12 +189,17 @@ class Product extends React.Component {
 
                 <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
 
-                <button onClick={() => {
-                  this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
-                  this.resetProduct()}}
-                className={(this.state.instock ? styles.add : styles.inStockFalse)}>
-                  <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>
-                </button>
+                <div className={styles.addWrapper}>
+                  <button onClick={() => {
+                    this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
+                    this.resetProduct()}}
+                  className={(this.state.instock ? styles.add : styles.inStockFalse)}>
+                    <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
+                  </button>
+
+                  <button onClick={() => this.signIn()} className={styles.signIn} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
+                </div>
+                
 
                 <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.product.description}}></span>
 

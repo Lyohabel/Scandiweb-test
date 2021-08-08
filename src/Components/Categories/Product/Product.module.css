@@ -32,7 +32,7 @@
 
 .prodWrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: column;    
 }
 
 .title {
@@ -155,6 +155,10 @@
     margin-left: 3px;
 }
 
+.addWrapper {
+    position: relative;
+}
+
 .add {
     font-weight: 600;
     font-size: 16px;
@@ -165,6 +169,22 @@
     padding: 10px 0;
     border: none;
     cursor: cell;
+}
+
+.signIn {
+    display: none;
+    font-weight: 600;
+    font-size: 16px;
+    color: crimson;   
+    background-color: rgba(227, 240, 196, 0.8);
+    width: 150px;
+    padding: 15px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: -20px;
+    left: 25%;
 }
 
 .inStock {

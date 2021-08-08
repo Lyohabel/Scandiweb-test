@@ -11,6 +11,12 @@ class StartPage extends React.Component {
       startData: '',
       startTitle: ''
     }
+    this.signIn = this.signIn.bind(this)     
+  }  
+
+  signIn() {
+    document.cookie = 'login=user;'
+    this.props.setDisplaySignIn('no')
   }
 
   creatAttributeNameList(index) {
@@ -42,7 +48,9 @@ class StartPage extends React.Component {
           item.attributes, (item.attributes[0] ? item.attributes[0].items : ''),
           item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
         }} 
-        className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>       
+        className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
+
+        <button className={styles.prodSignIn} onClick={() => this.signIn()} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>      
       </li>
     )
   }  

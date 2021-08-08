@@ -42,8 +42,7 @@ class CartProduct extends React.Component {
     }   
     
     this.addAttrToCart = this.addAttrToCart.bind(this)
-    this.setAttributes = this.setAttributes.bind(this)
-    this.checkForInStock = this.checkForInStock.bind(this)
+    this.setAttributes = this.setAttributes.bind(this)    
   }
 
   addAttrToCart(attr, value) {
@@ -212,21 +211,6 @@ class CartProduct extends React.Component {
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
         this.props.setMiniCartProductChanged('yes') 
       } 
-  }
-
-  checkForInStock() {
-    const name = this.props.name
-
-    client.setEndpoint("http://localhost:4000/graphql");
-
-    const queryInStock = new Query("product", true)  
-      .addArgument("id", "String!", name)   
-      .addField("inStock")
-
-      client.post(queryInStock).then(result => {
-        console.log(result.product.inStock)
-        //return result.product.inStock
-      })
   }
   
   componentDidMount() {
