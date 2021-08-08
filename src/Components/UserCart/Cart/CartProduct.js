@@ -42,7 +42,8 @@ class CartProduct extends React.Component {
     }   
     
     this.addAttrToCart = this.addAttrToCart.bind(this)
-    this.setAttributes = this.setAttributes.bind(this)    
+    this.setAttributes = this.setAttributes.bind(this)
+    this.defineButtonClass = this.defineButtonClass.bind(this)
   }
 
   addAttrToCart(attr, value) {
@@ -83,32 +84,53 @@ class CartProduct extends React.Component {
     return ind
   }
 
+  defineButtonClass(condition, attrName, order, index, item) {
+    switch(true) {  // eslint-disable-line
+      case (condition && (this.state[`activeAttribute_${order}`] === item.value)): 
+        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
+      case (condition && (this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order)): 
+        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
+
+      case (condition && ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value))): 
+        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
+
+      case (condition && (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === '')))): 
+        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
+
+        default: 
+        return (condition !== COLOR ? this.state.sizeButton.a : this.state.colorButton.a);      
+    }
+  }
+  
+
   createButtons(attrs, btnStyle, order) {
     const attributeName = this.state.jsonCart.attrNames[order]
     const attrName = attributeName ? attributeName.toLowerCase() : ''   
     
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value}
-      className={(btnStyle !== COLOR) ? 
-        ((this.state[`activeAttribute_${order}`] === item.value) ?
-        this.state.sizeButton.b : 
-        ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
-        this.state.sizeButton.b : 
-        ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
-        this.state.sizeButton.b :
-        (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
-        this.state.sizeButton.b :
-        this.state.sizeButton.a))        
-        :        
-        ((this.state[`activeAttribute_${order}`] === item.value) ? 
-        this.state.colorButton.b : 
-        ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
-        this.state.colorButton.b :
-        ((this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
-        this.state.colorButton.b :
-        (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
-        this.state.colorButton.b :
-        this.state.colorButton.a))}
+      className={this.defineButtonClass(btnStyle, attrName, order, index, item)
+        // (btnStyle !== COLOR) ? 
+        // ((this.state[`activeAttribute_${order}`] === item.value) ? 
+        // this.state.sizeButton.b : 
+        // ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        // this.state.sizeButton.b : 
+        // ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        // this.state.sizeButton.b : 
+        // (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
+        // this.state.sizeButton.b :
+        // this.state.sizeButton.a))        
+        // :        
+        // ((this.state[`activeAttribute_${order}`] === item.value) ? 
+        // this.state.colorButton.b : 
+        // ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
+        // this.state.colorButton.b :
+        // ((this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
+        // this.state.colorButton.b :
+        // (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
+        // this.state.colorButton.b :
+        // this.state.colorButton.a))
+      }
       
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
       
