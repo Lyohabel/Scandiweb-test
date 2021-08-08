@@ -36,7 +36,8 @@ class Product extends React.Component {
       },
 
       productAdded: 'no',
-      add: styles.add     
+      add: styles.add,
+      bigImage: ''   
     }
     this.signIn = this.signIn.bind(this)     
   }  
@@ -53,13 +54,25 @@ class Product extends React.Component {
       });
   }
 
+  setBigImage(arg) {
+    this.setState({
+      ...this.state,     
+      bigImage: arg    
+      });
+  }
+
   creatGallery() {
     const gl = this.state.gallery.length;
     if (gl === 1) {
       return ''
     } else {
-      return this.state.gallery && this.state.gallery.map(item =>
-        <li key={item} className={styles.galleryItem}><img className={styles.imgGalleryItem} src={item} alt="#"/></li>
+      return this.state.gallery && this.state.gallery.map((item, index) =>
+        <li key={item} className={styles.galleryItem}>
+          <div className={this.state.bigImage === index ? styles.imgBig : styles.imgSmall}>
+            <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === index ? {display: 'block'} : {display: 'none'}}>&times;</button>
+            <img onClick={() => this.setBigImage(index)} className={styles.imgGalleryItem} src={item} alt="#"/>            
+          </div>          
+        </li>
       )
     }
   }
@@ -174,8 +187,14 @@ class Product extends React.Component {
                   {this.creatGallery()}
                 </ul>
 
-                <div className={styles.imgProd}>
-                  <img src={this.state.gallery[0]} alt="#"/>
+                {/* <div className={this.state.bigImage === index ? styles.imgBig : styles.imgSmall}>
+                  <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === index ? {display: 'block'} : {display: 'none'}}>&times;</button>
+                  <img onClick={() => this.setBigImage(index)} className={styles.imgGalleryItem} src={item} alt="#"/>            
+                </div>    */}
+
+                <div className={this.state.bigImage === 'main' ? styles.mainImgBig : styles.imgProd}>
+                  <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === 'main' ? {display: 'block'} : {display: 'none'}}>&times;</button>
+                  <img onClick={() => this.setBigImage('main')} src={this.state.gallery[0]} alt="#"/>
                 </div>
               </div>
 

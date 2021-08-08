@@ -15,8 +15,43 @@
     margin-bottom: 30px;
 }
 
+.imgBig {
+    position: absolute;
+    width: 80vw;
+    padding: 10%;
+    top: 0;
+    left: 0;   
+    background-color: rgba(206, 209, 202, 0.3);
+    z-index: 3; 
+}
+
+.mainImgBig {
+    position: absolute;
+    width: 80vw;
+    padding: 10%;
+    top: 0;
+    left: 0;   
+    background-color: rgba(206, 209, 202, 0.3);
+    z-index: 3; 
+}
+
+.closeBigImage {
+    position: absolute;
+    color: crimson;   
+    border-radius: 50%;
+    padding: 0 11px 2px 11px;
+    font-size: 28px;
+    border: 0;
+    background-color: #fff;
+    cursor: pointer;   
+    top: 7%;
+    left: 7%;
+    z-index: 4;    
+}
+
 .imgGalleryItem {
     width: 100%;
+    cursor: zoom-in;
 }
 
 .imgProd {
@@ -26,8 +61,13 @@
     align-items:flex-start;
 }
 
+.mainImgBig > img {
+    width: 100%; 
+}
+
 .imgProd > img {
     width: 100%;
+    cursor: zoom-in;
 }
 
 .prodWrapper {
