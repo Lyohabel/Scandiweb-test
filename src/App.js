@@ -7,6 +7,7 @@ import StartPage from './Components/Categories/StartPage/StartPage';
 import Categ from './Components/Categories/Categ/Categ';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
+import FakeCart from './Components/UserCart/Cart/FakeCart';
 import OverallData from './Context';
 import {DEFAULT, POPUP} from './CONST';
 class App extends React.Component { 
@@ -15,6 +16,7 @@ class App extends React.Component {
     this.state = {      
       categoriesList: [],
       currentCategory: '',
+      savedHref: '/',
       currentProduct: '',
       categoryChanged: 'no',     
       currencySimbol: '$',
@@ -35,12 +37,11 @@ class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.createUniqueId = this.createUniqueId.bind(this);
     this.setPopUpPosition = this.setPopUpPosition.bind(this);
-    this.setCartChanged = this.setCartChanged.bind(this);    
-    this.setCartProductChanged = this.setCartProductChanged.bind(this);
     this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
     this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
+    this.setSavedHref = this.setSavedHref.bind(this);
     this.setCurrentProduct = this.setCurrentProduct.bind(this);
     this.changeAttributes = this.changeAttributes.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
@@ -51,8 +52,16 @@ class App extends React.Component {
     this.setState({
       ...this.state,
       currentCategory: categ,
+      savedHref: '/',
       categoryChanged: 'yes'    
       });
+  }
+
+  setSavedHref(href) {
+    this.setState({
+      ...this.state,
+      savedHref: href    
+      });    
   }
 
   setPopUpPosition(arg) {
@@ -65,36 +74,9 @@ class App extends React.Component {
   setCurrentProduct(prod) {      
     this.setState({
       ...this.state,
+      savedHref: '/',
       currentProduct: prod                 
-      });
-  }
-
-  setCartChanged(arg) {
-    if (!window.localStorage.getItem('cart')) return
-    const cart = window.localStorage.getItem('cart')
-    const cartCount = JSON.parse(cart).length
-
-    this.setState({
-      ...this.state,
-      cartChanged: arg,
-      displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
-      countCart: cartCount                 
-      });    
-  }
-
-  setCartProductChanged(arg) {
-    if (window.localStorage.getItem('cart')) {
-      const cart = window.localStorage.getItem('cart')
-      const cartCount = JSON.parse(cart).length
-      
-      this.setState({
-        ...this.state,
-        cartProductChanged: arg,
-        displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
-        countCart: cartCount,
-        position: ''                
-      });
-    }
+      }); 
   }
 
   setMiniCartProductChanged(arg,id) {
@@ -265,13 +247,10 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct}
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
             setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
-            setMiniCartChanged={this.setMiniCartChanged}
-            cartChanged={this.state.cartChanged}            
-            setCartChanged={this.setCartChanged}
-            setCartProductChanged={this.setCartProductChanged}
+            setMiniCartChanged={this.setMiniCartChanged}            
             miniCartProductChanged={this.state.miniCartProductChanged}
             miniCartProductChangedId={this.state.miniCartProductChangedId}
             setMiniCartProductChanged={this.setMiniCartProductChanged}
@@ -290,14 +269,14 @@ class App extends React.Component {
                 <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes}
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
+
               <Route path='/cart'>
-                <Cart setCurrentProduct={this.setCurrentProduct} changeAttributes={this.changeAttributes} setDefaultAttributes={this.setDefaultAttributes}
-                cartProductChanged={this.state.cartProductChanged} 
-                cartChanged={this.state.cartChanged}
-                setCartChanged={this.setCartChanged}
-                setCartProductChanged={this.setCartProductChanged}
-                setMiniCartProductChanged={this.setMiniCartProductChanged}
+                <Cart setCurrentProduct={this.setCurrentProduct} setMiniCartProductChanged={this.setMiniCartProductChanged}
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
+              </Route>
+
+              <Route path='/fake-cart'>
+                <FakeCart style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
             </Switch>
           </OverallData.Provider>

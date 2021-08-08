@@ -1,33 +1,16 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom'; 
-import { client, Query} from "@tilework/opus";
+import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
 
-class CartProduct extends React.Component {
+class FakeCartProduct extends React.Component {
   constructor(props) {  
     super(props);
     this.state = {
       jsonCart: '',
       jsonPrices: '',
       gallery: '',
-
-      activeAttribute_0: '',
-      activeAttribute_1: '',
-      activeAttribute_2: '',
-      activeAttribute_3: '', // fallback unusing property
-      activeAttribute_4: '', // fallback unusing property
-
-      defaultActiveAttribute_0: '',
-      defaultActiveAttribute_1: '',
-      defaultActiveAttribute_2: '',
-      defaultActiveAttribute_3: '', // fallback unusing property
-      defaultActiveAttribute_4: '', // fallback unusing property
-
-      sliderDisplayLeft: styles.sliderDisplayLeft,
-      sliderDisplayRight: styles.sliderDisplayRight,
-      imgStatus: 0,
 
       sizeButton: {
         a : styles.size,
@@ -39,11 +22,7 @@ class CartProduct extends React.Component {
         b : styles.colorActive
       },
       productAmount: ''
-    }   
-    
-    this.addAttrToCart = this.addAttrToCart.bind(this)
-    this.setAttributes = this.setAttributes.bind(this)
-    this.checkForInStock = this.checkForInStock.bind(this)
+    }     
   }
 
   addAttrToCart(attr, value) {
@@ -65,14 +44,6 @@ class CartProduct extends React.Component {
       }
      window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
-
-  markAttribute(value, order) {
-    this.setState({
-      ...this.state,
-      ['defaultActiveAttribute_' + order]: order,    
-      ['activeAttribute_' + order]: value
-    });
-  } 
 
   findAttrIndex(arr, name) {
     let ind = ''
@@ -156,78 +127,6 @@ class CartProduct extends React.Component {
             </li>
     ) 
   }
-
-  showAnotherImage(dir) { 
-    if (dir === 'next' && this.state.imgStatus < this.state.gallery.length - 1) {
-      let newImgStatus = this.state.imgStatus + 1
-      this.setState({
-        ...this.state,
-        imgStatus: newImgStatus,        
-      })
-    } else if (dir === 'prev'  && this.state.imgStatus > 0) {
-        let newImgStatus = this.state.imgStatus - 1
-        this.setState({
-        ...this.state,
-        imgStatus: newImgStatus
-        })
-      }        
-  }
-
-  changeProductAmount(sign) {
-    if (!window.localStorage.getItem('cart')) return;
-
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
-    if (jsonCart.length === 0) return
-    const x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
-    let productAmount = jsonCart[x].amount
-
-    if (sign === 'plus') {
-      const name = this.props.name
-      client.setEndpoint("http://localhost:4000/graphql");
-      const queryInStock = new Query("product", true) // checking for inStock  
-        .addArgument("id", "String!", name)   
-        .addField("inStock")
-
-      client.post(queryInStock).then(result => {
-        if (result.product.inStock !== true) return ''        
-          else {          
-            const newAmount = productAmount + 1
-            this.setState({
-              ...this.state,
-              productAmount: newAmount
-            })
-          jsonCart[x].amount = newAmount
-          window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-          this.props.setMiniCartProductChanged('yes')
-          } 
-      })
-    } else if (sign === 'minus' && productAmount > 0){
-        const newAmount = productAmount - 1
-        this.setState({
-          ...this.state,
-          productAmount: newAmount
-        })
-        jsonCart[x].amount = newAmount
-        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        this.props.setMiniCartProductChanged('yes') 
-      } 
-  }
-
-  checkForInStock() {
-    const name = this.props.name
-
-    client.setEndpoint("http://localhost:4000/graphql");
-
-    const queryInStock = new Query("product", true)  
-      .addArgument("id", "String!", name)   
-      .addField("inStock")
-
-      client.post(queryInStock).then(result => {
-        console.log(result.product.inStock)
-        //return result.product.inStock
-      })
-  }
   
   componentDidMount() {
     if (!window.localStorage.getItem('cart')) return;
@@ -239,26 +138,13 @@ class CartProduct extends React.Component {
     const jsonPrices = JSON.parse(cart)[x].prices
     const gallery = JSON.parse(cart)[x].gallery
     
-    const name = this.props.name
-
-    client.setEndpoint("http://localhost:4000/graphql");
-
-    const queryInStock = new Query("product", true) // checking for inStock  
-      .addArgument("id", "String!", name)   
-      .addField("inStock")
-
-    client.post(queryInStock).then(result => {
-      if (result.product.inStock !== true) return ''
-        else {
-          this.setState({ 
-            ...this.state,
-            jsonCart: JSON.parse(JSON.stringify(product)),
-            jsonPrices: jsonPrices,
-            gallery: gallery,
-            productAmount: product.amount
-          })
-        }
-    })
+    this.setState({ 
+      ...this.state,
+      jsonCart: JSON.parse(JSON.stringify(product)),
+      jsonPrices: jsonPrices,
+      gallery: gallery,
+      productAmount: product.amount
+    })       
   }
 
   render() {
@@ -292,9 +178,9 @@ class CartProduct extends React.Component {
 
                 {this.creatGallery()}
 
-                <button  onClick={() => this.showAnotherImage('prev')} className={(this.state.gallery.length > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
+                <button className={(this.state.gallery.length > 1) ? this.state.sliderDisplayLeft : this.state.imgHidden}></button>
                 
-                <button onClick={() => this.showAnotherImage('next')} className={(this.state.gallery.length > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
+                <button className={(this.state.gallery.length > 1) ? this.state.sliderDisplayRight : this.state.imgHidden}></button>
               </div>
           </div>
           
@@ -304,6 +190,6 @@ class CartProduct extends React.Component {
   } 
 }      
 
-CartProduct.contextType = OverallData;
+FakeCartProduct.contextType = OverallData;
 
-export default CartProduct;
+export default FakeCartProduct;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
 class CartMiniProduct extends React.Component { // 
@@ -24,20 +25,30 @@ class CartMiniProduct extends React.Component { //
     let productAmount = jsonCart[x].amount
 
     if (sign === 'plus') {
-      const newAmount = productAmount + 1
-      this.setState({
-        ...this.state,
-        productAmount: newAmount
-        })
+      const name = this.props.name
+      client.setEndpoint("http://localhost:4000/graphql");
+      const queryInStock = new Query("product", true) // checking for inStock  
+        .addArgument("id", "String!", name)   
+        .addField("inStock")
 
-        jsonCart[x].amount = newAmount
-        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        this.props.setMiniCartChanged('yes')
+      client.post(queryInStock).then(result => {
+        if (result.product.inStock !== true) return ''        
+          else {       
+            const newAmount = productAmount + 1
+            this.setState({
+              ...this.state,
+              productAmount: newAmount
+            })
+            jsonCart[x].amount = newAmount
+            window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+            this.props.setMiniCartProductChanged('yes')
+          } 
+      })
     } else if (sign === 'minus' && productAmount > 0){
-          const newAmount = productAmount - 1
-      this.setState({
-        ...this.state,
-        productAmount: newAmount
+        const newAmount = productAmount - 1
+        this.setState({
+          ...this.state,
+          productAmount: newAmount
         })
 
         jsonCart[x].amount = newAmount

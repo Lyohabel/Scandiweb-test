@@ -15,6 +15,11 @@
     margin-bottom: 60px;
 }
 
+.cartTitle > span {
+    font-weight: 300;
+    font-size: 16px;
+}
+
 @media screen and (max-width: 1152px) {
     .cartWrapper {
         width: 90%;

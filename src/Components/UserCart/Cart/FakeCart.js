@@ -1,8 +1,9 @@
 import React from 'react';
 import OverallData from '../../../Context';
 import * as styles from './Cart.module.css';
-import CartProduct from './CartProduct';
-class Cart extends React.Component {
+import FakeCartProduct from './CartProduct';
+
+class FakeCart extends React.Component {
   constructor(props) { 
     super(props);
     this.state = {
@@ -13,7 +14,7 @@ class Cart extends React.Component {
   }
   createCartList() {        
     return this.state.jsonCart && this.state.jsonCart.map((item) =>
-      <CartProduct key={item.uniqueId} id={item.uniqueId} name={item.name} setCurrentProduct={this.props.setCurrentProduct}      
+      <FakeCartProduct key={item.uniqueId} id={item.uniqueId} name={item.name} setCurrentProduct={this.props.setCurrentProduct}      
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
     )
   }
@@ -35,7 +36,7 @@ class Cart extends React.Component {
       <section className={styles.cart}>                                     
         <div className='container'>
           <div className={styles.cartWrapper}>
-            <h3 className={styles.cartTitle}>Cart</h3>
+            <h3 className={styles.cartTitle}>Cart<span>.</span></h3>
             
             <ul className={styles.productList}>
               {this.createCartList()}              
@@ -47,6 +48,6 @@ class Cart extends React.Component {
   } 
 }
 
-Cart.contextType = OverallData;
+FakeCart.contextType = OverallData;
 
-export default Cart;
+export default FakeCart;

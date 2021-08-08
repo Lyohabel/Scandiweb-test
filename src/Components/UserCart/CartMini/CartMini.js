@@ -16,7 +16,7 @@ class CartMini extends React.Component { //
 
   createCartMiniList(data) {        
     return data && data.map((item) =>
-      <CartMiniProduct key={item.uniqueId} id={item.uniqueId}
+      <CartMiniProduct key={item.uniqueId} id={item.uniqueId} name={item.name}
       setMiniCartChanged={this.props.setMiniCartChanged}
       miniCartProductChanged={this.props.miniCartProductChanged}           
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
@@ -75,7 +75,7 @@ class CartMini extends React.Component { //
 
       this.props.setMiniCartChanged('no')           
     }
-  } 
+  }
 
   render() {
     return (
@@ -93,7 +93,7 @@ class CartMini extends React.Component { //
           </div>
 
           <div className={styles.prodButtons}>
-            <button onClick={() => this.props.hideCartMini()} className={styles.viewButton}>
+            <button onClick={() => {this.props.hideCartMini(); this.props.setSavedHref("/cart")}} className={styles.viewButton}>
               <NavLink className={styles.cartLink} to="/cart">
                 View bag
               </NavLink>              
