@@ -3,7 +3,6 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import { client, Query, Field } from "@tilework/opus";
 import './App.css';
 import Nav from './Components/Nav/Nav';
-import StartPage from './Components/Categories/StartPage/StartPage';
 import Categ from './Components/Categories/Categ/Categ';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
@@ -34,7 +33,7 @@ class App extends React.Component {
       position: ''         
   }
 
-    this.addToCart = this.addToCart.bind(this); //checkForSignIn()
+    this.addToCart = this.addToCart.bind(this); 
     this.checkForSignIn = this.checkForSignIn.bind(this);
     this.setDisplaySignIn = this.setDisplaySignIn.bind(this);
     this.createUniqueId = this.createUniqueId.bind(this);
@@ -223,11 +222,6 @@ class App extends React.Component {
     }) 
   }
 
-  // componentWillMount() {    // ИМИТАЦИЯ РЕГИСТРАЦИИ ПОЛЬЗОВАТЕЛЯ
-  //   document.cookie = 'login=user';
-  //   console.log(document.cookie)
-  // }
-
   componentDidMount() {    
     client.setEndpoint("http://localhost:4000/graphql");
 
@@ -273,7 +267,8 @@ class App extends React.Component {
             style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}/>          
             <Switch>
               <Route exact path='/'>
-                <StartPage setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}/>
+              <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn} 
+              style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
 
               <Route exact path={`/categ/${this.state.currentCategory}`}>                

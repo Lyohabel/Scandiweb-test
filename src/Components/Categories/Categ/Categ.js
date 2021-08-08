@@ -7,10 +7,12 @@ import * as styles from './Categ.module.css';
 class Categ extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {      
+    this.state = {
+      start: '',
+      startData: '',
+      startTitle: '',      
       currentCategoryData: '',
-      prices: '',
-      attributes_1: ''
+      prices: ''
     }        
     this.signIn = this.signIn.bind(this)     
   }  
@@ -21,16 +23,22 @@ class Categ extends React.Component {
   }
   
   creatAttributeNameList(index) {
-    if (!this.state.currentCategoryData[index].attributes[0]) return '';
+    if ((this.state.start === '' && !this.state.currentCategoryData[index].attributes[0]) || (this.state.start === 'yes' && !this.state.startData[index].attributes[0]))  return '';
     let list = [];
-    this.state.currentCategoryData[index].attributes.forEach(item => {
-      list.push(item.id);
-    });    
+    if (this.state.start === '') {
+      this.state.currentCategoryData[index].attributes.forEach(item => {
+        list.push(item.id);
+      }); 
+    } else {
+      this.state.startData[index].attributes.forEach(item => {
+        list.push(item.id);
+      }); 
+    }       
     return list;
   }
 
-  createList() {    
-    return this.state.currentCategoryData && this.state.currentCategoryData.map((item, index) =>
+  createList(data) {    
+    return data && data.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
         <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
           <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
@@ -50,25 +58,40 @@ class Categ extends React.Component {
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
 
         <button className={styles.prodSignIn} onClick={() => this.signIn()} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
-
         </div>    
       </li>
     )
   } 
   
   componentDidMount() { 
-    client.setEndpoint("http://localhost:4000/graphql");    
-  
-    const query = new Query("category", true)
-      .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-  
-    client.post(query).then(result => {
-      this.setState({
-        ...this.state,        
-        currentCategoryData: JSON.parse(JSON.stringify(result.category.products))              
-      });       
-    });    
+    client.setEndpoint("http://localhost:4000/graphql");
+    
+    if (this.state.currentCategoryData === '') {
+        const queryStartData = new Query("categories", true)     
+        .addField(new Field("name"))
+        .addField(new Field("products{id, name, brand, attributes{id, items{value, id}}, inStock, gallery, prices{amount}}"))      
+    
+        client.post(queryStartData).then(result => {       
+          this.setState({
+            ...this.state,               
+          startData: JSON.parse(JSON.stringify(result.categories[0].products)),
+          startTitle: result.categories[0].name,
+          start: 'yes'          
+          });
+        }); 
+    } else {  
+      const query = new Query("category", true)
+        .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
+        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
+    
+      client.post(query).then(result => {
+        this.setState({
+          ...this.state,        
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
+          start: ''              
+        });       
+      });
+    }   
   }
 
   componentDidUpdate() {    
@@ -82,7 +105,8 @@ class Categ extends React.Component {
       client.post(query).then(result => {
         this.setState({
           ...this.state,        
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
+          start: ''
         });
         this.props.setDefaultCategoryChanged()            
       });
@@ -93,9 +117,9 @@ class Categ extends React.Component {
     return (
       <section className="categ">
           <div className="container">
-            <h3 className={styles.title}>{this.props.currentCategory}</h3>
+            <h3 className={styles.title}>{this.state.start === '' ? this.props.currentCategory : this.state.startTitle}</h3>
             <ul className={styles.products}>
-             {this.createList()}             
+             {this.createList(this.state.start === '' ? this.state.currentCategoryData : this.state.startData)}             
             </ul>
           </div>
       </section>
