@@ -23,6 +23,10 @@ class CartMini extends React.Component { //
     )
   }
 
+  preventClose(event) {
+    event.preventDefault();
+  }
+
   checkOut() {
     if (!window.localStorage.getItem('cart')) return;
 
@@ -57,6 +61,7 @@ class CartMini extends React.Component { //
       ...this.state,        
       jsonCart: JSON.parse(JSON.stringify(jsonCart))
     })
+    this.checkOut()
     
     this.props.setMiniCartChanged('no')
   }
@@ -72,6 +77,8 @@ class CartMini extends React.Component { //
         ...this.state,        
         jsonCart: JSON.parse(JSON.stringify(jsonCart))
       })
+      
+      this.checkOut()
 
       this.props.setMiniCartChanged('no')           
     }
@@ -80,7 +87,7 @@ class CartMini extends React.Component { //
   render() {
     return (
       <div className={styles.cartMiniWrapper}>                                     
-        <div className={styles.cartMini}>
+        <div onClick={(event) => this.preventClose(event)} className={styles.cartMini}>
           <div className={styles.cartTitle}>My bag, <span>{this.state.jsonCart.length}</span><span> items</span></div>
 
           <ul className={styles.productList}>

@@ -29,7 +29,7 @@ class Nav extends React.Component {
     })    
   }
 
-  hideCartMini() {    
+  hideCartMini(event) {        
     this.setState({
       ...this.state,
       popUp: styles.hidden      
@@ -133,7 +133,7 @@ class Nav extends React.Component {
                   </ul>
                 </div>
 
-                <div onClick={() => this.showCartMini()} className={styles.cartLink}>                  
+                <div onClick={() => {this.showCartMini(); this.props.setMiniCartChanged('yes')}} className={styles.cartLink}>                  
                   <span className={styles.cartLinkIcon} style={this.props.displayCountCart === "yes" ? {display: 'flex'} : {display: 'none'}}>{this.props.countCart}</span>
 
                   <NavLink onClick={(event) => this.linkOff(event)} className={styles.fromCartLink}  to={"/fake-cart/" + this.state.category}>                  
@@ -142,8 +142,8 @@ class Nav extends React.Component {
               </div>
             </div>
           </div>
-
-          <div className={this.state.popUp}>
+              
+          <div  className={this.state.popUp}>
             <div className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category}          
             miniCartChanged={this.props.miniCartChanged} setSavedHref={this.props.setSavedHref} savedHref={this.props.savedHref}
             setMiniCartChanged={this.props.setMiniCartChanged}            
@@ -152,7 +152,7 @@ class Nav extends React.Component {
             /></div>
           </div>
       </nav>
-    );
+    ); // onClick={(event) => this.hideCartMini(event)}
   } 
 }
 

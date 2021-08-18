@@ -8,8 +8,8 @@ class Categ extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      start: '',
-     // startData: '',
+      //start: '',
+     // startData: '', 
       // startTitle: '',      
       currentCategoryData: '',
       prices: ''
@@ -23,17 +23,13 @@ class Categ extends React.Component {
   }
   
   creatAttributeNameList(index) {
-    if ((this.state.start === '' && !this.state.currentCategoryData[index].attributes[0]) || (this.state.start === 'yes' && !this.state.startData[index].attributes[0]))  return '';
+    if (!this.state.currentCategoryData[index].attributes[0])  return '';
     let list = [];
-    if (this.state.start === '') {
-      this.state.currentCategoryData[index].attributes.forEach(item => {
-        list.push(item.id);
-      }); 
-    } else {
-      this.state.startData[index].attributes.forEach(item => {
-        list.push(item.id);
-      }); 
-    }       
+
+    this.state.currentCategoryData[index].attributes.forEach(item => {
+      list.push(item.id);
+    }); 
+      
     return list;
   }
 
@@ -75,9 +71,9 @@ class Categ extends React.Component {
         this.setState({
           ...this.state,        
           currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          start: 'yes'              
+          //start: 'yes'              
         });
-        console.log(this.props.currentCategory)       
+        //console.log(this.props.currentCategory)       
       });
         // const queryStartData = new Query("categories", true)     
         // .addField(new Field("name"))
@@ -92,18 +88,19 @@ class Categ extends React.Component {
         //   });
         //   console.log('XXX')
         // }); 
-    } else {  
+    } else {
+      const category = this.props.currentCategory.length > 0 ? this.props.currentCategory : 'tech' 
       const query = new Query("category", true)
-        .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
+        .addArgument("input", "CategoryInput", { title : category})
         .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
     
       client.post(query).then(result => {
         this.setState({
           ...this.state,        
           currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          start: ''              
+          //start: ''              
         });
-        console.log(this.props.currentCategory)        
+        //console.log(this.props.currentCategory)        
       });
     }   
   }
@@ -120,10 +117,10 @@ class Categ extends React.Component {
         this.setState({
           ...this.state,        
           currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          start: ''
+          //start: ''
         });
         this.props.setDefaultCategoryChanged()
-        console.log(this.props.currentCategory)           
+        //console.log(this.props.currentCategory)           
       });
     }   
   }  

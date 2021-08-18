@@ -4,6 +4,7 @@ import { client, Query, Field } from "@tilework/opus";
 import './App.css';
 import Nav from './Components/Nav/Nav';
 import Categ from './Components/Categories/Categ/Categ';
+import StartPage from './Components/Categories/Categ/StartPage';
 import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import FakeCart from './Components/UserCart/Cart/FakeCart';
@@ -147,10 +148,18 @@ class App extends React.Component {
   changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    const newId = jsonCart.length
+    //const newId = jsonCart.length
     const uniqueId = this.createUniqueId(prodName)
+    console.log(this.state.attrs)
 
-    jsonCart.push({uniqueId: uniqueId, id: newId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})    
+    const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrs) === JSON.stringify(this.state.attrs));
+    
+    if (double === -1) {
+      jsonCart.push({uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
+    } else {
+      jsonCart[double].amount++
+      console.log(jsonCart[double].amount)
+    }       
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
@@ -164,7 +173,7 @@ class App extends React.Component {
         if (window.localStorage.getItem('cart')) {
           this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
           } else {
-          window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, id : 0, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
+          window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
           }    
         
         let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
@@ -267,7 +276,7 @@ class App extends React.Component {
             style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}/>          
             <Switch>
               <Route exact path='/'>
-              <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn} 
+              <StartPage currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn} 
               style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
 

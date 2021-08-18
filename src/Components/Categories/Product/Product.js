@@ -129,9 +129,9 @@ class Product extends React.Component {
   }
 
   componentDidMount() {    
-    const product = this.props.currentProduct;    
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : 'huarache-x-stussy-le';    
 
-    client.setEndpoint("http://localhost:4000/graphql");
+    client.setEndpoint("http://localhost:4000/graphql"); // huarache-x-stussy-le
 
     const query = new Query("product", true)
    .addArgument("id", "String!", product)   
