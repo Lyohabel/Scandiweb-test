@@ -102,7 +102,7 @@ class Nav extends React.Component {
       btnShow: 'visible'     
     })
   }
-  render() { // <NavLink className={styles.link} to="/">  <img onClick={() => this.props.setSavedHref("/")} className={styles.imgLogo} src={imgLogo} alt="#"/> </NavLink>    
+  render() {     
     return (
       <nav className={styles.nav}>
           <div className="container">
@@ -117,8 +117,11 @@ class Nav extends React.Component {
                 </ul>
               </div>              
 
-              <div className={styles.logo}>                
+              <div className={styles.logo}>
+                <NavLink onClick={() => {this.props.changeCurrentCategory(''); this.markActive('')}} className={styles.linkHome} to="/">
                   <img className={styles.imgLogo} src={imgLogo} alt="#"/>
+                  <span className={styles.clue}>To All products</span>
+                </NavLink>
               </div>
 
               <div className={styles.cartWrapper}>

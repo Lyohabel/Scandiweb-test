@@ -9,8 +9,8 @@ class Categ extends React.Component {
     super(props);
     this.state = {
       start: '',
-      startData: '',
-      startTitle: '',      
+     // startData: '',
+      // startTitle: '',      
       currentCategoryData: '',
       prices: ''
     }        
@@ -67,18 +67,31 @@ class Categ extends React.Component {
     client.setEndpoint("http://localhost:4000/graphql");
     
     if (this.state.currentCategoryData === '') {
-        const queryStartData = new Query("categories", true)     
-        .addField(new Field("name"))
-        .addField(new Field("products{id, name, brand, attributes{id, items{value, id}}, inStock, gallery, prices{amount}}"))      
+      const query = new Query("category", true)
+      //.addArgument("input", "CategoryInput", { title : this.props.currentCategory})
+      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
+  
+      client.post(query).then(result => {
+        this.setState({
+          ...this.state,        
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
+          start: 'yes'              
+        });
+        console.log(this.props.currentCategory)       
+      });
+        // const queryStartData = new Query("categories", true)     
+        // .addField(new Field("name"))
+        // .addField(new Field("products{id, name, brand, attributes{id, items{value, id}}, inStock, gallery, prices{amount}}"))      
     
-        client.post(queryStartData).then(result => {       
-          this.setState({
-            ...this.state,               
-          startData: JSON.parse(JSON.stringify(result.categories[0].products)),
-          startTitle: result.categories[0].name,
-          start: 'yes'          
-          });
-        }); 
+        // client.post(queryStartData).then(result => {       
+        //   this.setState({
+        //     ...this.state,               
+        //   startData: JSON.parse(JSON.stringify(result.categories[0].products)),
+        //   startTitle: result.categories[0].name,
+        //   start: 'yes'          
+        //   });
+        //   console.log('XXX')
+        // }); 
     } else {  
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
@@ -89,7 +102,8 @@ class Categ extends React.Component {
           ...this.state,        
           currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
           start: ''              
-        });       
+        });
+        console.log(this.props.currentCategory)        
       });
     }   
   }
@@ -108,7 +122,8 @@ class Categ extends React.Component {
           currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
           start: ''
         });
-        this.props.setDefaultCategoryChanged()            
+        this.props.setDefaultCategoryChanged()
+        console.log(this.props.currentCategory)           
       });
     }   
   }  
@@ -117,9 +132,9 @@ class Categ extends React.Component {
     return (
       <section className="categ">
           <div className="container">
-            <h3 className={styles.title}>{this.state.start === '' ? this.props.currentCategory : this.state.startTitle}</h3>
+            <h3 className={styles.title}>{this.props.currentCategory === '' ? "All products" : this.props.currentCategory}</h3>
             <ul className={styles.products}>
-             {this.createList(this.state.start === '' ? this.state.currentCategoryData : this.state.startData)}             
+             {this.createList(this.state.currentCategoryData)}             
             </ul>
           </div>
       </section>

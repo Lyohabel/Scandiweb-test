@@ -43,18 +43,37 @@
     color: #5ECE7B;
 }
 
-.link {
+.link, .linkHome {
     text-decoration: none;
     font-size: 16px;
     color: #1D1F22;
     align-items: center;
     text-align: center;
     text-transform: uppercase;
-    padding: 5px;
+    padding: 7px;
+    border-radius: 10px;
 }
 
 .link:hover {
     background-color:  #e8f8ec;
+}
+
+.logo {
+    position: relative;
+}
+
+.logo:hover .clue {
+    display: block;
+}
+
+.clue {
+    position: absolute;
+    left: -17px;
+    top: 35px;
+    padding: 7px;
+    border-radius: 10px;
+    background-color:  #e8f8ec;
+    display: none;
 }
 
 .cartWrapper {
@@ -234,7 +253,7 @@
     }
 
     .logo {
-        position: absolute;
+        position: absolute;       
         left: 45%;
     }
 }
