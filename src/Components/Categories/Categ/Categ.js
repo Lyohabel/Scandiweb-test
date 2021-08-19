@@ -7,12 +7,8 @@ import * as styles from './Categ.module.css';
 class Categ extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      //start: '',
-     // startData: '', 
-      // startTitle: '',      
-      currentCategoryData: '',
-      prices: ''
+    this.state = {   
+      currentCategoryData: ''
     }        
     this.signIn = this.signIn.bind(this)     
   }  
@@ -62,67 +58,52 @@ class Categ extends React.Component {
   componentDidMount() { 
     client.setEndpoint("http://localhost:4000/graphql");
     
-    if (this.state.currentCategoryData === '') {
-      const query = new Query("category", true)
-      //.addArgument("input", "CategoryInput", { title : this.props.currentCategory})
+    if (this.props.startPage && this.props.startPage === 'yes') {
+      const query = new Query("category", true)      
       .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
   
       client.post(query).then(result => {
-        this.setState({
-          ...this.state,        
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          //start: 'yes'              
-        });
-        //console.log(this.props.currentCategory)       
+        this.setState({       
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
+        });      
       });
-        // const queryStartData = new Query("categories", true)     
-        // .addField(new Field("name"))
-        // .addField(new Field("products{id, name, brand, attributes{id, items{value, id}}, inStock, gallery, prices{amount}}"))      
-    
-        // client.post(queryStartData).then(result => {       
-        //   this.setState({
-        //     ...this.state,               
-        //   startData: JSON.parse(JSON.stringify(result.categories[0].products)),
-        //   startTitle: result.categories[0].name,
-        //   start: 'yes'          
-        //   });
-        //   console.log('XXX')
-        // }); 
     } else {
-      const category = this.props.currentCategory.length > 0 ? this.props.currentCategory : 'tech' 
-      const query = new Query("category", true)
-        .addArgument("input", "CategoryInput", { title : category})
-        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-    
-      client.post(query).then(result => {
-        this.setState({
-          ...this.state,        
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          //start: ''              
+        const category = this.props.currentCategory === '' ? 'tech' : this.props.currentCategory
+
+        const query = new Query("category", true)
+          .addArgument("input", "CategoryInput", { title : category})
+          .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
+      
+        client.post(query).then(result => {
+          this.setState({        
+            currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
+          });      
         });
-        //console.log(this.props.currentCategory)        
-      });
-    }   
+      }   
   }
 
   componentDidUpdate() {    
     if (this.props.categoryChanged !== 'no') {
-      client.setEndpoint("http://localhost:4000/graphql");    
-    
+      client.setEndpoint("http://localhost:4000/graphql");
+
+    const category = this.props.currentCategory === '' ? 'tech' : this.props.currentCategory 
+
       const query = new Query("category", true)
-        .addArgument("input", "CategoryInput", { title : this.props.currentCategory})
+        .addArgument("input", "CategoryInput", { title : category})
         .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-    
+      
       client.post(query).then(result => {
-        this.setState({
-          ...this.state,        
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products)),
-          //start: ''
+        this.setState({       
+          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
         });
-        this.props.setDefaultCategoryChanged()
-        //console.log(this.props.currentCategory)           
+        this.props.setDefaultCategoryChanged()                   
       });
-    }   
+    }
+       
+  }
+  
+  componentWillUnmount() {
+    this.props.setDefaultCategoryChanged()
   }  
 
   render() {

@@ -6,11 +6,17 @@ class StartPage extends React.Component {
     constructor(props) { 
       super(props);
       this.state = {
-        
+        startPage: 'yes'
       }
       
-      //this.createCartList = this.createCartList.bind(this)      
-    }    
+      this.changeStartPage = this.changeStartPage.bind(this)      
+    }
+    
+    changeStartPage() {
+      this.setState({
+        startPage: 'no'
+      }); 
+    }
     
     componentDidMount() {
      
@@ -18,7 +24,7 @@ class StartPage extends React.Component {
   
     render() {
       return (
-        <Categ currentCategory={this.props.currentCategory} categoryChanged={this.props.categoryChanged} setDefaultCategoryChanged={this.props.setDefaultCategoryChanged} setCurrentProduct={this.props.setCurrentProduct} addToCart={this.props.addToCart} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn} 
+        <Categ currentCategory={this.props.currentCategory} categoryChanged={this.props.categoryChanged} setDefaultCategoryChanged={this.props.setDefaultCategoryChanged} startPage={this.state.startPage} changeStartPage={this.changeStartPage} setCurrentProduct={this.props.setCurrentProduct} addToCart={this.props.addToCart} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn} 
         style={this.props.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>     
       );
     } 
