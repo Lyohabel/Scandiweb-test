@@ -5,6 +5,10 @@
     color: #1D1F22;
 }
 
+.productItem:hover .signIn {
+    visibility: visible;
+}
+
 .galleryWrapper {
     display: flex;    
 }
@@ -213,6 +217,7 @@
 
 .signIn {
     display: none;
+    visibility: hidden;
     font-weight: 600;
     font-size: 16px;
     color: crimson;   

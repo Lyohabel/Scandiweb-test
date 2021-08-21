@@ -2,6 +2,7 @@ import React from 'react';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
+//import Description from './Description';
 import {COLOR} from '../../../CONST';
 class Product extends React.Component { 
   constructor(props) {
@@ -47,12 +48,12 @@ class Product extends React.Component {
     this.props.setDisplaySignIn('no')
   }
 
-  resetProduct() {
-    this.setState({
-      ...this.state,     
-      productAdded: 'yes'    
-      });
-  }
+  // resetProduct() {
+  //   this.setState({
+  //     ...this.state,     
+  //     productAdded: 'yes'    
+  //     });
+  // }
 
   setBigImage(arg) {
     this.setState({
@@ -128,8 +129,12 @@ class Product extends React.Component {
     )    
   }
 
-  componentDidMount() {    
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : 'huarache-x-stussy-le';    
+  returnDescription() {
+    return this.state.product.description
+  }
+
+  componentDidMount() {      
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;    
 
     client.setEndpoint("http://localhost:4000/graphql"); // huarache-x-stussy-le
 
@@ -149,29 +154,29 @@ class Product extends React.Component {
      });     
   }
 
-  componentDidUpdate() {
-    if (this.state.productAdded !== 'no') {
+  // componentDidUpdate() {
+  //   if (this.state.productAdded !== 'no') {
       
-      const product = this.props.currentProduct;      
+  //     const product = this.props.currentProduct;      
 
-      client.setEndpoint("http://localhost:4000/graphql");
+  //     client.setEndpoint("http://localhost:4000/graphql");
 
-      const query = new Query("product", true)
-    .addArgument("id", "String!", product)   
-    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
+  //     const query = new Query("product", true)
+  //   .addArgument("id", "String!", product)   
+  //   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
 
-    client.post(query).then(result => {
-      this.setState({
-      ...this.state,
-      product: JSON.parse(JSON.stringify(result.product)),
-      gallery: result.product.gallery,      
-      instock: result.product.inStock,
-      prices: result.product.prices.map(item => item.amount),
-      attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
-      });                         
-     });   
-    }
-  }
+  //   client.post(query).then(result => {
+  //     this.setState({
+  //     ...this.state,
+  //     product: JSON.parse(JSON.stringify(result.product)),
+  //     gallery: result.product.gallery,      
+  //     instock: result.product.inStock,
+  //     prices: result.product.prices.map(item => item.amount),
+  //     attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
+  //     });                         
+  //    });   
+  //   }
+  // }
  
   componentWillUnmount() {
     this.props.setDefaultAttributes()
@@ -210,23 +215,27 @@ class Product extends React.Component {
 
                 <div className={styles.addWrapper}>
                   <button onClick={() => {
-                    this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand); 
-                    this.resetProduct()}}
+                    this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand);                   
+                    //this.resetProduct()
+                  }}
                   className={(this.state.instock ? styles.add : styles.inStockFalse)}>
                     <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
                   </button>
 
                   <button onClick={() => this.signIn()} className={styles.signIn} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
                 </div>
-                
 
-                <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.product.description}}></span>
+                {/* <Description description={this.state.product.description}/> */}
+
+                {this.returnDescription()}                
+
+                {/* <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.product.description}}></span> */}
 
               </div>              
             </div>              
           </div>
       </section>
-    );
+    ); // 
   } 
 }
 

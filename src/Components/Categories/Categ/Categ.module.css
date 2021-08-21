@@ -35,6 +35,10 @@
     display: block;
 }
 
+.productItem:hover .prodSignIn {
+    visibility: visible;
+}
+
 .priceNumber {
     display: block;
     padding-left: 3px;
@@ -83,6 +87,7 @@
 }
 
 .prodSignIn {
+    visibility: hidden;
     width: 55px;
     height: 55px;
     padding: 2px;

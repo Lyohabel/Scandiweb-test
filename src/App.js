@@ -15,15 +15,17 @@ class App extends React.Component {
     super(props);
     this.state = {      
       categoriesList: [],
+      startPage: 'yes',
       currentCategory: '',
+      savedCategory: '',
       savedHref: '/',
       currentProduct: '',
       categoryChanged: 'no',     
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      cartChanged: 'no',     
-      cartProductChanged: 'no',
+      //cartChanged: 'no',     
+      //cartProductChanged: 'no',
       miniCartProductChanged: 'no',
       miniCartChanged: 'no',
       displayCountCart: 'no',
@@ -41,8 +43,10 @@ class App extends React.Component {
     this.setPopUpPosition = this.setPopUpPosition.bind(this);
     this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
     this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
-    this.changeCurrency = this.changeCurrency.bind(this);    
+    this.changeCurrency = this.changeCurrency.bind(this);
+    this.changeStartPage = this.changeStartPage.bind(this);    
     this.changeCurrentCategory = this.changeCurrentCategory.bind(this);
+    this.setSavedCategory = this.setSavedCategory.bind(this);
     this.setSavedHref = this.setSavedHref.bind(this);
     this.setCurrentProduct = this.setCurrentProduct.bind(this);
     this.changeAttributes = this.changeAttributes.bind(this);
@@ -63,13 +67,27 @@ class App extends React.Component {
       });   
   }
 
+  changeStartPage(arg) {
+    this.setState({
+      startPage: arg,
+      savedCategory: ''
+    }); 
+  }
+
   changeCurrentCategory(categ) {   
     this.setState({
-      ...this.state,
+      //...this.state,
       currentCategory: categ,
       savedHref: '/',
       categoryChanged: 'yes'    
       });
+  }
+
+  setSavedCategory(categ) {
+    this.setState({
+      ...this.state,
+      savedCategory: categ    
+      });    
   }
 
   setSavedHref(href) {
@@ -102,20 +120,22 @@ class App extends React.Component {
       this.setState({
         ...this.state,
         miniCartProductChanged: arg,
-        cartProductChanged: 'yes',
-        cartChanged: 'yes',
+        miniCartChanged: arg,
+        //cartProductChanged: 'yes',
+        //cartChanged: 'yes',
         displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
         countCart: cartCount                 
         });
     } 
   }
 
-  setMiniCartChanged(arg) {      
+  setMiniCartChanged(arg) {
+          
     this.setState({
       ...this.state,
       miniCartChanged: arg,
-      cartProductChanged: 'yes',
-      cartChanged: 'yes'                 
+      //cartProductChanged: 'yes',
+      //cartChanged: 'yes'                 
       });    
   }
 
@@ -182,7 +202,10 @@ class App extends React.Component {
           ...this.state,
           countCart: newCount,
           displayCountCart: 'yes',        
-          miniCartChanged: 'yes'
+          miniCartChanged: 'yes',
+          miniCartProductChanged: 'yes'                 
+          //cartProductChanged: 'yes',
+          //cartChanged: 'yes'
         })
       } 
   }
@@ -267,7 +290,7 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} changeCurrentCategory={this.changeCurrentCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} startPage={this.state.StartPage} changeCurrentCategory={this.changeCurrentCategory} savedCategory={this.state.savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
             setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged}            
@@ -276,18 +299,16 @@ class App extends React.Component {
             style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}/>          
             <Switch>
               <Route exact path='/'>
-              <StartPage currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn} 
+              <StartPage currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} changeStartPage={this.changeStartPage} startPage={this.state.startPage} setSavedCategory={this.setSavedCategory} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
               style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
               </Route>
 
-              <Route exact path={`/categ/${this.state.currentCategory}`}>                
-                <Categ currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
-                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>                
+              <Route exact path={`/categ/:categ`}>{({match}) => <Categ match={match} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setSavedCategory={this.setSavedCategory} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
+                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}
               </Route>
 
-              <Route path='/product'>
-                <Product currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
-                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
+              <Route path='/product/:id'>{({match}) => <Product match={match} currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}                
+                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}                
               </Route>
 
               <Route path='/cart'>

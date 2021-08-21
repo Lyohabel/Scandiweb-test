@@ -42,6 +42,7 @@ class CartMiniProduct extends React.Component { //
             jsonCart[x].amount = newAmount
             window.localStorage.setItem('cart', JSON.stringify(jsonCart));
             this.props.setMiniCartProductChanged('yes')
+            //this.props.setMiniCartChanged('yes')
           } 
       })
     } else if (sign === 'minus' && productAmount > 0){
@@ -53,7 +54,7 @@ class CartMiniProduct extends React.Component { //
 
         jsonCart[x].amount = newAmount
         window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-        this.props.setMiniCartChanged('yes')
+        this.props.setMiniCartProductChanged('yes')        
       } 
   }
 

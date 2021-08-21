@@ -46,7 +46,8 @@ class Categ extends React.Component {
 
         <div className={styles.prodAddWrapper}>
         <button onClick={() => {
-          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);}}
+          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
+        }}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
 
         <button className={styles.prodSignIn} onClick={() => this.signIn()} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
@@ -68,7 +69,8 @@ class Categ extends React.Component {
         });      
       });
     } else {
-        const category = this.props.currentCategory === '' ? 'tech' : this.props.currentCategory
+        const category = this.props.currentCategory === '' ? this.props.match.params.categ : this.props.currentCategory
+        this.props.setSavedCategory(category)
 
         const query = new Query("category", true)
           .addArgument("input", "CategoryInput", { title : category})
