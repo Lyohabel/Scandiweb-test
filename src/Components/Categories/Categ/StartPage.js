@@ -14,7 +14,7 @@ class StartPage extends React.Component { // eslint-disable-next-line
     
         
     componentDidMount() {
-     //this.props.setSavedCategory('')
+      //this.props.changeStartPage('no')
     }
 
     componentWillUnmount() {

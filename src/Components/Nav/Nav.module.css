@@ -80,6 +80,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 25px 0;
 }
 
 .currency {
@@ -185,11 +186,15 @@
     }
 
     .wrapper{
-        position: relative;
+        position: relative;        
     }
 
     .menuWrapper{
-        position: relative;
+        position: fixed;
+        width: 100vw;
+        min-height: 100vh;
+        background-color: rgba(245, 203, 187, 0.2);
+        z-index: 2;
     }
 
     .showMenu, .closeMenu {
@@ -218,9 +223,19 @@
         background-color:  #e8f8ec;          
     }
 
-    .closeMenu, .link {
+    .link {
         color: #fff;
         font-weight: 500;
+    }
+
+    .closeMenu {
+        color: rgba(247, 242, 242, 0.5);
+        font-size: 16px;
+        text-transform: none;
+        width: 150px;
+        position: fixed;
+        left: 10px;
+        top: 5px;
     }
 
     .menu {
@@ -235,7 +250,7 @@
         padding-left: 80px;        
         width: 100px;
         height: 100vh;        
-        background-color: rgba(3, 3, 3, 0.4);
+        background-color: rgba(3, 3, 3, 0.8);
         z-index: 2;
     }
 
@@ -254,7 +269,7 @@
 
     .logo {
         position: absolute;       
-        left: 45%;
+        left: 45%;        
     }
 }
 

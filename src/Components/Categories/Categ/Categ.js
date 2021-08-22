@@ -88,7 +88,7 @@ class Categ extends React.Component {
     if (this.props.categoryChanged !== 'no') {
       client.setEndpoint("http://localhost:4000/graphql");
 
-    const category = this.props.currentCategory === '' ? 'tech' : this.props.currentCategory 
+    const category = this.props.currentCategory
 
       const query = new Query("category", true)
         .addArgument("input", "CategoryInput", { title : category})
@@ -105,7 +105,7 @@ class Categ extends React.Component {
   }
   
   componentWillUnmount() {
-    this.props.setDefaultCategoryChanged()
+    this.props.setDefaultCategoryChanged()    
   }  
 
   render() {

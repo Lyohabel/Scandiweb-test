@@ -62,7 +62,7 @@ class App extends React.Component {
 
   setDisplaySignIn(arg) {
     this.setState({
-      ...this.state,
+      //...this.state,
       displaySignIn: arg    
       });   
   }
@@ -85,28 +85,29 @@ class App extends React.Component {
 
   setSavedCategory(categ) {
     this.setState({
-      ...this.state,
-      savedCategory: categ    
+      //...this.state,
+      savedCategory: categ,
+      currentCategory: categ    
       });    
   }
 
   setSavedHref(href) {
     this.setState({
-      ...this.state,
+      //...this.state,
       savedHref: href    
       });    
   }
 
   setPopUpPosition(arg) {
     this.setState({
-      ...this.state,
+      //...this.state,
       position: arg                 
       });
   }
 
   setCurrentProduct(prod) {      
     this.setState({
-      ...this.state,
+      //...this.state,
       savedHref: '/',
       currentProduct: prod                 
       }); 
@@ -118,7 +119,7 @@ class App extends React.Component {
       const cartCount = JSON.parse(cart).length
 
       this.setState({
-        ...this.state,
+        //...this.state,
         miniCartProductChanged: arg,
         miniCartChanged: arg,
         //cartProductChanged: 'yes',
@@ -132,7 +133,7 @@ class App extends React.Component {
   setMiniCartChanged(arg) {
           
     this.setState({
-      ...this.state,
+      //...this.state,
       miniCartChanged: arg,
       //cartProductChanged: 'yes',
       //cartChanged: 'yes'                 
@@ -141,7 +142,7 @@ class App extends React.Component {
 
   setDefaultCategoryChanged() {
     this.setState({
-      ...this.state,      
+      //...this.state,      
       categoryChanged: 'no',            
       });
   }  
@@ -152,7 +153,7 @@ class App extends React.Component {
     const cartCount = JSON.parse(cart).length
     
     this.setState({
-      ...this.state,
+      //...this.state,
       displayCountCart: (cartCount > 0 ? 'yes' : 'no'),      
       countCart: cartCount,            
       });
@@ -199,7 +200,7 @@ class App extends React.Component {
         let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
 
         this.setState({
-          ...this.state,
+          //...this.state,
           countCart: newCount,
           displayCountCart: 'yes',        
           miniCartChanged: 'yes',
@@ -233,21 +234,21 @@ class App extends React.Component {
       }        
 
     this.setState({
-      ...this.state,
+      //...this.state,
       attrs: newAttrs    
     })
   }
 
   setDefaultAttributes() {
     this.setState({
-      ...this.state,
+     // ...this.state,
       attrs: DEFAULT    
     })    
   }
 
   changeCurrency(simbol, currency, index) {
     this.setState({
-      ...this.state,
+      //...this.state,
       currencySimbol: simbol,
       currency: currency,
       currencyNumber: index
@@ -264,7 +265,7 @@ class App extends React.Component {
       const unique = Array.from(new Set(result.category.products.map(JSON.stringify))).map(JSON.parse);
       
       this.setState({
-      ...this.state,
+      //...this.state,
       categoriesList: unique             
       });
       this.showCartCount()
@@ -273,7 +274,7 @@ class App extends React.Component {
     const queryCurrencies = new Query("currencies", true)      
       client.post(queryCurrencies).then(result => {        
         this.setState({
-        ...this.state,
+        //...this.state,
         currencies: result.currencies,
         currency: result.currencies[0]                   
       });        
@@ -290,7 +291,7 @@ class App extends React.Component {
             currencies: this.state.currencies             
             }}>
 
-            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} startPage={this.state.StartPage} changeCurrentCategory={this.changeCurrentCategory} savedCategory={this.state.savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
+            <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} startPage={this.state.StartPage} currentCategory={this.state.currentCategory} changeCurrentCategory={this.changeCurrentCategory} savedCategory={this.state.savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
             setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged}            

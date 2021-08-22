@@ -4,9 +4,12 @@ import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 //import Description from './Description';
 import {COLOR} from '../../../CONST';
+//import {getProduct} from '../../../Queries/GetProduct';
+//import {testUtil} from '../../../Utils/TestUtil'
 class Product extends React.Component { 
   constructor(props) {
     super(props);
+    this.descrRef = React.createRef();
     this.state = {      
       product: '',
       gallery: '',     
@@ -130,13 +133,18 @@ class Product extends React.Component {
   }
 
   returnDescription() {
+    console.log(this.descrRef)
     return this.state.product.description
   }
 
   componentDidMount() {      
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;    
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;
+    
+    //console.log(getProduct(product))
 
-    client.setEndpoint("http://localhost:4000/graphql"); // huarache-x-stussy-le
+    //testUtil('XXX')
+
+    client.setEndpoint("http://localhost:4000/graphql"); 
 
     const query = new Query("product", true)
    .addArgument("id", "String!", product)   
@@ -150,7 +158,8 @@ class Product extends React.Component {
       instock: result.product.inStock,
       prices: result.product.prices.map(item => item.amount),
       attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
-      });                         
+      });
+      this.descrRef.current.innerHTML = this.state.product.description                       
      });     
   }
 
@@ -223,19 +232,15 @@ class Product extends React.Component {
                   </button>
 
                   <button onClick={() => this.signIn()} className={styles.signIn} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
-                </div>
+                </div>              
 
-                {/* <Description description={this.state.product.description}/> */}
-
-                {this.returnDescription()}                
-
-                {/* <span id="dis" className={styles.prodDescription} dangerouslySetInnerHTML={{__html: this.state.product.description}}></span> */}
+                <div ref={this.descrRef} className={styles.prodDescription}></div>
 
               </div>              
             </div>              
           </div>
       </section>
-    ); // 
+    );
   } 
 }
 

@@ -9,7 +9,8 @@ import {POPUP} from '../../CONST';
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.myRef = React.createRef();
+    this.popUpRef = React.createRef();
+    this.menuRef = React.createRef();
 
     this.state = {
       category: '',
@@ -31,10 +32,15 @@ class Nav extends React.Component {
     })    
   }
 
-  hideCartMini(event) {
-    if (this.myRef.current && !this.myRef.current.contains(event.target)) {
+  hideCartMini() {    
+    this.setState({        
+      popUp: styles.hidden      
+    })    
+  }
+
+  hideCartMini_2(event) {
+    if (this.popUpRef.current && !this.popUpRef.current.contains(event.target)) {
       this.setState({
-        ...this.state,
         popUp: styles.hidden      
       })
     }
@@ -56,7 +62,7 @@ class Nav extends React.Component {
 
   createLinksList() { // this.state.category  
     return this.context.categoriesList && this.context.categoriesList.map(item => // eslint-disable-next-line
-      <li onClick={() => this.markActive(item.category)} className={(this.state.category === item.category && this.props.startPage !== 'yes' || this.state.category === '' && this.props.savedCategory === item.category) ? styles.active : styles.menuItem} key={item.category}>
+      <li onClick={() => this.markActive(item.category)} className={(this.state.category === item.category || this.state.category === '' && this.props.savedCategory === item.category && this.props.startPage !== 'yes') ? styles.active : styles.menuItem} key={item.category}>
         <NavLink onClick={() => this.props.changeCurrentCategory(item.category)} className={styles.link} to={"/categ/" + item.category}>
            {item.category}
         </NavLink>
@@ -98,7 +104,8 @@ class Nav extends React.Component {
     })
   }
 
-  closeMenu() {
+  closeMenu(event) {
+    if (this.menuRef.current && !this.menuRef.current.contains(event.target)) {
     this.setState({
       ...this.state,
       menu: 'hidden',
@@ -106,17 +113,18 @@ class Nav extends React.Component {
       btnShow: 'visible'     
     })
   }
-  render() {     
+  }
+  render() { //  onClick= {() => this.closeMenu()}  
     return (
       <nav className={styles.nav}>
           <div className="container">
             <div className={styles.wrapper}>
               <button onClick= {() => this.showMenu()} style={this.state.btnShow === 'visible' ? {display: 'block'} : {display: 'none'}}  className={styles.showMenu}>Menu</button>
 
-              <button onClick= {() => this.closeMenu()} style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Close menu</button>                   
+              <button style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Click outside to close menu</button>                   
 
-              <div className={styles.menuWrapper}>
-                <ul className={styles.menu} style={this.state.menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
+              <div onClick= {(event) => this.closeMenu(event)} className={styles.menuWrapper}>
+                <ul ref={this.menuRef} className={styles.menu} style={this.state.menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
                   {this.createLinksList()}                
                 </ul>
               </div>              
@@ -147,12 +155,8 @@ class Nav extends React.Component {
             </div>
           </div>
               
-          <div onClick={(event) => this.hideCartMini(event)} className={this.state.popUp}>
-            <div ref={this.myRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category}          
-            miniCartChanged={this.props.miniCartChanged} setSavedHref={this.props.setSavedHref} savedHref={this.props.savedHref}
-            setMiniCartChanged={this.props.setMiniCartChanged}            
-            miniCartProductChanged={this.props.miniCartProductChanged}           
-            setMiniCartProductChanged={this.props.setMiniCartProductChanged}
+          <div onClick={(event) => this.hideCartMini_2(event)} className={this.state.popUp}>
+            <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category} miniCartChanged={this.props.miniCartChanged} setSavedHref={this.props.setSavedHref} savedHref={this.props.savedHref} setMiniCartChanged={this.props.setMiniCartChanged} miniCartProductChanged={this.props.miniCartProductChanged} setMiniCartProductChanged={this.props.setMiniCartProductChanged}
             /></div>
           </div>
       </nav>
