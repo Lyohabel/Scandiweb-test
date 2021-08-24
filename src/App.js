@@ -24,8 +24,6 @@ class App extends React.Component {
       currencySimbol: '$',
       currencyNumber: 0,
       countCart: 0,
-      //cartChanged: 'no',     
-      //cartProductChanged: 'no',
       miniCartProductChanged: 'no',
       miniCartChanged: 'no',
       displayCountCart: 'no',
@@ -62,7 +60,6 @@ class App extends React.Component {
 
   setDisplaySignIn(arg) {
     this.setState({
-      //...this.state,
       displaySignIn: arg    
       });   
   }
@@ -76,7 +73,6 @@ class App extends React.Component {
 
   changeCurrentCategory(categ) {   
     this.setState({
-      //...this.state,
       currentCategory: categ,
       savedHref: '/',
       categoryChanged: 'yes'    
@@ -85,7 +81,6 @@ class App extends React.Component {
 
   setSavedCategory(categ) {
     this.setState({
-      //...this.state,
       savedCategory: categ,
       currentCategory: categ    
       });    
@@ -93,21 +88,18 @@ class App extends React.Component {
 
   setSavedHref(href) {
     this.setState({
-      //...this.state,
       savedHref: href    
       });    
   }
 
   setPopUpPosition(arg) {
     this.setState({
-      //...this.state,
       position: arg                 
       });
   }
 
   setCurrentProduct(prod) {      
     this.setState({
-      //...this.state,
       savedHref: '/',
       currentProduct: prod                 
       }); 
@@ -119,30 +111,22 @@ class App extends React.Component {
       const cartCount = JSON.parse(cart).length
 
       this.setState({
-        //...this.state,
         miniCartProductChanged: arg,
         miniCartChanged: arg,
-        //cartProductChanged: 'yes',
-        //cartChanged: 'yes',
         displayCountCart: (cartCount > 0 ? 'yes' : 'no'),
         countCart: cartCount                 
         });
     } 
   }
 
-  setMiniCartChanged(arg) {
-          
+  setMiniCartChanged(arg) {          
     this.setState({
-      //...this.state,
-      miniCartChanged: arg,
-      //cartProductChanged: 'yes',
-      //cartChanged: 'yes'                 
+      miniCartChanged: arg           
       });    
   }
 
   setDefaultCategoryChanged() {
-    this.setState({
-      //...this.state,      
+    this.setState({    
       categoryChanged: 'no',            
       });
   }  
@@ -153,7 +137,6 @@ class App extends React.Component {
     const cartCount = JSON.parse(cart).length
     
     this.setState({
-      //...this.state,
       displayCountCart: (cartCount > 0 ? 'yes' : 'no'),      
       countCart: cartCount,            
       });
@@ -169,10 +152,8 @@ class App extends React.Component {
   changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    //const newId = jsonCart.length
     const uniqueId = this.createUniqueId(prodName)
-    console.log(this.state.attrs)
-
+    
     const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrs) === JSON.stringify(this.state.attrs));
     
     if (double === -1) {
@@ -200,13 +181,10 @@ class App extends React.Component {
         let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
 
         this.setState({
-          //...this.state,
           countCart: newCount,
           displayCountCart: 'yes',        
           miniCartChanged: 'yes',
-          miniCartProductChanged: 'yes'                 
-          //cartProductChanged: 'yes',
-          //cartChanged: 'yes'
+          miniCartProductChanged: 'yes'
         })
       } 
   }
@@ -234,21 +212,18 @@ class App extends React.Component {
       }        
 
     this.setState({
-      //...this.state,
       attrs: newAttrs    
     })
   }
 
   setDefaultAttributes() {
     this.setState({
-     // ...this.state,
       attrs: DEFAULT    
     })    
   }
 
   changeCurrency(simbol, currency, index) {
     this.setState({
-      //...this.state,
       currencySimbol: simbol,
       currency: currency,
       currencyNumber: index
@@ -265,7 +240,6 @@ class App extends React.Component {
       const unique = Array.from(new Set(result.category.products.map(JSON.stringify))).map(JSON.parse);
       
       this.setState({
-      //...this.state,
       categoriesList: unique             
       });
       this.showCartCount()
@@ -274,7 +248,6 @@ class App extends React.Component {
     const queryCurrencies = new Query("currencies", true)      
       client.post(queryCurrencies).then(result => {        
         this.setState({
-        //...this.state,
         currencies: result.currencies,
         currency: result.currencies[0]                   
       });        
