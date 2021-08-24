@@ -13,16 +13,15 @@ class Nav extends React.Component {
     this.menuRef = React.createRef();
 
     this.state = {
-      category: '',
-      count: this.props.countCart,      
+      category: '',           
       popUp: styles.hidden,
       menu: '',
       btnShow: '',
       btnClose: ''
-    }
+    }    
 
     this.hideCartMini = this.hideCartMini.bind(this)    
-  }
+  }  
 
   showCartMini() {
     this.props.setPopUpPosition(POPUP)   
@@ -110,17 +109,19 @@ class Nav extends React.Component {
     })
   }
   }
-  render() {  
-    return (
+
+  render() {
+    const {category, popUp, menu, btnClose, btnShow} = this.state 
+    return (      
       <nav className={styles.nav}>
           <div className="container">
             <div className={styles.wrapper}>
-              <button onClick= {() => this.showMenu()} style={this.state.btnShow === 'visible' ? {display: 'block'} : {display: 'none'}}  className={styles.showMenu}>Menu</button>
+              <button onClick= {() => this.showMenu()} style={btnShow === 'visible' ? {display: 'block'} : {display: 'none'}}  className={styles.showMenu}>Menu</button>
 
-              <button style={this.state.btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Click outside to close menu</button>                   
+              <button style={btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Click outside to close menu</button>                   
 
               <div onClick= {(event) => this.closeMenu(event)} className={styles.menuWrapper}>
-                <ul ref={this.menuRef} className={styles.menu} style={this.state.menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
+                <ul ref={this.menuRef} className={styles.menu} style={menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
                   {this.createLinksList()}                
                 </ul>
               </div>              
@@ -144,15 +145,15 @@ class Nav extends React.Component {
                 <div onClick={() => {this.showCartMini(); this.props.setMiniCartChanged('yes')}} className={styles.cartLink}>                  
                   <span className={styles.cartLinkIcon} style={this.props.displayCountCart === "yes" ? {display: 'flex'} : {display: 'none'}}>{this.props.countCart}</span>
 
-                  <NavLink onClick={(event) => this.linkOff(event)} className={styles.fromCartLink}  to={"/fake-cart/" + this.state.category}>                  
+                  <NavLink onClick={(event) => this.linkOff(event)} className={styles.fromCartLink}  to={"/fake-cart/" + category}>                  
                   </NavLink>                  
                 </div>
               </div>
             </div>
           </div>
               
-          <div onClick={(event) => this.hideCartMini_2(event)} className={this.state.popUp}>
-            <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={this.state.category} miniCartChanged={this.props.miniCartChanged} setSavedHref={this.props.setSavedHref} savedHref={this.props.savedHref} setMiniCartChanged={this.props.setMiniCartChanged} miniCartProductChanged={this.props.miniCartProductChanged} setMiniCartProductChanged={this.props.setMiniCartProductChanged}
+          <div onClick={(event) => this.hideCartMini_2(event)} className={popUp}>
+            <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={category} miniCartChanged={this.props.miniCartChanged} setSavedHref={this.props.setSavedHref} savedHref={this.props.savedHref} setMiniCartChanged={this.props.setMiniCartChanged} miniCartProductChanged={this.props.miniCartProductChanged} setMiniCartProductChanged={this.props.setMiniCartProductChanged}
             /></div>
           </div>
       </nav>

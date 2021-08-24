@@ -3,8 +3,9 @@ import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 import {COLOR} from '../../../CONST';
-//import {getProduct} from '../../../Queries/GetProduct';
-//import {testUtil} from '../../../Utils/TestUtil'
+import getProduct from '../../../Queries/GetProduct';
+//import {testUtil} from '../../../Utils/TestUtil';
+import returnDescription from '../../../Utils/ReturnDescription';
 class Product extends React.Component { 
   constructor(props) {
     super(props);
@@ -88,6 +89,15 @@ class Product extends React.Component {
     return list;
   }
 
+  // creatDefaultAttributesList() {
+  //   if (!this.state.product.attributes[0]) return '';
+  //   let list = [];
+  //   this.state.product.attributes.forEach(item => {
+  //     list.push(item.id);
+  //   });
+  //   return list;
+  // }
+
   createButtons(attrs, btnStyle, order) {
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value} 
@@ -120,17 +130,20 @@ class Product extends React.Component {
         {this.setAttributes(index)}
       </div>
     )    
-  }
+  }  
+  // returnDescription() {
+  //   returnDescription(this.state.product.description)
+  //   // console.log(this.descrRef)
+  //   // return this.state.product.description
+  // }
 
-  returnDescription() {
-    console.log(this.descrRef)
-    return this.state.product.description
-  }
-
+  returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
   componentDidMount() {      
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;   
+
+   
     
-    //console.log(getProduct(product))
+    console.log(getProduct(product))
 
     //testUtil('XXX')
 
@@ -148,7 +161,8 @@ class Product extends React.Component {
       prices: result.product.prices.map(item => item.amount),
       attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
       });
-      this.descrRef.current.innerHTML = this.state.product.description                       
+      this.descrRef.current.innerHTML = this.state.product.description
+      this.returnDescription();                       
      });     
   }
  

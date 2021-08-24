@@ -1,6 +1,6 @@
 import { client, Query} from "@tilework/opus";
 
-const getProduct = (product) => {
+const getProduct = async (product) => {
 
     client.setEndpoint("http://localhost:4000/graphql");
 
@@ -8,9 +8,7 @@ const getProduct = (product) => {
    .addArgument("id", "String!", product)   
    .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
 
-    client.post(query).then(result => {
-      return result
-     });     
+    return await client.post(query)
   }
 
-  export {getProduct}
+export default getProduct
