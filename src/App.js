@@ -127,7 +127,8 @@ class App extends React.Component {
 
   setDefaultCategoryChanged() {
     this.setState({    
-      categoryChanged: 'no',            
+      categoryChanged: 'no',
+      startPage: 'yes'            
       });
   }  
 

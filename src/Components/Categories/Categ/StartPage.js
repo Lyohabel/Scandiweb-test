@@ -4,17 +4,12 @@ import {POPUP} from '../../../CONST';
 
 class StartPage extends React.Component { // eslint-disable-next-line 
     constructor(props) { 
-      super(props);
-      // this.state = {
-      //   startPage: 'yes'
-      // }
-      
-      //this.changeStartPage = this.changeStartPage.bind(this)      
+      super(props);  
     }
     
         
     componentDidMount() {
-      //this.props.changeStartPage('no')
+      this.props.changeStartPage('no')
     }
 
     componentWillUnmount() {

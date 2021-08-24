@@ -68,7 +68,6 @@ class CartProduct extends React.Component {
 
   markAttribute(value, order) {
     this.setState({
-      ...this.state,
       ['defaultActiveAttribute_' + order]: order,    
       ['activeAttribute_' + order]: value
     });
@@ -182,13 +181,11 @@ class CartProduct extends React.Component {
     if (dir === 'next' && this.state.imgStatus < this.state.gallery.length - 1) {
       let newImgStatus = this.state.imgStatus + 1
       this.setState({
-        ...this.state,
         imgStatus: newImgStatus,        
       })
     } else if (dir === 'prev'  && this.state.imgStatus > 0) {
         let newImgStatus = this.state.imgStatus - 1
         this.setState({
-        ...this.state,
         imgStatus: newImgStatus
         })
       }        
@@ -215,7 +212,6 @@ class CartProduct extends React.Component {
           else {          
             const newAmount = productAmount + 1
             this.setState({
-              ...this.state,
               productAmount: newAmount
             })
           jsonCart[x].amount = newAmount
@@ -226,7 +222,6 @@ class CartProduct extends React.Component {
     } else if (sign === 'minus' && productAmount > 0){
         const newAmount = productAmount - 1
         this.setState({
-          ...this.state,
           productAmount: newAmount
         })
         jsonCart[x].amount = newAmount
@@ -256,8 +251,7 @@ class CartProduct extends React.Component {
     client.post(queryInStock).then(result => {
       if (result.product.inStock !== true) return ''
         else {
-          this.setState({ 
-            ...this.state,
+          this.setState({
             jsonCart: JSON.parse(JSON.stringify(product)),
             jsonPrices: jsonPrices,
             gallery: gallery,

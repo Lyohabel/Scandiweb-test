@@ -23,10 +23,6 @@ class CartMini extends React.Component { //
     )
   }
 
-  // preventClose(event) {
-  //   event.preventDefault();
-  // }
-
   checkOut() {
     if (!window.localStorage.getItem('cart')) return;
 
@@ -42,7 +38,6 @@ class CartMini extends React.Component { //
     window.localStorage.setItem('cart', JSON.stringify(checkDeleted));
 
     this.setState({
-      ...this.state,
       currencySimbol: this.context.currencySimbol,        
       total: total.toFixed(2),
       jsonCart: checkDeleted    
@@ -57,8 +52,7 @@ class CartMini extends React.Component { //
     const cart = window.localStorage.getItem('cart');
     let jsonCart = JSON.parse(cart)
 
-    this.setState({
-      ...this.state,        
+    this.setState({      
       jsonCart: JSON.parse(JSON.stringify(jsonCart))
     })
     this.checkOut()
@@ -73,8 +67,7 @@ class CartMini extends React.Component { //
       const cart = window.localStorage.getItem('cart');
       let jsonCart = JSON.parse(cart)
 
-      this.setState({
-        ...this.state,        
+      this.setState({      
         jsonCart: JSON.parse(JSON.stringify(jsonCart))
       })
       

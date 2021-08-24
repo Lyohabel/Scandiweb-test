@@ -24,8 +24,7 @@ class Cart extends React.Component {
     const cart = window.localStorage.getItem('cart');
     let jsonCart = JSON.parse(cart)
 
-    this.setState({
-      ...this.state,        
+    this.setState({      
       jsonCart: JSON.parse(JSON.stringify(jsonCart))
     })
   }

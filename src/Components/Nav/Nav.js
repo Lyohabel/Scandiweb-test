@@ -27,7 +27,6 @@ class Nav extends React.Component {
   showCartMini() {
     this.props.setPopUpPosition(POPUP)   
     this.setState({
-      ...this.state,
       popUp: styles.popUp      
     })    
   }
@@ -54,13 +53,12 @@ class Nav extends React.Component {
 
   markActive(category) {
     this.setState({
-      ...this.state,
       category: category,
       popUp: styles.hidden      
     })
   }
 
-  createLinksList() { // this.state.category  
+  createLinksList() { 
     return this.context.categoriesList && this.context.categoriesList.map(item => // eslint-disable-next-line
       <li onClick={() => this.markActive(item.category)} className={(this.state.category === item.category || this.state.category === '' && this.props.savedCategory === item.category && this.props.startPage !== 'yes') ? styles.active : styles.menuItem} key={item.category}>
         <NavLink onClick={() => this.props.changeCurrentCategory(item.category)} className={styles.link} to={"/categ/" + item.category}>
@@ -97,7 +95,6 @@ class Nav extends React.Component {
 
   showMenu() {
     this.setState({
-      ...this.state,
       menu: 'visible',
       btnClose: 'visible',
       btnShow: 'hidden'     
@@ -107,14 +104,13 @@ class Nav extends React.Component {
   closeMenu(event) {
     if (this.menuRef.current && !this.menuRef.current.contains(event.target)) {
     this.setState({
-      ...this.state,
       menu: 'hidden',
       btnClose: 'hidden',
       btnShow: 'visible'     
     })
   }
   }
-  render() { //  onClick= {() => this.closeMenu()}  
+  render() {  
     return (
       <nav className={styles.nav}>
           <div className="container">
@@ -160,7 +156,7 @@ class Nav extends React.Component {
             /></div>
           </div>
       </nav>
-    ); // onClick={(event) => this.hideCartMini(event)}
+    );
   } 
 }
 

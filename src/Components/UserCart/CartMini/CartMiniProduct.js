@@ -36,7 +36,6 @@ class CartMiniProduct extends React.Component { //
           else {       
             const newAmount = productAmount + 1
             this.setState({
-              ...this.state,
               productAmount: newAmount
             })
             jsonCart[x].amount = newAmount
@@ -48,7 +47,6 @@ class CartMiniProduct extends React.Component { //
     } else if (sign === 'minus' && productAmount > 0){
         const newAmount = productAmount - 1
         this.setState({
-          ...this.state,
           productAmount: newAmount
         })
 
@@ -85,7 +83,6 @@ class CartMiniProduct extends React.Component { //
     const attributes_1 = JSON.parse(cart)[x].attributes_1
     const attrNames = JSON.parse(cart)[x].attrNames
     this.setState({
-      ...this.state,
       jsonCart: JSON.parse(JSON.stringify(newData)),
       productAmount: newAmount,
       uniqueId: uniqueId,
@@ -106,7 +103,6 @@ class CartMiniProduct extends React.Component { //
       const newAmount = x ? x.amount : ''
       
       this.setState({
-        ...this.state,
         productAmount: newAmount
         })
         this.props.setMiniCartProductChanged('no')
