@@ -2,12 +2,9 @@ import React from 'react';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
-import ProductImages from './ProductImages'
 import {COLOR} from '../../../CONST';
-//import getProduct from '../../../Queries/GetProduct';
-//import {testUtil} from '../../../Utils/TestUtil';
-//import returnDescription from '../../../Utils/ReturnDescription';
-class Product extends React.Component { 
+
+class ProductAttrButtons extends React.Component { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();
@@ -41,16 +38,15 @@ class Product extends React.Component {
       },
 
       productAdded: 'no',
-      add: styles.add,
-      //bigImage: ''   
+      add: styles.add        
     }
-    this.signIn = this.signIn.bind(this)     
+    //this.signIn = this.signIn.bind(this)     
   }  
 
-  signIn() {
-    document.cookie = 'login=user;'
-    this.props.setDisplaySignIn('no')
-  }  
+  // signIn() {
+  //   document.cookie = 'login=user;'
+  //   this.props.setDisplaySignIn('no')
+  // }  
 
   markAttribute(value, order) {
     this.setState({
@@ -93,37 +89,10 @@ class Product extends React.Component {
       )
   }
 
-  setAttributes(order) {
-    if (this.state.product.attributes.length < order + 1) return ''   
-    return (
-      <div className={styles.chooseSize}>
-        {this.createButtons(this.state.product.attributes[order].items, this.state.product.attributes[order].id, order)}           
-      </div> 
-    )    
-  }
-
-  returnAttributes(arr) {
-    return arr && arr.map((item, index) =>
-      <div key={item.id} className="attrWrapper">
-        <h4 className={styles.sizeTitle}>{this.state.product.attributes[index] ? this.creatAttributeNameList()[index] : ''}</h4>
-        {this.setAttributes(index)}
-      </div>
-    )    
-  }  
-  // returnDescription() {
-  //   returnDescription(this.state.product.description)
-  //   // console.log(this.descrRef)
-  //   // return this.state.product.description
-  // }
-
-  //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
+  
 
   componentDidMount() {      
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;
-
-    //console.log(getProduct(product))
-
-    //testUtil('XXX')
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.savedProduct;
 
     client.setEndpoint("http://localhost:4000/graphql"); 
 
@@ -154,7 +123,7 @@ class Product extends React.Component {
           <div className="container">                       
             <div className={styles.productItem}>
 
-              <ProductImages gallery={this.state.gallery} currentProduct={this.props.currentProduct} savedProduct={this.props.match.params.id}/>
+              <ProductImages currentProduct={this.props.currentProduct} savedProduct={this.props.match.params.id}/>
 
               <div className={styles.prodWrapper}>
                 <h3 className={styles.title}>{this.state.product.brand}</h3>
@@ -186,6 +155,6 @@ class Product extends React.Component {
   } 
 }
 
-Product.contextType = OverallData;
+ProductAttrButtons.contextType = OverallData;
 
-export default Product;
+export default ProductAttrButtons;
