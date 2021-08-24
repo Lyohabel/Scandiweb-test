@@ -3,6 +3,7 @@ import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './Product.module.css'
 import ProductImages from './ProductImages'
+import ProductAttrButtons from './ProductAttrButtons'
 import {COLOR} from '../../../CONST';
 //import getProduct from '../../../Queries/GetProduct';
 //import {testUtil} from '../../../Utils/TestUtil';
@@ -96,9 +97,13 @@ class Product extends React.Component {
   setAttributes(order) {
     if (this.state.product.attributes.length < order + 1) return ''   
     return (
-      <div className={styles.chooseSize}>
-        {this.createButtons(this.state.product.attributes[order].items, this.state.product.attributes[order].id, order)}           
-      </div> 
+      <div>
+        <ProductAttrButtons savedState={this.state}/>
+        <div className={styles.chooseSize}>        
+          {this.createButtons(this.state.product.attributes[order].items, this.state.product.attributes[order].id, order)}           
+        </div> 
+      </div>
+      
     )    
   }
 
