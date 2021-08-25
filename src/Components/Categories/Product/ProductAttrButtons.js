@@ -1,7 +1,7 @@
 import React from 'react';
 //import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
-import * as styles from './Product.module.css'
+import * as styles from './ProductAttrButtons.module.css'
 import {COLOR} from '../../../CONST';
 
 class ProductAttrButtons extends React.Component { 
@@ -14,54 +14,24 @@ class ProductAttrButtons extends React.Component {
       prices: '',
       instok: '',
       attributes_1: '',
-
-      activeAttribute_0: '',
-      activeAttribute_1: '',
-      activeAttribute_2: '',
-      activeAttribute_3: '', // fallback unusing property
-      activeAttribute_4: '', // fallback unusing property
-
-      defaultActiveAttribute_0: '',
-      defaultActiveAttribute_1: '',
-      defaultActiveAttribute_2: '',
-      defaultActiveAttribute_3: '', // fallback unusing property
-      defaultActiveAttribute_4: '', // fallback unusing property      
-      
-      sizeButton: {
-        a : styles.size,
-        b : styles.sizeActive
-      },
-
-      colorButton: {
-        a : styles.color,
-        b : styles.colorActive
-      },
-
+      activeAttribute: '',
+      defaultActiveAttribute: '',
       productAdded: 'no',
       add: styles.add        
     }
     //this.signIn = this.signIn.bind(this)     
-  }  
+  }
 
-  // signIn() {
-  //   document.cookie = 'login=user;'
-  //   this.props.setDisplaySignIn('no')
-  // }  
-
-  markAttribute(value, order) {
-    this.setState({
-      ['defaultActiveAttribute_' + order]: order,    
-      ['activeAttribute_' + order]: value
+  markAttribute(value) {
+    this.setState({    
+      activeAttribute: value,
+      defaultActiveAttribute: 1
     });
   }
 
-  creatAttributeNameList() {
-    if (!this.state.product.attributes[0]) return '';
-    let list = [];
-    this.state.product.attributes.forEach(item => {
-      list.push(item.id);
-    });
-    return list;
+  creatAttributeName(order) {
+    if (!this.props.savedState.product.attributes[0]) return '';
+    return this.props.savedState.product.attributes[order].id;
   }
 
   // creatDefaultAttributesList() {
@@ -74,27 +44,32 @@ class ProductAttrButtons extends React.Component {
   // }
 
   createButtons(btnStyle, order) {
-    const attrs = JSON.parse(JSON.stringify(this.props.savedState.product.attributes[0].items)) 
+    const attrs = JSON.parse(JSON.stringify(this.props.savedState.product.attributes[order].items)) 
     return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value} value={item.value} 
+      <button id={index} key={item.value} value={item.value}
+      className={(btnStyle !== COLOR) ? this.state.activeAttribute === item.value ? styles.sizeActive : 
+        index === 0 && this.state.activeAttribute === '' ? styles.sizeActive : styles.size :
+        this.state.activeAttribute === item.value ? styles.colorActive : 
+        index === 0 && this.state.activeAttribute === '' ? styles.colorActive : styles.size
+      }
       
-      // onClick={() => {this.markAttribute(item.value, order);
-      //   this.props.changeAttributes(this.creatAttributeNameList()[order], item.value, this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand)}}
+      onClick={() => {this.markAttribute(item.value);        
+        this.props.changeAttributes(this.creatAttributeName(order), item.value, this.props.savedState.prices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand)
+      }}
 
-      // className={(btnStyle !== COLOR) ? ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.sizeButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.sizeButton.b : this.state.sizeButton.a)) : ((this.state[`activeAttribute_${order}`] === item.value) ? this.state.colorButton.b : ((index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? this.state.colorButton.b : this.state.colorButton.a))} 
-
-      // style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`}}
-      >A1
-        {/* {btnStyle !== COLOR ? item.value : ''}
-        <span className={styles.displayValue}>{item.id}</span> */}
+      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`}}
+      
+      >
+        {btnStyle !== COLOR ? item.value : ''}
+        <span className={styles.displayValue}>{item.id}</span> 
       </button>
       )
   }
 
-  render() {
+  render() {//onClick={console.log(this.props.savedState.product.attributes)}
     return (
-      <section onClick={console.log(this.props.savedState.product.attributes)} className="ProductAttrButtons">        
-         {this.createButtons()}
+      <section className={styles.productAttrButtons}>        
+         {this.createButtons(this.props.btnStyle, this.props.order)}
       </section>
     );
   } 

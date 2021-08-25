@@ -1,0 +1,52 @@
+.productAttrButtons {
+    width: 290px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.size, .sizeActive,
+.colorActive {    
+    height: 45px;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    background-color: #fff;
+    border: 1px solid #1D1F22;
+    cursor: pointer;
+    position: relative;
+}
+
+.sizeActive {
+    background-color: #1D1F22;
+    color: #fff;    
+}
+
+.colorActive {
+    border: 2px solid #c9380c;      
+}
+
+.displayValue {
+    display: block;
+    position: absolute;
+    padding: 3px;
+    border: 1px solid #1D1F22;
+    border-radius: 5px;
+    top: 50px;
+    color: #1D1F22;
+    display: none;
+}
+
+.colorActive .displayValue,
+.sizeActive .displayValue {
+    color: #1D1F22;
+}
+
+.colorActive:hover .displayValue,
+.size:hover .displayValue,
+.sizeActive:hover .displayValue {
+    display: block;
+}
