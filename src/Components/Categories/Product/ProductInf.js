@@ -1,8 +1,7 @@
 import React from 'react';
-import { client, Query} from "@tilework/opus";
+//import { client, Query} from "@tilework/opus";
 import * as styles from './Product.module.css';
 import OverallData from '../../../Context';
-import ProductImages from './ProductImages';
 import ProductAttrButtons from './ProductAttrButtons';
 //import getProduct from '../../../Queries/GetProduct';
 //import {testUtil} from '../../../Utils/TestUtil';
@@ -67,42 +66,13 @@ class ProductInf extends React.Component {
 
   //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
 
-  componentDidMount() {      
-  //   const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;
-
-  //   //console.log(getProduct(product))
-
-  //   //testUtil('XXX')
-
-  //   client.setEndpoint("http://localhost:4000/graphql"); 
-
-  //   const query = new Query("product", true)
-  //  .addArgument("id", "String!", product)   
-  //  .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
-
-  //   client.post(query).then(result => {
-  //     this.setState({
-  //     product: JSON.parse(JSON.stringify(result.product)),
-  //     gallery: result.product.gallery,      
-  //     instock: result.product.inStock,
-  //     prices: result.product.prices.map(item => item.amount),
-  //     attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
-  //     });
-      // this.descrRef.current.innerHTML = this.props.savedState.product.description
-      // console.log(this.props.savedState.product.prices) 
-      //this.returnDescription();                       
-     //});     
+  componentDidMount() {
+      this.descrRef.current.innerHTML = this.props.savedState.product.description          
   }
 
   componentDidUpdate() {
-    this.descrRef.current.innerHTML = this.props.savedState.product.description
-    const x = this.props.savedState.product.prices ? this.props.savedState.product.prices[this.context.currencyNumber].amount : 'XXX'
-    console.log(x) 
+    this.descrRef.current.innerHTML = this.props.savedState.product.description    
   }
- 
-  // componentWillUnmount() {
-  //   this.props.setDefaultAttributes()
-  // }  
 
   render() {
     return (
@@ -115,11 +85,11 @@ class ProductInf extends React.Component {
 
                 <h4 className={styles.priceTitle}>Price:</h4>
 
-                <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.props.savedState.prices ? this.props.savedState.prices[this.context.currencyNumber].amount : '999'}</span></div>
+                <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.props.savedPrices[this.context.currencyNumber]}</span></div>
 
                 <div className={styles.addWrapper}>
                   <button onClick={() => {
-                    this.props.addToCart(this.state.instock, this.props.savedState.product.id, this.creatAttributeNameList(), this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedState.prices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
+                    this.props.addToCart(this.props.savedState.instock, this.props.savedState.product.id, this.creatAttributeNameList(), this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedPrices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
                   className={(this.props.savedState.instock ? styles.add : styles.inStockFalse)}>
                     <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
                   </button>

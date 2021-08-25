@@ -87,10 +87,7 @@ class Product extends React.Component {
       instock: result.product.inStock,
       prices: result.product.prices.map(item => item.amount),
       attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
-      });
-      //this.descrRef.current.innerHTML = this.state.product.description
-      //this.returnDescription();
-      //console.log(this.state.product.description)                       
+      });                           
      });
          
   }
@@ -107,31 +104,7 @@ class Product extends React.Component {
 
               <ProductImages gallery={this.state.gallery} currentProduct={this.props.currentProduct} savedProduct={this.props.match.params.id}/>
 
-              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} changeAttributes={this.props.changeAttributes}/>
-
-              {/* <div className={styles.prodWrapper}>
-                <h3 className={styles.title}>{this.state.product.brand}</h3>
-                <span className={styles.subtitle}>{this.state.product.name}</span>
-
-                {this.state.product.attributes ? this.returnAttributes(this.state.product.attributes) : ''}                
-
-                <h4 className={styles.priceTitle}>Price:</h4>
-
-                <div className={styles.prodPrice}><span className={styles.currencySimbol}>{this.context.currencySimbol}</span><span className={styles.currencyAmount}>{this.state.prices[this.context.currencyNumber]}</span></div>
-
-                <div className={styles.addWrapper}>
-                  <button onClick={() => {
-                    this.props.addToCart(this.state.instock, this.state.product.id, this.creatAttributeNameList(), this.state.product.attributes, this.state.attributes_1,  this.state.prices, this.state.gallery, this.state.product.name, this.state.product.brand);}}
-                  className={(this.state.instock ? styles.add : styles.inStockFalse)}>
-                    <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
-                  </button>
-
-                  <button onClick={() => this.signIn()} className={styles.signIn} style={this.props.displaySignIn === 'yes' ? {display: 'block'} : {display: 'none'}}>Press to sign in</button>
-                </div>              
-
-                <div ref={this.descrRef} className={styles.prodDescription}></div>
-
-              </div>               */}
+              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} savedPrices={JSON.parse(JSON.stringify(this.state.prices))} changeAttributes={this.props.changeAttributes} addToCart={this.props.addToCart}/>
             </div>              
           </div>
       </section>
