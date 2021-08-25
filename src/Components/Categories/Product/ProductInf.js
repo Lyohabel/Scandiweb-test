@@ -4,7 +4,7 @@ import * as styles from './Product.module.css';
 import OverallData from '../../../Context';
 import ProductAttrButtons from './ProductAttrButtons';
 //import getProduct from '../../../Queries/GetProduct';
-//import {testUtil} from '../../../Utils/TestUtil';
+import signIn from '../../../Utils/SignIn';
 //import returnDescription from '../../../Utils/ReturnDescription';
 class ProductInf extends React.Component { 
   constructor(props) {
@@ -22,10 +22,10 @@ class ProductInf extends React.Component {
     this.signIn = this.signIn.bind(this)     
   }  
 
-  signIn() {
-    document.cookie = 'login=user;'
-    this.props.setDisplaySignIn('no')
-  } 
+  // signIn() {
+  //   document.cookie = 'login=user;'
+  //   this.props.setDisplaySignIn('no')
+  // } 
 
   creatAttributeNameList() {
     if (!this.props.savedState.product.attributes[0]) return '';
@@ -64,14 +64,18 @@ class ProductInf extends React.Component {
     )    
   }
 
+  signIn = () => signIn.call(this)
+
   //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
 
   componentDidMount() {
-      this.descrRef.current.innerHTML = this.props.savedState.product.description          
+      this.descrRef.current.innerHTML = this.props.savedState.product.description
+      console.log(this.props.savedState.attributes)         
   }
 
   componentDidUpdate() {
-    this.descrRef.current.innerHTML = this.props.savedState.product.description    
+    this.descrRef.current.innerHTML = this.props.savedState.product.description
+    console.log(this.props.savedState.attributes)   
   }
 
   render() {

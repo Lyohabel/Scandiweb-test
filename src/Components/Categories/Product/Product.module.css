@@ -216,8 +216,7 @@
 }
 
 .signIn {
-    display: none;
-    visibility: hidden;
+    /* display: none;     */
     font-weight: 600;
     font-size: 16px;
     color: crimson;   
