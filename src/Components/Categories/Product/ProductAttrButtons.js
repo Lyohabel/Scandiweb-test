@@ -34,6 +34,11 @@ class ProductAttrButtons extends React.Component {
     return this.props.savedState.product.attributes[order].id;
   }
 
+  changeAttributeOrders(order, index) {
+    let list = this.props.attributeOrders;
+    list[order] = index;
+    this.props.changeAttributeOrders(list)
+  }
   // creatDefaultAttributesList() {
   //   if (!this.state.product.attributes[0]) return '';
   //   let list = [];
@@ -54,7 +59,7 @@ class ProductAttrButtons extends React.Component {
       }
       
       onClick={() => {this.markAttribute(item.value);        
-        this.props.changeAttributes(this.creatAttributeName(order), item.value, this.props.savedState.prices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand)
+        this.props.changeAttributes(this.creatAttributeName(order), item.value); this.changeAttributeOrders(order, index)
       }}
 
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`}}

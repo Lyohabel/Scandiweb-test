@@ -59,7 +59,7 @@ class Product extends React.Component {
 
               <ProductImages gallery={this.state.gallery} currentProduct={this.props.currentProduct} savedProduct={this.props.match.params.id}/>
 
-              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} savedPrices={JSON.parse(JSON.stringify(this.state.prices))} changeAttributes={this.props.changeAttributes} addToCart={this.props.addToCart} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn}/>
+              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} savedPrices={JSON.parse(JSON.stringify(this.state.prices))} changeAttributes={this.props.changeAttributes} addToCart={this.props.addToCart} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn}/>
             </div>              
           </div>
       </section>

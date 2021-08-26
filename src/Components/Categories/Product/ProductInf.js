@@ -36,6 +36,19 @@ class ProductInf extends React.Component {
     return list;
   }
 
+  creatAttributeOrdersList() {
+    if (!this.props.savedState.product.attributes) return '';
+    let list = [];
+    const attrLength = this.props.savedState.product.attributes.length
+    for (let i = 0; i < attrLength; i++) {
+      list.push(0)
+    }
+    this.props.changeAttributeOrders(list)
+    return list
+  }
+
+
+
   // creatDefaultAttributesList() {
   //   if (!this.state.product.attributes[0]) return '';
   //   let list = [];
@@ -46,16 +59,16 @@ class ProductInf extends React.Component {
   // }
 
   setAttributes(order) {
-    if (this.props.savedState.product.attributes.length < order + 1) return ''   
+    if (this.props.savedState.product.attributes.length < order + 1) return ''       
     return (
       <div>
-        <ProductAttrButtons savedState={JSON.parse(JSON.stringify(this.props.savedState))} order={order} btnStyle={this.props.savedState.product.attributes[order].id} changeAttributes={this.props.changeAttributes}/>
+        <ProductAttrButtons savedState={JSON.parse(JSON.stringify(this.props.savedState))} order={order} btnStyle={this.props.savedState.product.attributes[order].id} changeAttributes={this.props.changeAttributes} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders}/>
       </div>
       
     )    
   }
 
-  returnAttributes(arr) {
+  returnAttributes(arr) {       
     return arr && arr.map((item, index) =>
       <div key={item.id} className="attrWrapper">
         <h4 className={styles.sizeTitle}>{this.props.savedState.product.attributes[index] ? this.creatAttributeNameList()[index] : ''}</h4>
@@ -70,12 +83,27 @@ class ProductInf extends React.Component {
 
   componentDidMount() {
       this.descrRef.current.innerHTML = this.props.savedState.product.description
-      console.log(this.props.savedState.attributes)         
+      if (this.props.attributeOrders === '') {
+        this.creatAttributeOrdersList()
+        console.log(this.creatAttributeOrdersList())
+      }
+     //this.creatAttributeOrdersList()    
+      //console.log(this.creatAttributeOrdersList())         
   }
 
   componentDidUpdate() {
     this.descrRef.current.innerHTML = this.props.savedState.product.description
-    console.log(this.props.savedState.attributes)   
+    if (this.props.attributeOrders === '') {
+      this.creatAttributeOrdersList()
+      console.log(this.creatAttributeOrdersList())
+    }
+    
+    //this.creatAttributeOrdersList()
+    //console.log(this.creatAttributeOrdersList())   
+  }
+
+  componentWillUnmount() {
+    this.props.changeAttributeOrders('')
   }
 
   render() {
@@ -93,7 +121,7 @@ class ProductInf extends React.Component {
 
                 <div className={styles.addWrapper}>
                   <button onClick={() => {
-                    this.props.addToCart(this.props.savedState.instock, this.props.savedState.product.id, this.creatAttributeNameList(), this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedPrices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
+                    this.props.addToCart(this.props.savedState.instock, this.props.savedState.product.id, this.creatAttributeNameList(), this.props.attributeOrders, this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedPrices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
                   className={(this.props.savedState.instock ? styles.add : styles.inStockFalse)}>
                     <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
                   </button>

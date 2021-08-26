@@ -31,6 +31,7 @@ class App extends React.Component {
       currencies: '',
       currency: '',
       attrs: DEFAULT,
+      attributeOrders: '',
       position: ''         
   }
 
@@ -48,6 +49,7 @@ class App extends React.Component {
     this.setSavedHref = this.setSavedHref.bind(this);
     this.setCurrentProduct = this.setCurrentProduct.bind(this);
     this.changeAttributes = this.changeAttributes.bind(this);
+    this.changeAttributeOrders = this.changeAttributeOrders.bind(this);
     this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
     this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
   }
@@ -150,15 +152,19 @@ class App extends React.Component {
     return uniqueId
   }
 
-  changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
+  changeLocalStorage(id, attributeNames, attributeOrders, attributes, attributes_1, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
     const uniqueId = this.createUniqueId(prodName)
-    
-    const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrs) === JSON.stringify(this.state.attrs));
+    let indicator = 0
+    attributeOrders.forEach(element => {
+      indicator += element
+    });
+    //eslint-disable-next-line
+    const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrs) === JSON.stringify(this.state.attrs) || item.name === id && item.attrs === DEFAULT && indicator === 0);
     
     if (double === -1) {
-      jsonCart.push({uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
+      jsonCart.push({uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attrOrders: attributeOrders, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
     } else {
       jsonCart[double].amount++
       console.log(jsonCart[double].amount)
@@ -167,16 +173,16 @@ class App extends React.Component {
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
   }
 
-  addToCart(inStock, id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand) {
+  addToCart(inStock, id, attributeNames, attributeOrders, attributes, attributes_1, prices, gallery, prodName, brand) {
     if (this.checkForSignIn() !== 'login=user') {
       this.setDisplaySignIn('yes')
       return;
     } else if (inStock === true) {
         const uniqueId = this.createUniqueId(prodName)      
         if (window.localStorage.getItem('cart')) {
-          this.changeLocalStorage(id, attributeNames, attributes, attributes_1, prices, gallery, prodName, brand)
+          this.changeLocalStorage(id, attributeNames, attributeOrders, attributes, attributes_1, prices, gallery, prodName, brand)
           } else {
-          window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
+          window.localStorage.setItem('cart', JSON.stringify([{uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs, attrNames: attributeNames, attrOrders: attributeOrders, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand}]));
           }    
         
         let newCount = JSON.parse(window.localStorage.getItem('cart')).length;
@@ -215,6 +221,13 @@ class App extends React.Component {
     this.setState({
       attrs: newAttrs    
     })
+  }
+
+  changeAttributeOrders(arg) {
+    this.setState({
+      attributeOrders: arg   
+    })
+    console.log(this.state.attributeOrders)
   }
 
   setDefaultAttributes() {
@@ -282,7 +295,7 @@ class App extends React.Component {
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}
               </Route>
 
-              <Route path='/product/:id'>{({match}) => <Product match={match} currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}                
+              <Route path='/product/:id'>{({match}) => <Product match={match} currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} attributeOrders={this.state.attributeOrders} changeAttributeOrders={this.changeAttributeOrders} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}                
                 style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}                
               </Route>
 

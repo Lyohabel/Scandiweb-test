@@ -29,6 +29,16 @@ class Categ extends React.Component {
     return list;
   }
 
+  creatAttributeOrdersList(index) {
+    if (!this.state.currentCategoryData[index].attributes) return '';
+    let list = [];
+    const attrLength = this.state.currentCategoryData[index].attributes.length
+    for (let i = 0; i < attrLength; i++) {
+      list.push(0)
+    }
+    return list;
+  }
+
   createList(data) {    
     return data && data.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
@@ -46,7 +56,7 @@ class Categ extends React.Component {
 
         <div className={styles.prodAddWrapper}>
         <button onClick={() => {
-          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
+          this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), this.creatAttributeOrdersList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
           console.log(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand)
         }}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
