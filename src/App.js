@@ -155,13 +155,9 @@ class App extends React.Component {
   changeLocalStorage(id, attributeNames, attributeOrders, attributes, attributes_1, prices, gallery, prodName, brand) {
     const cart = window.localStorage.getItem('cart');    
     let jsonCart = JSON.parse(cart);
-    const uniqueId = this.createUniqueId(prodName)
-    let indicator = 0
-    attributeOrders.forEach(element => {
-      indicator += element
-    });
+    const uniqueId = this.createUniqueId(prodName)    
     //eslint-disable-next-line
-    const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrs) === JSON.stringify(this.state.attrs) || item.name === id && item.attrs === DEFAULT && indicator === 0);
+    const double = jsonCart.findIndex(item => item.name === id && JSON.stringify(item.attrOrders) === JSON.stringify(this.state.attributeOrders));
     
     if (double === -1) {
       jsonCart.push({uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attrOrders: attributeOrders, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
@@ -227,7 +223,6 @@ class App extends React.Component {
     this.setState({
       attributeOrders: arg   
     })
-    console.log(this.state.attributeOrders)
   }
 
   setDefaultAttributes() {

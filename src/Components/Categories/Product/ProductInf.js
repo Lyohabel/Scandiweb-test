@@ -20,12 +20,7 @@ class ProductInf extends React.Component {
       add: styles.add        
     }
     this.signIn = this.signIn.bind(this)     
-  }  
-
-  // signIn() {
-  //   document.cookie = 'login=user;'
-  //   this.props.setDisplaySignIn('no')
-  // } 
+  }
 
   creatAttributeNameList() {
     if (!this.props.savedState.product.attributes[0]) return '';
@@ -46,17 +41,6 @@ class ProductInf extends React.Component {
     this.props.changeAttributeOrders(list)
     return list
   }
-
-
-
-  // creatDefaultAttributesList() {
-  //   if (!this.state.product.attributes[0]) return '';
-  //   let list = [];
-  //   this.state.product.attributes.forEach(item => {
-  //     list.push(item.id);
-  //   });
-  //   return list;
-  // }
 
   setAttributes(order) {
     if (this.props.savedState.product.attributes.length < order + 1) return ''       
@@ -85,7 +69,6 @@ class ProductInf extends React.Component {
       this.descrRef.current.innerHTML = this.props.savedState.product.description
       if (this.props.attributeOrders === '') {
         this.creatAttributeOrdersList()
-        console.log(this.creatAttributeOrdersList())
       }
      //this.creatAttributeOrdersList()    
       //console.log(this.creatAttributeOrdersList())         
@@ -94,8 +77,7 @@ class ProductInf extends React.Component {
   componentDidUpdate() {
     this.descrRef.current.innerHTML = this.props.savedState.product.description
     if (this.props.attributeOrders === '') {
-      this.creatAttributeOrdersList()
-      console.log(this.creatAttributeOrdersList())
+      this.creatAttributeOrdersList()      
     }
     
     //this.creatAttributeOrdersList()
