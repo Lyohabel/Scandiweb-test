@@ -39,24 +39,30 @@ class ProductAttrButtons extends React.Component {
     list[order] = index;
     this.props.changeAttributeOrders(list)
   }
-  // creatDefaultAttributesList() {
-  //   if (!this.state.product.attributes[0]) return '';
-  //   let list = [];
-  //   this.state.product.attributes.forEach(item => {
-  //     list.push(item.id);
-  //   });
-  //   return list;
-  // }
+  
+  defineButtonClass(condition, index, item) {
+    switch(true) {  // eslint-disable-line
+      case (condition && (this.state.activeAttribute === item.value)): 
+        return (condition !== COLOR ? styles.sizeActive : styles.colorActive);
+      case (condition && (index === 0 && this.state.activeAttribute === '')): 
+        return (condition !== COLOR ? styles.sizeActive : styles.colorActive);
+
+      default: 
+        return (styles.size);      
+    }
+  }
 
   createButtons(btnStyle, order) {
     const attrs = JSON.parse(JSON.stringify(this.props.savedState.product.attributes[order].items)) 
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value} value={item.value}
-      className={(btnStyle !== COLOR) ? this.state.activeAttribute === item.value ? styles.sizeActive : 
-        index === 0 && this.state.activeAttribute === '' ? styles.sizeActive : styles.size :
-        this.state.activeAttribute === item.value ? styles.colorActive : 
-        index === 0 && this.state.activeAttribute === '' ? styles.colorActive : styles.size
-      }
+      className={this.defineButtonClass(btnStyle, index, item)}
+      
+      // {(btnStyle !== COLOR) ? this.state.activeAttribute === item.value ? styles.sizeActive : 
+      //   index === 0 && this.state.activeAttribute === '' ? styles.sizeActive : styles.size :
+      //   this.state.activeAttribute === item.value ? styles.colorActive : 
+      //   index === 0 && this.state.activeAttribute === '' ? styles.colorActive : styles.size
+      // }
       
       onClick={() => {this.markAttribute(item.value);        
         this.props.changeAttributes(this.creatAttributeName(order), item.value); this.changeAttributeOrders(order, index)

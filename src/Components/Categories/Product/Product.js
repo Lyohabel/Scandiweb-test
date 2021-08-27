@@ -1,9 +1,9 @@
 import React from 'react';
-import { client, Query} from "@tilework/opus";
+//import { client, Query} from "@tilework/opus";
 import * as styles from './Product.module.css';
 import ProductImages from './ProductImages';
 import ProductInf from './ProductInf';
-//import getProduct from '../../../Queries/GetProduct';
+import getProduct from '../../../Queries/GetProduct';
 //import returnDescription from '../../../Utils/ReturnDescription';
 class Product extends React.Component { 
   constructor(props) {
@@ -23,28 +23,19 @@ class Product extends React.Component {
 
   //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
 
-  componentDidMount() {      
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;
+  async componentDidMount() {      
+    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;   
 
-    //console.log(getProduct(product))
-    
-    client.setEndpoint("http://localhost:4000/graphql"); 
+    let result = await JSON.parse(JSON.stringify((await getProduct(product)).product))
 
-    const query = new Query("product", true)
-   .addArgument("id", "String!", product)   
-   .addFieldList(["id", "name", "inStock", "gallery", "description", "brand", "attributes {id, items {value, id}}", "prices {amount}"])
-
-    client.post(query).then(result => {
-      this.setState({
-      product: JSON.parse(JSON.stringify(result.product)),
-      gallery: result.product.gallery,      
-      instock: result.product.inStock,
-      prices: result.product.prices.map(item => item.amount),
-      attributes: JSON.parse(JSON.stringify(result.product.attributes)),
-      attributes_1: ((result.product.attributes[0]) ? JSON.parse(JSON.stringify(result.product.attributes[0].items)) : '')
+    this.setState({
+      product: result,
+      gallery: result.gallery,      
+      instock: result.inStock,
+      prices: result.prices.map(item => item.amount),
+      attributes: JSON.parse(JSON.stringify(result.attributes)),
+      attributes_1: ((result.attributes[0]) ? JSON.parse(JSON.stringify(result.attributes[0].items)) : '')
       });
-      //console.log(result)                           
-     });         
   }
  
   componentWillUnmount() {

@@ -57,7 +57,7 @@ class Categ extends React.Component {
         <div className={styles.prodAddWrapper}>
         <button onClick={() => {
           this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), this.creatAttributeOrdersList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
-          console.log(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand)
+          //console.log(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand)
         }}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
 

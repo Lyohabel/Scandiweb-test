@@ -108,27 +108,7 @@ class CartProduct extends React.Component {
     
     return attrs && attrs.map((item, index, array) =>
       <button id={index} key={item.value}
-      className={this.defineButtonClass(btnStyle, attrName, order, index, item)
-        // (btnStyle !== COLOR) ? 
-        // ((this.state[`activeAttribute_${order}`] === item.value) ? 
-        // this.state.sizeButton.b : 
-        // ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
-        // this.state.sizeButton.b : 
-        // ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
-        // this.state.sizeButton.b : 
-        // (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
-        // this.state.sizeButton.b :
-        // this.state.sizeButton.a))        
-        // :        
-        // ((this.state[`activeAttribute_${order}`] === item.value) ? 
-        // this.state.colorButton.b : 
-        // ((this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order) ? 
-        // this.state.colorButton.b :
-        // ((this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value)) ? 
-        // this.state.colorButton.b :
-        // (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === ''))) ? 
-        // this.state.colorButton.b :
-        // this.state.colorButton.a))
+      className={this.defineButtonClass(btnStyle, attrName, order, index, item)        
       }
       
       style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}

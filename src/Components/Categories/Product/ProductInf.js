@@ -63,7 +63,7 @@ class ProductInf extends React.Component {
 
   signIn = () => signIn.call(this)
 
-  //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
+  //returnDescription = (в пропсах - здесь аргс) => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
 
   componentDidMount() {
       this.descrRef.current.innerHTML = this.props.savedState.product.description
