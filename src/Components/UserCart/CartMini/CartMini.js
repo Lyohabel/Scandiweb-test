@@ -83,9 +83,11 @@ class CartMini extends React.Component { //
         <div className={styles.cartMini}>
           <div className={styles.cartTitle}>My bag, <span>{this.state.jsonCart.length}</span><span> items</span></div>
 
-          <ul className={styles.productList}>
-            {this.createCartMiniList(this.state.jsonCart)}
-          </ul>
+          <div className={styles.cartMiniListWrapper}>
+            <ul className={styles.productList}>
+              {this.createCartMiniList(this.state.jsonCart)}
+            </ul>
+          </div>          
 
           <div className={styles.prodSumm}>
             <h4>Total</h4>

@@ -4,9 +4,9 @@ import imgLogo from '../../Images/a-logo.png'
 import CartMini from '../UserCart/CartMini/CartMini';
 import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
-import {POPUP} from '../../CONST';
+//import {POPUP} from '../../CONST';
 
-class Nav extends React.Component {
+class Nav extends React.Component { //setPopUpPosition
   constructor(props) {
     super(props);
     this.popUpRef = React.createRef();
@@ -24,7 +24,7 @@ class Nav extends React.Component {
   }  
 
   showCartMini() {
-    this.props.setPopUpPosition(POPUP)   
+    //this.props.setPopUpPosition(POPUP)   
     this.setState({
       popUp: styles.popUp      
     })    
@@ -120,7 +120,7 @@ class Nav extends React.Component {
 
               <button style={btnClose === 'hidden' ? {display: 'none'} : {display: 'block'}} className={styles.closeMenu}>Click outside to close menu</button>                   
 
-              <div onClick= {(event) => this.closeMenu(event)} className={styles.menuWrapper}>
+              <div onClick= {(event) => this.closeMenu(event)} className={(this.state.menu === '' || this.state.menu === 'visible') ? styles.menuOpenWrapper : styles.menuWrapper}>
                 <ul ref={this.menuRef} className={styles.menu} style={menu === 'hidden' ? {display: 'none'} : {display: 'flex'}}>                
                   {this.createLinksList()}                
                 </ul>

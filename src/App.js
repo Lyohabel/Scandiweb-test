@@ -9,7 +9,7 @@ import Product from './Components/Categories/Product/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import FakeCart from './Components/UserCart/Cart/FakeCart';
 import OverallData from './Context';
-import {DEFAULT, POPUP} from './CONST';
+import {DEFAULT} from './CONST';
 class App extends React.Component { 
   constructor(props) {
     super(props);
@@ -32,14 +32,14 @@ class App extends React.Component {
       currency: '',
       attrs: DEFAULT,
       attributeOrders: '',
-      position: ''         
+      //position: ''         
   }
 
     this.addToCart = this.addToCart.bind(this); 
     this.checkForSignIn = this.checkForSignIn.bind(this);
     this.setDisplaySignIn = this.setDisplaySignIn.bind(this);
     this.createUniqueId = this.createUniqueId.bind(this);
-    this.setPopUpPosition = this.setPopUpPosition.bind(this);
+    //this.setPopUpPosition = this.setPopUpPosition.bind(this);
     this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
     this.setMiniCartChanged = this.setMiniCartChanged.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);
@@ -94,11 +94,11 @@ class App extends React.Component {
       });    
   }
 
-  setPopUpPosition(arg) {
-    this.setState({
-      position: arg                 
-      });
-  }
+  // setPopUpPosition(arg) {
+  //   this.setState({
+  //     position: arg                 
+  //     });
+  // }
 
   setCurrentProduct(prod) {      
     this.setState({
@@ -274,33 +274,40 @@ class App extends React.Component {
             }}>
 
             <Nav changeCurrency={this.changeCurrency} countCart={this.state.countCart}  showCartCount={this.showCartCount} displayCountCart={this.state.displayCountCart} startPage={this.state.StartPage} currentCategory={this.state.currentCategory} changeCurrentCategory={this.changeCurrentCategory} savedCategory={this.state.savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={this.state.savedHref}
-            setPopUpPosition={this.setPopUpPosition} 
+            //setPopUpPosition={this.setPopUpPosition} 
             miniCartChanged={this.state.miniCartChanged} 
             setMiniCartChanged={this.setMiniCartChanged}            
             miniCartProductChanged={this.state.miniCartProductChanged}
             setMiniCartProductChanged={this.setMiniCartProductChanged}
-            style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}/>          
+            //style={this.state.position === POPUP ? {position: 'fixed'} : {position: 'relative'}}
+            />          
             <Switch>
               <Route exact path='/'>
               <StartPage currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} changeStartPage={this.changeStartPage} startPage={this.state.startPage} setSavedCategory={this.setSavedCategory} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
-              style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
+              //style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}
+              />
               </Route>
 
               <Route exact path={`/categ/:categ`}>{({match}) => <Categ match={match} currentCategory={this.state.currentCategory} categoryChanged={this.state.categoryChanged} setSavedCategory={this.setSavedCategory} setDefaultCategoryChanged={this.setDefaultCategoryChanged} setCurrentProduct={this.setCurrentProduct} addToCart={this.addToCart} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}
-                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}
+                //style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}
+                />}
               </Route>
 
               <Route path='/product/:id'>{({match}) => <Product match={match} currentProduct={this.state.currentProduct} changeAttributes={this.changeAttributes} addToCart={this.addToCart} attributeOrders={this.state.attributeOrders} changeAttributeOrders={this.changeAttributeOrders} setDefaultAttributes={this.setDefaultAttributes} setDisplaySignIn={this.setDisplaySignIn} displaySignIn={this.state.displaySignIn}                
-                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>}                
+                //style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}
+                />}                
               </Route>
 
               <Route path='/cart'>
                 <Cart setCurrentProduct={this.setCurrentProduct} setMiniCartProductChanged={this.setMiniCartProductChanged}
-                style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
+                //style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}
+                />
               </Route>
 
               <Route path='/fake-cart'>
-                <FakeCart style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>
+                <FakeCart 
+                //style={this.state.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}
+                />
               </Route>
             </Switch>
           </OverallData.Provider>
