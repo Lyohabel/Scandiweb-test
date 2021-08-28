@@ -1,5 +1,5 @@
 import React from 'react';
-import { client, Query, Field } from "@tilework/opus";
+import getAllCategories from '../../../Queries/GetAllCategories';
 import getCategory from '../../../Queries/GetCategory';
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
@@ -58,7 +58,6 @@ class Categ extends React.PureComponent {
         <div className={styles.prodAddWrapper}>
         <button onClick={() => {
           this.props.addToCart(item.inStock, item.id, this.creatAttributeNameList(index), this.creatAttributeOrdersList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand);
-          //console.log(item.inStock, item.id, this.creatAttributeNameList(index), item.attributes, (item.attributes[0] ? item.attributes[0].items : ''), item.prices.map(item => item.amount), item.gallery, item.name, item.brand)
         }}
         className={(item.inStock ? styles.prodAdd : styles.inStockFalse)}><span className={styles.cartIcon}><span className={styles.redLine}></span></span></button>
 
@@ -68,57 +67,41 @@ class Categ extends React.PureComponent {
     )
   } 
   
-  async componentDidMount() {    
-
-    client.setEndpoint("http://localhost:4000/graphql");
+  async componentDidMount() {
     
     if (this.props.startPage && this.props.startPage === 'yes') {
-      const query = new Query("category", true)      
-      .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-  
-      client.post(query).then(result => {
-        this.setState({       
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
-        });      
-      });
+
+      const resultAll = await JSON.parse(JSON.stringify((await getAllCategories())))  
+      
+      this.setState({       
+        currentCategoryData: JSON.parse(JSON.stringify(resultAll.category.products))
+      });             
+      
     } else {
         const category = this.props.currentCategory === '' ? this.props.match.params.categ : this.props.currentCategory
+        
         this.props.setSavedCategory(category)
 
         const resultCategory = await JSON.parse(JSON.stringify((await getCategory(category))))
-        console.log(resultCategory)
-
-        const query = new Query("category", true)
-          .addArgument("input", "CategoryInput", { title : category})
-          .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-      
-        client.post(query).then(result => {
-          this.setState({        
-            currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
-          });
-          console.log(result)      
-        });
+        
+        this.setState({        
+          currentCategoryData: JSON.parse(JSON.stringify(resultCategory.category.products))
+        });          
       }   
   }
 
-  componentDidUpdate() {    
+  async componentDidUpdate() {    
     if (this.props.categoryChanged !== 'no') {
-      client.setEndpoint("http://localhost:4000/graphql");
 
     const category = this.props.currentCategory
 
-      const query = new Query("category", true)
-        .addArgument("input", "CategoryInput", { title : category})
-        .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes {id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
-      
-      client.post(query).then(result => {
-        this.setState({       
-          currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
-        });
-        this.props.setDefaultCategoryChanged()                   
-      });
-    }
+    const resultCategory = await JSON.parse(JSON.stringify((await getCategory(category))))
        
+      this.setState({       
+        currentCategoryData: JSON.parse(JSON.stringify(resultCategory.category.products))
+      });
+      this.props.setDefaultCategoryChanged()
+    }
   }
   
   componentWillUnmount() {
