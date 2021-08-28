@@ -1,5 +1,6 @@
 import React from 'react';
 import { client, Query, Field } from "@tilework/opus";
+import getCategory from '../../../Queries/GetCategory';
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './Categ.module.css';
@@ -67,7 +68,8 @@ class Categ extends React.PureComponent {
     )
   } 
   
-  componentDidMount() { 
+  async componentDidMount() {    
+
     client.setEndpoint("http://localhost:4000/graphql");
     
     if (this.props.startPage && this.props.startPage === 'yes') {
@@ -83,6 +85,9 @@ class Categ extends React.PureComponent {
         const category = this.props.currentCategory === '' ? this.props.match.params.categ : this.props.currentCategory
         this.props.setSavedCategory(category)
 
+        const resultCategory = await JSON.parse(JSON.stringify((await getCategory(category))))
+        console.log(resultCategory)
+
         const query = new Query("category", true)
           .addArgument("input", "CategoryInput", { title : category})
           .addField(new Field("products", arguments.title, true).addFieldList(["id", "name", "brand", "attributes{id, items{value, id}}", "inStock", "gallery", "prices{amount}"]))
@@ -90,7 +95,8 @@ class Categ extends React.PureComponent {
         client.post(query).then(result => {
           this.setState({        
             currentCategoryData: JSON.parse(JSON.stringify(result.category.products))
-          });      
+          });
+          console.log(result)      
         });
       }   
   }
