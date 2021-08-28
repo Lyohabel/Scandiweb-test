@@ -1,6 +1,6 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom'; 
-import { client, Query} from "@tilework/opus";
+import {NavLink} from 'react-router-dom';
+import checkForInStock from '../../../Queries/CheckForInStock';
 import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
@@ -171,7 +171,7 @@ class CartProduct extends React.PureComponent {
       }        
   }
 
-  changeProductAmount(sign) {
+  async changeProductAmount(sign) {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
@@ -182,23 +182,19 @@ class CartProduct extends React.PureComponent {
 
     if (sign === 'plus') {
       const name = this.props.name
-      client.setEndpoint("http://localhost:4000/graphql");
-      const queryInStock = new Query("product", true) // checking for inStock  
-        .addArgument("id", "String!", name)   
-        .addField("inStock")
+      const inStock = await JSON.parse(JSON.stringify((await checkForInStock(name))))
 
-      client.post(queryInStock).then(result => {
-        if (result.product.inStock !== true) return ''        
-          else {          
-            const newAmount = productAmount + 1
-            this.setState({
-              productAmount: newAmount
-            })
-          jsonCart[x].amount = newAmount
-          window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-          this.props.setMiniCartProductChanged('yes')
-          } 
-      })
+      if (inStock.product.inStock !== true) return ''        
+      else {          
+        const newAmount = productAmount + 1
+        this.setState({
+          productAmount: newAmount
+        })
+        jsonCart[x].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        this.props.setMiniCartProductChanged('yes')
+      } 
+      
     } else if (sign === 'minus' && productAmount > 0){
         const newAmount = productAmount - 1
         this.setState({
@@ -218,27 +214,14 @@ class CartProduct extends React.PureComponent {
     let x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
     const product = jsonCart[x]
     const jsonPrices = JSON.parse(cart)[x].prices
-    const gallery = JSON.parse(cart)[x].gallery
+    const gallery = JSON.parse(cart)[x].gallery    
     
-    const name = this.props.name
-
-    client.setEndpoint("http://localhost:4000/graphql");
-
-    const queryInStock = new Query("product", true) // checking for inStock  
-      .addArgument("id", "String!", name)   
-      .addField("inStock")
-
-    client.post(queryInStock).then(result => {
-      if (result.product.inStock !== true) return ''
-        else {
-          this.setState({
-            jsonCart: JSON.parse(JSON.stringify(product)),
-            jsonPrices: jsonPrices,
-            gallery: gallery,
-            productAmount: product.amount
-          })
-        }
-    })
+    this.setState({
+      jsonCart: JSON.parse(JSON.stringify(product)),
+      jsonPrices: jsonPrices,
+      gallery: gallery,
+      productAmount: product.amount
+    })       
   }
 
   render() {

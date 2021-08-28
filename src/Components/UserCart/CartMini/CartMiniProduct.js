@@ -1,5 +1,5 @@
 import React from 'react';
-import { client, Query} from "@tilework/opus";
+import checkForInStock from '../../../Queries/CheckForInStock';
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
 class CartMiniProduct extends React.PureComponent { // 
@@ -16,7 +16,7 @@ class CartMiniProduct extends React.PureComponent { //
     }
   }
 
-  changeProductAmount(sign, uniqueId) {  
+  async changeProductAmount(sign, uniqueId) {  
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');    
@@ -26,23 +26,19 @@ class CartMiniProduct extends React.PureComponent { //
 
     if (sign === 'plus') {
       const name = this.props.name
-      client.setEndpoint("http://localhost:4000/graphql");
-      const queryInStock = new Query("product", true) // checking for inStock  
-        .addArgument("id", "String!", name)   
-        .addField("inStock")
+      const inStock = await JSON.parse(JSON.stringify((await checkForInStock(name))))
 
-      client.post(queryInStock).then(result => {
-        if (result.product.inStock !== true) return ''        
-          else {       
-            const newAmount = productAmount + 1
-            this.setState({
-              productAmount: newAmount
-            })
-            jsonCart[x].amount = newAmount
-            window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-            this.props.setMiniCartProductChanged('yes')
-          } 
-      })
+      if (inStock.product.inStock !== true) return ''        
+      else {       
+        const newAmount = productAmount + 1
+        this.setState({
+          productAmount: newAmount
+        })
+            
+        jsonCart[x].amount = newAmount
+        window.localStorage.setItem('cart', JSON.stringify(jsonCart));
+        this.props.setMiniCartProductChanged('yes')
+      }      
     } else if (sign === 'minus' && productAmount > 0){
         const newAmount = productAmount - 1
         this.setState({
