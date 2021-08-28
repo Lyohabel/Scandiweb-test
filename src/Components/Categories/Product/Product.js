@@ -26,7 +26,7 @@ class Product extends React.PureComponent {
   async componentDidMount() {      
     const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;   
 
-    let result = await JSON.parse(JSON.stringify((await getProduct(product)).product))
+    const result = await JSON.parse(JSON.stringify((await getProduct(product)).product))
 
     this.setState({
       product: result,
