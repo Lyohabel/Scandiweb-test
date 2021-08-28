@@ -1,7 +1,7 @@
 import React from 'react';
 import * as styles from './Product.module.css';
 
-class ProductImages extends React.Component { 
+class ProductImages extends React.PureComponent { 
   constructor(props) {
     super(props);    
     this.state = {

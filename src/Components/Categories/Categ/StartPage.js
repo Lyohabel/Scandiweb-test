@@ -2,7 +2,7 @@ import React from 'react';
 import Categ from './Categ';
 import {POPUP} from '../../../CONST';
 
-class StartPage extends React.Component { // eslint-disable-next-line 
+class StartPage extends React.PureComponent { // eslint-disable-next-line 
     constructor(props) { 
       super(props);  
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import OverallData from '../../../Context';
 import * as styles from './Cart.module.css';
 import CartProduct from './CartProduct';
-class Cart extends React.Component {
+class Cart extends React.PureComponent {
   constructor(props) { 
     super(props);
     this.state = {

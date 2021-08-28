@@ -4,7 +4,7 @@ import OverallData from '../../../Context';
 import * as styles from './ProductAttrButtons.module.css'
 import {COLOR} from '../../../CONST';
 
-class ProductAttrButtons extends React.Component { 
+class ProductAttrButtons extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();

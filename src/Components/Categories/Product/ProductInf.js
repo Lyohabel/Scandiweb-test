@@ -6,7 +6,7 @@ import ProductAttrButtons from './ProductAttrButtons';
 //import getProduct from '../../../Queries/GetProduct';
 import signIn from '../../../Utils/SignIn';
 //import returnDescription from '../../../Utils/ReturnDescription';
-class ProductInf extends React.Component { 
+class ProductInf extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();

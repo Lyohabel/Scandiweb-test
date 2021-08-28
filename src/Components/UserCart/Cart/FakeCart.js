@@ -3,7 +3,7 @@ import OverallData from '../../../Context';
 import * as styles from './Cart.module.css';
 import FakeCartProduct from './CartProduct';
 
-class FakeCart extends React.Component {
+class FakeCart extends React.PureComponent {
   constructor(props) { 
     super(props);
     this.state = {

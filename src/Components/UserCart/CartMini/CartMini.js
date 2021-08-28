@@ -4,7 +4,7 @@ import OverallData from '../../../Context';
 import * as styles from './CartMini.module.css';
 import CartMiniProduct from './CartMiniProduct';
 
-class CartMini extends React.Component { //
+class CartMini extends React.PureComponent {
   constructor(props) { 
     super(props);
     this.state = {

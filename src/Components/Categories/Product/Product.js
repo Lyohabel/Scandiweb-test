@@ -5,7 +5,7 @@ import ProductImages from './ProductImages';
 import ProductInf from './ProductInf';
 import getProduct from '../../../Queries/GetProduct';
 //import returnDescription from '../../../Utils/ReturnDescription';
-class Product extends React.Component { 
+class Product extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();

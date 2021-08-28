@@ -6,7 +6,7 @@ import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
 //import {POPUP} from '../../CONST';
 
-class Nav extends React.Component { //setPopUpPosition
+class Nav extends React.PureComponent { //setPopUpPosition
   constructor(props) {
     super(props);
     this.popUpRef = React.createRef();

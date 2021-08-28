@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './Categ.module.css';
 
-class Categ extends React.Component {
+class Categ extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {   

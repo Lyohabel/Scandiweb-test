@@ -2,7 +2,7 @@ import React from 'react';
 import { client, Query} from "@tilework/opus";
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
-class CartMiniProduct extends React.Component { // 
+class CartMiniProduct extends React.PureComponent { // 
   constructor(props) { 
     super(props);
     this.state = {
@@ -41,7 +41,6 @@ class CartMiniProduct extends React.Component { //
             jsonCart[x].amount = newAmount
             window.localStorage.setItem('cart', JSON.stringify(jsonCart));
             this.props.setMiniCartProductChanged('yes')
-            //this.props.setMiniCartChanged('yes')
           } 
       })
     } else if (sign === 'minus' && productAmount > 0){
@@ -93,8 +92,7 @@ class CartMiniProduct extends React.Component { //
     })      
   } 
 
-  componentDidUpdate() {     
-    if (window.localStorage.getItem('cart') && this.props.miniCartProductChanged !== 'no') {
+  componentDidUpdate() {
       const cart = window.localStorage.getItem('cart');
       const jsonCart = JSON.parse(cart)
 
@@ -105,8 +103,6 @@ class CartMiniProduct extends React.Component { //
       this.setState({
         productAmount: newAmount
         })
-        this.props.setMiniCartProductChanged('no')
-    } 
   } 
 
   render() { 

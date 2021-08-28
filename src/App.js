@@ -10,7 +10,7 @@ import Cart from './Components/UserCart/Cart/Cart';
 import FakeCart from './Components/UserCart/Cart/FakeCart';
 import OverallData from './Context';
 import {DEFAULT} from './CONST';
-class App extends React.Component { 
+class App extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.state = {      

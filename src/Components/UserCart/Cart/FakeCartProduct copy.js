@@ -4,7 +4,7 @@ import OverallData from '../../../Context';
 import * as styles from './CartProduct.module.css'
 import {COLOR, DEFAULT} from '../../../CONST';
 
-class FakeCartProduct extends React.Component {
+class FakeCartProduct extends React.PureComponent {
   constructor(props) {  
     super(props);
     this.state = {
