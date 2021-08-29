@@ -2,8 +2,8 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import checkForInStock from '../../../Queries/CheckForInStock';
 import OverallData from '../../../Context';
-import * as styles from './CartProduct.module.css'
-import {COLOR, DEFAULT} from '../../../CONST';
+import * as styles from './CartProduct.module.css';
+import ProductAttrButtons from '../../../Elements/AttrButtons/ProductAttrButtons';
 
 class CartProduct extends React.PureComponent {
   constructor(props) {  
@@ -12,118 +12,20 @@ class CartProduct extends React.PureComponent {
       jsonCart: '',
       jsonPrices: '',
       gallery: '',
-
-      activeAttribute_0: '',
-      activeAttribute_1: '',
-      activeAttribute_2: '',
-      activeAttribute_3: '', // fallback unusing property
-      activeAttribute_4: '', // fallback unusing property
-
-      defaultActiveAttribute_0: '',
-      defaultActiveAttribute_1: '',
-      defaultActiveAttribute_2: '',
-      defaultActiveAttribute_3: '', // fallback unusing property
-      defaultActiveAttribute_4: '', // fallback unusing property
-
       sliderDisplayLeft: styles.sliderDisplayLeft,
       sliderDisplayRight: styles.sliderDisplayRight,
       imgStatus: 0,
-
-      sizeButton: {
-        a : styles.size,
-        b : styles.sizeActive
-      },
-
-      colorButton: {
-        a : styles.color,
-        b : styles.colorActive
-      },
       productAmount: ''
-    }   
-    
-    this.addAttrToCart = this.addAttrToCart.bind(this)
-    this.setAttributes = this.setAttributes.bind(this)
-    this.defineButtonClass = this.defineButtonClass.bind(this)
-  }
-
-  addAttrToCart(attr, value) {
-    if (!window.localStorage.getItem('cart')) return;
-
-    const cart = window.localStorage.getItem('cart');    
-    let jsonCart = JSON.parse(cart);
-    const x = jsonCart.findIndex(item => item.uniqueId === this.props.id);    
-    const key = attr.toLowerCase()
-    let newAttr = {}
-    newAttr[key] = value
-
-    if (this.state.jsonCart.attrs === DEFAULT) {
-      jsonCart[x].attrs = [newAttr]
-    } else {
-      let y = jsonCart[x].attrs.findIndex(item => JSON.stringify(item).includes(key) === true)
-      if(y !== -1) jsonCart[x].attrs.splice(y, 1)
-      jsonCart[x].attrs.push(newAttr)
-      }
-     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
-  }
-
-  markAttribute(value, order) {
-    this.setState({
-      ['defaultActiveAttribute_' + order]: order,    
-      ['activeAttribute_' + order]: value
-    });
-  } 
-
-  findAttrIndex(arr, name) {
-    let ind = ''
-    arr.forEach((element, index)=> {
-      let y = JSON.stringify(element)
-      let x = y.substring(1).split(':')[0]        
-      if (x === JSON.stringify(name)) ind = index
-    });
-    return ind
-  }
-
-  defineButtonClass(condition, attrName, order, index, item) {
-    switch(true) {  // eslint-disable-line
-      case (condition && (this.state[`activeAttribute_${order}`] === item.value)): 
-        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
-      case (condition && (this.state.jsonCart.attrs === DEFAULT && index === 0 && this.state[`defaultActiveAttribute_${order}`] !== order)): 
-        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
-
-      case (condition && ((this.state.jsonCart.attrs !== DEFAULT && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)] && this.state[`defaultActiveAttribute_${order}`] !== order && this.state.jsonCart.attrs[this.findAttrIndex(this.state.jsonCart.attrs, attrName)][`${attrName}`] === item.value))): 
-        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
-
-      case (condition && (((index === 0 && this.state.jsonCart.attrs !== DEFAULT && this.state[`defaultActiveAttribute_${order}`] !== order && this.findAttrIndex(this.state.jsonCart.attrs, attrName) === '')))): 
-        return (condition !== COLOR ? this.state.sizeButton.b : this.state.colorButton.b);
-
-        default: 
-        return (condition !== COLOR ? this.state.sizeButton.a : this.state.colorButton.a);      
     }
+    this.setAttributes = this.setAttributes.bind(this)
   }
   
-
-  createButtons(attrs, btnStyle, order) {
-    const attributeName = this.state.jsonCart.attrNames[order]
-    const attrName = attributeName ? attributeName.toLowerCase() : ''   
-    
-    return attrs && attrs.map((item, index, array) =>
-      <button id={index} key={item.value}
-      className={this.defineButtonClass(btnStyle, attrName, order, index, item)        
-      }
-      
-      style={btnStyle !== COLOR ? {width: `calc(95% / ${array.length})`} : {backgroundColor: item.value, width: `calc(95% / ${array.length})`, color: (item.id === 'Black' || item.id === 'Blue') ? '#fff' : '#1D1F22'}}
-      
-      onClick={() => {this.markAttribute(item.value, order); this.addAttrToCart(this.state.jsonCart.attrNames[order], item.value, );}}> 
-        {btnStyle !== COLOR ? item.value : ''}      
-      <span className={styles.displayValue}>{attributeName}</span>
-      </button>    
-    )
-  }
-
   setAttributes(order) { 
     if (!this.state.jsonCart.attributes || this.state.jsonCart.attributes.length < order + 1) return ''   
-    return (      
-        this.createButtons(this.state.jsonCart.attributes[order].items, this.state.jsonCart.attributes[order].id, order)      
+    return (
+      <div>       
+        <ProductAttrButtons cartProduct={'yes'} savedState={JSON.parse(JSON.stringify(this.state.jsonCart))} btnStyle={this.state.jsonCart.attributes[order].id} order={order} id={this.props.id} />
+      </div>
     )    
   }
 
@@ -137,7 +39,7 @@ class CartProduct extends React.PureComponent {
 
   creatGallery() {
     const gl = this.state.jsonCart.gallery;
-    const id = this.state.jsonCart.name    
+    const id = this.state.jsonCart.name       
     
     return gl && gl.map((item, index, array) =>
       (array.length === 1)
@@ -206,13 +108,13 @@ class CartProduct extends React.PureComponent {
       } 
   }
   
-  componentDidMount() {
+  componentDidMount() {    
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
     const jsonCart = JSON.parse(cart)
     let x = jsonCart.findIndex(item => item.uniqueId === this.props.id);
-    const product = jsonCart[x]
+    const product = JSON.parse(JSON.stringify(jsonCart[x]))
     const jsonPrices = JSON.parse(cart)[x].prices
     const gallery = JSON.parse(cart)[x].gallery    
     

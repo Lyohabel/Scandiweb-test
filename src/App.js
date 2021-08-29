@@ -210,6 +210,7 @@ class App extends React.PureComponent {
     this.setState({
       attrs: newAttrs    
     })
+    //console.log(this.state.attrs)
   }
 
   changeAttributeOrders(arg) {

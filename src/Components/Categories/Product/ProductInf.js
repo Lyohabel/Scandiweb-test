@@ -1,24 +1,14 @@
 import React from 'react';
-//import { client, Query} from "@tilework/opus";
 import * as styles from './Product.module.css';
 import OverallData from '../../../Context';
-import ProductAttrButtons from './ProductAttrButtons';
-//import getProduct from '../../../Queries/GetProduct';
+import ProductAttrButtons from '../../../Elements/AttrButtons/ProductAttrButtons';
 import signIn from '../../../Utils/SignIn';
 //import returnDescription from '../../../Utils/ReturnDescription';
 class ProductInf extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();
-    this.state = {      
-      product: '',
-      gallery: '',     
-      prices: '',
-      instok: '',
-      attributes_1: '',
-      productAdded: 'no',
-      add: styles.add        
-    }
+
     this.signIn = this.signIn.bind(this)     
   }
 
@@ -46,9 +36,8 @@ class ProductInf extends React.PureComponent {
     if (this.props.savedState.product.attributes.length < order + 1) return ''       
     return (
       <div>
-        <ProductAttrButtons savedState={JSON.parse(JSON.stringify(this.props.savedState))} order={order} btnStyle={this.props.savedState.product.attributes[order].id} changeAttributes={this.props.changeAttributes} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders}/>
-      </div>
-      
+        <ProductAttrButtons savedState={JSON.parse(JSON.stringify(this.props.savedState.product))} order={order} btnStyle={this.props.savedState.product.attributes[order].id} changeAttributes={this.props.changeAttributes} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders}/>
+      </div>      
     )    
   }
 
@@ -69,9 +58,7 @@ class ProductInf extends React.PureComponent {
       this.descrRef.current.innerHTML = this.props.savedState.product.description
       if (this.props.attributeOrders === '') {
         this.creatAttributeOrdersList()
-      }
-     //this.creatAttributeOrdersList()    
-      //console.log(this.creatAttributeOrdersList())         
+      }         
   }
 
   componentDidUpdate() {
@@ -79,9 +66,6 @@ class ProductInf extends React.PureComponent {
     if (this.props.attributeOrders === '') {
       this.creatAttributeOrdersList()      
     }
-    
-    //this.creatAttributeOrdersList()
-    //console.log(this.creatAttributeOrdersList())   
   }
 
   componentWillUnmount() {
