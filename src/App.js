@@ -3,7 +3,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import getCategoriesList from './Queries/GetCategoriesList';
 import getCurrencies from './Queries/GetCarrencies';
 import './App.css';
-import Nav from './Components/Nav/Nav';
+import Nav from './Components/Nav';
 import Categ from './Components/Categories/Categ/Categ';
 import StartPage from './Components/Categories/Categ/StartPage';
 import Product from './Components/Categories/Product/Product';
