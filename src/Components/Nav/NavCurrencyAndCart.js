@@ -2,17 +2,14 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
+import linkOff from '../../Utils/LinkOff';
 
 class NavCarrencyAndCart extends React.PureComponent {
   constructor(props) { // eslint-disable-line
     super(props);
   }
 
-  linkOff(event) {
-    if (this.props.savedHref !== '/cart') { // eslint-disable-next-line 
-      event. preventDefault() 
-    }     
-  }
+  linkOff = (event) => linkOff.call(this, event)
 
   showCurrencySimbol(index) {
     switch(this.context.currencies[index]) {  // eslint-disable-line

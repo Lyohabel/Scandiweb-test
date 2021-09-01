@@ -6,7 +6,7 @@ import './App.css';
 import Nav from './Components/Nav';
 import Categ from './Components/Categories/Categ/Categ';
 import StartPage from './Components/Categories/Categ/StartPage';
-import Product from './Components/Categories/Product/Product';
+import Product from './Components/Categories/Product';
 import Cart from './Components/UserCart/Cart/Cart';
 import FakeCart from './Components/UserCart/Cart/FakeCart';
 import OverallData from './Context';

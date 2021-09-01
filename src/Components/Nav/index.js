@@ -6,7 +6,6 @@ import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
 import NavCategories from './NavCategories';
 import NavCarrencyAndCart from './NavCurrencyAndCart';
-
 class Nav extends React.PureComponent { //setPopUpPosition
   constructor(props) {
     super(props);
@@ -32,7 +31,7 @@ class Nav extends React.PureComponent { //setPopUpPosition
     this.setState({        
       popUp: styles.hidden      
     })    
-  }
+  }  
 
   hideCartMini_2(event) {
     if (this.popUpRef.current && !this.popUpRef.current.contains(event.target)) {
@@ -40,13 +39,7 @@ class Nav extends React.PureComponent { //setPopUpPosition
         popUp: styles.hidden      
       })
     }
-  }
-
-  linkOff(event) {
-    if (this.props.savedHref !== '/cart') { // eslint-disable-next-line 
-      event. preventDefault() 
-    }     
-  }
+  } 
 
   markActive(category) {
     this.setState({

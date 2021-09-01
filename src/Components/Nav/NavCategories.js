@@ -15,7 +15,7 @@ class NavCategories extends React.PureComponent {
     }   
   } 
 
-  createLinksList() {
+  createLinksList() { // ????????????????????
     const {category, markActive, savedCategory, startPage, changeCurrentCategory} = this.props
     return this.context.categoriesList && this.context.categoriesList.map(item => // eslint-disable-next-line
       <li onClick={() => markActive(item.category)} className={(category === item.category || category === '' && savedCategory === item.category && startPage !== 'yes') ? styles.active : styles.menuItem} key={item.category}>
