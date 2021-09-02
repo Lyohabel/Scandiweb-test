@@ -1,5 +1,6 @@
 import React from 'react';
 import * as styles from './Product.module.css';
+import PopUp from '../../../Elements/PopUp';
 
 class ProductImages extends React.PureComponent { 
   constructor(props) {
@@ -7,7 +8,8 @@ class ProductImages extends React.PureComponent {
     this.state = {
       bigImage: '',
       imageIndex: 0    
-    }         
+    }
+    this.setBigImage = this.setBigImage.bind(this)         
   }
 
   setBigImage(arg) {
@@ -45,15 +47,18 @@ class ProductImages extends React.PureComponent {
         <div className={styles.galleryWrapper}>
           <ul className={styles.galleryList}>
             {this.creatGallery()}
-          </ul>
+          </ul>        
 
-          <div className={this.state.bigImage === 'main' ? styles.mainImgBig : styles.imgProd}>
+          <div className={styles.imgProd} style={this.state.bigImage === 'main' ? {display: 'none'} : {display: 'block'}}>
             <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === 'main' ? {display: 'block'} : {display: 'none'}}>&times;</button>
             <img onClick={() => this.setBigImage('main')} src={this.props.gallery[this.state.imageIndex]} alt="#"/>
           </div>
+
+          <PopUp img={this.props.gallery[this.state.imageIndex]} style={this.state.bigImage === 'main' ? {display: 'block'} : {display: 'none'}} bigImage={this.state.bigImage} setBigImage={this.setBigImage}/>
+
         </div>
       </section>
-    );
+    ); // {this.state.bigImage === 'main' ? styles.mainImgBig : 
   } 
 }
 
