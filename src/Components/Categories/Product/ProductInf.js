@@ -35,7 +35,7 @@ class ProductInf extends React.PureComponent {
   setAttributes(order) {
     if (this.props.savedState.product.attributes.length < order + 1) return ''       
     return (
-      <div>
+      <div className={styles.attrButtonsWrapper}>
         <ProductAttrButtons savedState={JSON.parse(JSON.stringify(this.props.savedState.product))} order={order} btnStyle={this.props.savedState.product.attributes[order].id} changeAttributes={this.props.changeAttributes} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders}/>
       </div>      
     )    

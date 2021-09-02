@@ -23,7 +23,7 @@ class CartProduct extends React.PureComponent {
   setAttributes(order) { 
     if (!this.state.jsonCart.attributes || this.state.jsonCart.attributes.length < order + 1) return ''   
     return (
-      <div>       
+      <div className={styles.attrButtonsWrapper}>       
         <ProductAttrButtons cartProduct={'yes'} savedState={JSON.parse(JSON.stringify(this.state.jsonCart))} btnStyle={this.state.jsonCart.attributes[order].id} order={order} id={this.props.id} />
       </div>
     )    
@@ -130,7 +130,7 @@ class CartProduct extends React.PureComponent {
     return (
       <section>
         <span className={styles.cartLine}></span>     
-        <div className={styles.cartWrapper}>
+        <div className={styles.cartProdWrapper}>
           <div className={styles.prodInf}>
             <div className={styles.prodInfWrapper}>
               <h4 className={styles.cartItemTitle}>{this.state.jsonCart.brand}</h4>

@@ -1,4 +1,4 @@
-.cartWrapper {    
+.cartProdWrapper {    
     display: flex;
     justify-content: space-between;
     color: #26292e;
@@ -50,12 +50,14 @@
 }
 
 .attributeTypeWrapper {
-    width: 300px;
+    /* width: 300px; */
     display: flex;
     margin-bottom: 10px;   
 }
 
-
+.attrButtonsWrapper {
+    max-width: 290px;
+}
 
 .size {    
     height: 45px;
@@ -232,14 +234,18 @@
 }
 
 @media screen and (max-width: 600px) {
-    .attributeTypeWrapper {
+    /* .attributeTypeWrapper {
        width: 250px;
-    }
+    } */
 }
 
 @media screen and (max-width: 480px) {
-    .attributeTypeWrapper {
-       width: 200px;
+    .cartProdWrapper {
+        flex-direction: column;
+    }
+
+    .prodImage {
+        justify-content: space-between;
     }
 }
 
@@ -247,9 +253,6 @@
     .cartItemTitle,
     .cartItemSubtitle {
         font-size: 22px;
-    }
-    .attributeTypeWrapper {
-       width: 150px;
     }
 
     .color:not(:last-child),
@@ -260,20 +263,21 @@
     }
 }
 
-@media screen and (max-width: 375px) {
-    .cartWrapper {
-        flex-direction: column;
-    }
+@media screen and (max-width: 375px) {    
+    .cartItemTitle,
+    .cartItemSubtitle {
+        font-size: 24px;
+    }    
+}
+
+@media screen and (max-width: 320px) {    
     .cartItemTitle,
     .cartItemSubtitle {
         font-size: 24px;
     }
-    .attributeTypeWrapper {
-       width: 200px;
-    }
-
-    .prodImage {
-        justify-content: space-between;
+    
+    .attrButtonsWrapper {
+        max-width: 250px;
     }
 }
 

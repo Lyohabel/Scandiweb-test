@@ -1,13 +1,15 @@
 .popUp {
     position: absolute;
     width: 80vw;
-    padding: 10%;
+    height: 100vh;
+    padding: 0 10%;
+    padding-top: 10%;
     top: 0;
     left: 0;   
     background-color: rgba(206, 209, 202, 0.3);
     z-index: 3; 
 }
 
-.popUp > img {
+.innerPopUp, .innerPopUp > img {
     width: 100%;
 }

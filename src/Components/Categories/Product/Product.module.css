@@ -76,7 +76,8 @@
 
 .prodWrapper {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
+    margin: 0;    
 }
 
 .title {
@@ -108,7 +109,11 @@
     justify-content: space-between;
 }
 
-.size {    
+.attrButtonsWrapper {
+    max-width: 100%;
+}
+
+/* .size {    
     height: 45px;
     font-family: Source Sans Pro;
     font-size: 16px;
@@ -173,7 +178,7 @@
 .size:hover .displayValue,
 .sizeActive:hover .displayValue {
     display: block;
-}
+} */
 
 .priceTitle {
     display: block;
@@ -377,10 +382,14 @@
         width: 300px;              
     }
 
+    .prodWrapper {
+        margin-left: 2%;
+    }
+
     .chooseSize, .add,
     .inStockFalse,
     .prodDescription {
-        width: 270px;
+        width: 100%;
     }
 }
 
@@ -392,6 +401,10 @@
     .chooseSize, .add,
     .inStockFalse,
     .prodDescription {
-        width: 230px;
+        width: 100%;
+    }
+
+    .prodWrapper {
+        margin-left: 0;
     }
 }

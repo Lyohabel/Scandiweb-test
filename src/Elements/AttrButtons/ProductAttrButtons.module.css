@@ -1,5 +1,6 @@
-.productAttrButtons {
+.productAttrButtons {    
     width: 290px;
+    max-width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
@@ -49,4 +50,8 @@
 .size:hover .displayValue,
 .sizeActive:hover .displayValue {
     display: block;
+}
+
+@media screen and (max-width: 320px) {
+    
 }

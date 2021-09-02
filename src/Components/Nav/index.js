@@ -6,6 +6,7 @@ import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
 import NavCategories from './NavCategories';
 import NavCarrencyAndCart from './NavCurrencyAndCart';
+//import PopUp from '../../Elements/PopUp';
 class Nav extends React.PureComponent { //setPopUpPosition
   constructor(props) {
     super(props);
@@ -68,6 +69,8 @@ class Nav extends React.PureComponent { //setPopUpPosition
               <NavCarrencyAndCart changeCurrency={changeCurrency} countCart={countCart} displayCountCart={displayCountCart} savedHref={savedHref} setMiniCartChanged={setMiniCartChanged} category={category} showCartMini={this.showCartMini}/>              
             </div>
           </div>
+
+          {/* <PopUp inner={'cart-mini'}/> */}
               
           <div onClick={(event) => this.hideCartMini_2(event)} className={popUp}>
             <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={category} miniCartChanged={miniCartChanged} setSavedHref={setSavedHref} savedHref={savedHref} setMiniCartChanged={setMiniCartChanged} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={setMiniCartProductChanged}

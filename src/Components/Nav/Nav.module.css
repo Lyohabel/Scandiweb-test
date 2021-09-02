@@ -289,7 +289,21 @@
 @media screen and (max-width: 480px) {
     .menu {
         padding-left: 50px;
-    }    
+    }
+    
+    .logo {
+        left: 42%;
+    }
+
+    .cartWrapper {        
+        left: 75%;        
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .cartWrapper {        
+        left: 70%;        
+    } 
 }
 
 @media screen and (max-width: 375px) {
@@ -300,11 +314,11 @@
 
 @media screen and (max-width: 320px) {
     .logo {
-        left: 40%;
+        left: 35%;
     }
     
     .cartWrapper {        
-        left: 75%;
+        left: 64%;
     }
 }
 

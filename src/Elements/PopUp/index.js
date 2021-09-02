@@ -6,7 +6,7 @@ class PopUp extends React.PureComponent {
       super(props);
       this.popUpImg = React.createRef();   
       this.state = {
-        show: 'yes'   
+        //show: 'yes'   
       }         
     }
 
@@ -14,12 +14,22 @@ class PopUp extends React.PureComponent {
       if (this.popUpImg.current && !this.popUpImg.current.contains(event.target)) {
         this.props.setBigImage('')
       }
-    } 
+    }
+    
+    creatInnerPopUp() {
+      if (this.props.inner === 'img') {
+        return (
+          <div className={styles.innerPopUp} ref={this.popUpImg}>
+            <img src={this.props.img} alt="#"/>
+          </div>        
+        )
+      } else return ''
+    }
 
     render() {
         return (
           <div onClick={(event) => {this.closeBigImage(event)}} className={styles.popUp} style={this.props.bigImage === 'main' ? {display: 'block'} : {display: 'none'}}>
-            <img ref={this.popUpImg} src={this.props.img} alt="#"/>
+            {this.creatInnerPopUp()} 
           </div>
         );
       } 

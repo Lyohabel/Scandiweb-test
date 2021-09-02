@@ -4,6 +4,7 @@ import getCategory from '../../../Queries/GetCategory';
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './Categ.module.css';
+//import CategProduct from './CategProduct';
 
 class Categ extends React.PureComponent {
   constructor(props) {
@@ -43,6 +44,9 @@ class Categ extends React.PureComponent {
   createList(data) {    
     return data && data.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
+
+        {/* <CategProduct index={index} item={JSON.parse(JSON.stringify(item))} id={item.id} setCurrentProduct={this.props.setCurrentProduct} gallery={item.gallery} prices={item.prices} attributes={item.attributes} addToCart={this.props.addToCart} displaySignIn={this.props.displaySignIn}/> */}
+
         <NavLink className={styles.prodLink} to={"/product/" + item.id}> 
           <img onClick={() => this.props.setCurrentProduct(item.id)} className={styles.imgProd} src={item.gallery[0] || item.gallery} alt="#"/>
         </NavLink>

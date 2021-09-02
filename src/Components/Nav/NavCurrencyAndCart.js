@@ -3,34 +3,18 @@ import {NavLink} from 'react-router-dom';
 import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
 import linkOff from '../../Utils/LinkOff';
+import showCurrencySimbol from '../../Utils/ShowCurrencySimbol';
 
 class NavCarrencyAndCart extends React.PureComponent {
   constructor(props) { // eslint-disable-line
     super(props);
   }
 
+  showCurrencySimbol = (index) => showCurrencySimbol.call(this, index)
+
   linkOff = (event) => linkOff.call(this, event)
 
-  showCurrencySimbol(index) {
-    switch(this.context.currencies[index]) {  // eslint-disable-line
-      case 'USD': 
-        return (<span>$</span>);
-
-      case 'GBP':
-        return (<span>&pound;</span>);      
-
-      case 'AUD':
-        return (<span>A$</span>);
-
-      case 'JPY':
-        return (<span>&#165;</span>);
-       
-      case 'RUB':
-        return (<span>&#8381;</span>);
-    }
-  }
-
-  creatCurrencyButtons() {
+  creatCurrencyButtons() { // ????????????
     const {currencies} = this.context
     return currencies && currencies.map((item, index) => 
       <li key={item} onClick={() => this.props.changeCurrency(this.showCurrencySimbol(index), currencies[index], index )}>{this.showCurrencySimbol(index)} {currencies[index]}</li>
