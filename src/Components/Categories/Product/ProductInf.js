@@ -3,33 +3,14 @@ import * as styles from './Product.module.css';
 import OverallData from '../../../Context';
 import ProductAttrButtons from '../../../Elements/AttrButtons/ProductAttrButtons';
 import signIn from '../../../Utils/SignIn';
-//import returnDescription from '../../../Utils/ReturnDescription';
+import creatAttributeNameList from '../../../Utils/CreatAttributeNameList';
+import creatAttributeOrdersList from '../../../Utils/CreatAttributeOrdersList';
 class ProductInf extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.descrRef = React.createRef();
 
-    this.signIn = this.signIn.bind(this)     
-  }
-
-  creatAttributeNameList() {
-    if (!this.props.savedState.product.attributes[0]) return '';
-    let list = [];
-    this.props.savedState.product.attributes.forEach(item => {
-      list.push(item.id);
-    });
-    return list;
-  }
-
-  creatAttributeOrdersList() {
-    if (!this.props.savedState.product.attributes) return '';
-    let list = [];
-    const attrLength = this.props.savedState.product.attributes.length
-    for (let i = 0; i < attrLength; i++) {
-      list.push(0)
-    }
-    this.props.changeAttributeOrders(list)
-    return list
+    this.signIn = this.signIn.bind(this) //  bind - только для функции, которую передаю в пропсы?    
   }
 
   setAttributes(order) {
@@ -44,7 +25,7 @@ class ProductInf extends React.PureComponent {
   returnAttributes(arr) {       
     return arr && arr.map((item, index) =>
       <div key={item.id} className="attrWrapper">
-        <h4 className={styles.sizeTitle}>{this.props.savedState.product.attributes[index] ? this.creatAttributeNameList()[index] : ''}</h4>
+        <h4 className={styles.sizeTitle}>{this.props.savedState.product.attributes[index] ? this.creatAttributeNameList(this.props.savedState.product.attributes)[index] : ''}</h4>
         {this.setAttributes(index)}
       </div>
     )    
@@ -52,19 +33,23 @@ class ProductInf extends React.PureComponent {
 
   signIn = () => signIn.call(this)
 
-  //returnDescription = (в пропсах - здесь аргс) => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
+  creatAttributeNameList = (arg) => creatAttributeNameList.call(this, arg)
+  
+  creatAttributeOrdersList = (arg) => creatAttributeOrdersList.call(this, arg)
 
   componentDidMount() {
       this.descrRef.current.innerHTML = this.props.savedState.product.description
       if (this.props.attributeOrders === '') {
-        this.creatAttributeOrdersList()
+        const orders = this.creatAttributeOrdersList(this.props.savedState.product.attributes)
+        this.props.changeAttributeOrders(orders)
       }         
   }
 
   componentDidUpdate() {
     this.descrRef.current.innerHTML = this.props.savedState.product.description
     if (this.props.attributeOrders === '') {
-      this.creatAttributeOrdersList()      
+      const orders = this.creatAttributeOrdersList(this.props.savedState.product.attributes)
+      this.props.changeAttributeOrders(orders)      
     }
   }
 
@@ -87,7 +72,7 @@ class ProductInf extends React.PureComponent {
 
                 <div className={styles.addWrapper}>
                   <button onClick={() => {
-                    this.props.addToCart(this.props.savedState.instock, this.props.savedState.product.id, this.creatAttributeNameList(), this.props.attributeOrders, this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedPrices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
+                    this.props.addToCart(this.props.savedState.instock, this.props.savedState.product.id, this.creatAttributeNameList(this.props.savedState.product.attributes), this.props.attributeOrders, this.props.savedState.product.attributes, this.props.savedState.attributes_1,  this.props.savedPrices, this.props.savedState.gallery, this.props.savedState.product.name, this.props.savedState.product.brand);}}
                   className={(this.props.savedState.instock ? styles.add : styles.inStockFalse)}>
                     <span className={styles.out}>Out of stock</span><span className={styles.inStock}>Add to cart</span>                  
                   </button>
