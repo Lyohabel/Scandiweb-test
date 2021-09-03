@@ -1,7 +1,5 @@
 import React from 'react';
 import Categ from './Categ';
-import {POPUP} from '../../../CONST';
-
 class StartPage extends React.PureComponent { // eslint-disable-next-line 
     constructor(props) { 
       super(props);  
@@ -17,9 +15,9 @@ class StartPage extends React.PureComponent { // eslint-disable-next-line
     }  
   
     render() {
-      return (
-        <Categ currentCategory={this.props.currentCategory} categoryChanged={this.props.categoryChanged} setDefaultCategoryChanged={this.props.setDefaultCategoryChanged} startPage={this.props.startPage} changeStartPage={this.props.changeStartPage} setCurrentProduct={this.props.setCurrentProduct} addToCart={this.props.addToCart} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn}        
-        style={this.props.position !== POPUP ? {position: 'static'} : {position: 'fixed'}}/>     
+      const {currentCategory, categoryChanged, setDefaultCategoryChanged, startPage, changeStartPage, setCurrentProduct, addToCart, setDisplaySignIn, displaySignIn} = this.props
+      return (        
+        <Categ currentCategory={currentCategory} categoryChanged={categoryChanged} setDefaultCategoryChanged={setDefaultCategoryChanged} startPage={startPage} changeStartPage={changeStartPage} setCurrentProduct={setCurrentProduct} addToCart={addToCart} setDisplaySignIn={setDisplaySignIn} displaySignIn={displaySignIn}/>     
       );
     } 
   }
