@@ -13,7 +13,7 @@ class ProductInf extends React.PureComponent {
     this.signIn = this.signIn.bind(this) //  bind - только для функции, которую передаю в пропсы?    
   }
 
-  setAttributes(order) {
+  setAttributes(order) { // ????
     if (this.props.savedState.product.attributes.length < order + 1) return ''       
     return (
       <div className={styles.attrButtonsWrapper}>
@@ -22,7 +22,7 @@ class ProductInf extends React.PureComponent {
     )    
   }
 
-  returnAttributes(arr) {       
+  returnAttributes(arr) {  // ????     
     return arr && arr.map((item, index) =>
       <div key={item.id} className="attrWrapper">
         <h4 className={styles.sizeTitle}>{this.props.savedState.product.attributes[index] ? this.creatAttributeNameList(this.props.savedState.product.attributes)[index] : ''}</h4>

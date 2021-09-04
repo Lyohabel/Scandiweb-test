@@ -55,7 +55,7 @@ class App extends React.PureComponent {
 
   checkForSignIn() {
     const cookie = document.cookie.split(';')
-    let user = cookie.find(item => item === 'login=user');
+    const user = cookie.find(item => item === 'login=user');
     return user
   }
 
@@ -100,7 +100,7 @@ class App extends React.PureComponent {
       }); 
   }
 
-  setMiniCartProductChanged(arg,id) {
+  setMiniCartProductChanged(arg) {
     if (window.localStorage.getItem('cart')) {
       const cart = window.localStorage.getItem('cart')
       const cartCount = JSON.parse(cart).length
@@ -155,8 +155,7 @@ class App extends React.PureComponent {
     if (double === -1) {
       jsonCart.push({uniqueId: uniqueId, name: id, amount: 1, attrs: this.state.attrs,  attrNames: attributeNames, attrOrders: attributeOrders, attributes: attributes, attributes_1: attributes_1, prices: prices, gallery: gallery, prodName: prodName, brand: brand})
     } else {
-      jsonCart[double].amount++
-      console.log(jsonCart[double].amount)
+      jsonCart[double].amount++      
     }       
 
     window.localStorage.setItem('cart', JSON.stringify(jsonCart));
@@ -210,7 +209,6 @@ class App extends React.PureComponent {
     this.setState({
       attrs: newAttrs    
     })
-    //console.log(this.state.attrs)
   }
 
   changeAttributeOrders(arg) {

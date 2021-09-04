@@ -21,8 +21,6 @@ class Product extends React.PureComponent {
     }    
   }
 
-  //returnDescription = () => returnDescription.call(this, 'arg1', 'arg2') // объявление имп функцииб потом ее можно вызвать
-
   async componentDidMount() {      
     const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;   
 

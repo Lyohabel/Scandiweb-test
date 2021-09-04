@@ -23,7 +23,7 @@ class FakeCart extends React.PureComponent {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
-    let jsonCart = JSON.parse(cart)
+    const jsonCart = JSON.parse(cart)
 
     this.setState({     
       jsonCart: JSON.parse(JSON.stringify(jsonCart))

@@ -19,6 +19,7 @@ class CategProduct extends React.PureComponent {
 
   render() {
     const {id, setCurrentProduct, gallery, item, prices, addToCart, currentCategoryData, attributes, displaySignIn} = this.props
+    // context ??
     return (
       <section className={styles.categProduct}>
         <NavLink className={styles.prodLink} to={"/product/" + id}> 

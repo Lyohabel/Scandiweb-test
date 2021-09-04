@@ -12,7 +12,7 @@ class Categ extends React.PureComponent {
     }   
   }
 
-  createList(data) {    
+  createList(data) { // ???   
     return data && data.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
 

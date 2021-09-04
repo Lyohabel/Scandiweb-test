@@ -11,7 +11,7 @@ class Cart extends React.PureComponent {
     
     this.createCartList = this.createCartList.bind(this)      
   }
-  createCartList() {        
+  createCartList() { // ???        
     return this.state.jsonCart && this.state.jsonCart.map((item) =>
       <CartProduct key={item.uniqueId} id={item.uniqueId} name={item.name} setCurrentProduct={this.props.setCurrentProduct}      
       setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
@@ -22,7 +22,7 @@ class Cart extends React.PureComponent {
     if (!window.localStorage.getItem('cart')) return;
 
     const cart = window.localStorage.getItem('cart');
-    let jsonCart = JSON.parse(cart)
+    const jsonCart = JSON.parse(cart)
 
     this.setState({      
       jsonCart: JSON.parse(JSON.stringify(jsonCart))

@@ -33,7 +33,6 @@ class ProductImages extends React.PureComponent {
       return this.props.gallery && this.props.gallery.map((item, index) =>
         <li key={item} className={styles.galleryItem}>
           <div className={this.state.bigImage === index ? styles.imgBig : styles.imgSmall}>
-            {/* <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === index ? {display: 'block'} : {display: 'none'}}>&times;</button> */}
             <img onClick={() => this.changeMainImage(index)} className={styles.imgGalleryItem} src={item} alt="#"/>            
           </div>          
         </li>
@@ -50,7 +49,6 @@ class ProductImages extends React.PureComponent {
           </ul>        
 
           <div className={styles.imgProd} style={this.state.bigImage === 'main' ? {display: 'none'} : {display: 'block'}}>
-            {/* <button onClick={() => this.setBigImage('')} className={styles.closeBigImage} style={this.state.bigImage === 'main' ? {display: 'block'} : {display: 'none'}}>&times;</button> */}
             <img onClick={() => this.setBigImage('main')} src={this.props.gallery[this.state.imageIndex]} alt="#"/>
           </div>
 
@@ -58,7 +56,7 @@ class ProductImages extends React.PureComponent {
 
         </div>
       </section>
-    ); // {this.state.bigImage === 'main' ? styles.mainImgBig : 
+    ); 
   } 
 }
 
