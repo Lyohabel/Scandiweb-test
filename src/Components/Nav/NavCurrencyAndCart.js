@@ -5,7 +5,7 @@ import OverallData from '../../Context';
 import linkOff from '../../Utils/LinkOff';
 import showCurrencySimbol from '../../Utils/ShowCurrencySimbol';
 
-class NavCarrencyAndCart extends React.PureComponent {
+class NavCarrencyAndCart extends React.PureComponent { // setMiniCartChanged
   constructor(props) { // eslint-disable-line
     super(props);
   }
@@ -22,7 +22,7 @@ class NavCarrencyAndCart extends React.PureComponent {
   }
 
   render() {
-    const {category, showCartMini, setMiniCartChanged, displayCountCart, countCart} = this.props
+    const {category, showCartMini, displayCountCart, countCart} = this.props
     return (
       <section className={styles.cartWrapper}>
         <span className={styles.currency}>{this.context.currencySimbol}</span>
@@ -33,7 +33,7 @@ class NavCarrencyAndCart extends React.PureComponent {
           </ul>
         </div>
 
-        <div onClick={() => {showCartMini(); setMiniCartChanged('yes')}} className={styles.cartLink}>                  
+        <div onClick={() => {showCartMini()}} className={styles.cartLink}>                  
           <span className={styles.cartLinkIcon} style={displayCountCart === "yes" ? {display: 'flex'} : {display: 'none'}}>{countCart}</span>
 
           <NavLink onClick={(event) => this.linkOff(event)} className={styles.fromCartLink}  to={"/fake-cart/" + category}>                  
@@ -41,7 +41,7 @@ class NavCarrencyAndCart extends React.PureComponent {
         </div>
       </section>            
     );
-  } 
+  } //; setMiniCartChanged('yes')
 }
 
 NavCarrencyAndCart.contextType = OverallData;

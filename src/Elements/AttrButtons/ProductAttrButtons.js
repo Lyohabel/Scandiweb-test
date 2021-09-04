@@ -4,7 +4,7 @@ import * as styles from './ProductAttrButtons.module.css'
 import {COLOR, DEFAULT} from '../../CONST';
 
 class ProductAttrButtons extends React.PureComponent { 
-  constructor(props) {
+  constructor(props) { // {названия пропсов}
     super(props);
     this.descrRef = React.createRef();
     this.state = {
@@ -12,7 +12,9 @@ class ProductAttrButtons extends React.PureComponent {
       activeAttribute: '',
       defaultActiveAttribute: ''
     } 
+
   }
+
 
   markAttribute(value) {
     this.setState({    

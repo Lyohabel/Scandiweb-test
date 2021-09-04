@@ -4,7 +4,7 @@ import OverallData from '../../../Context';
 import * as styles from './CartMini.module.css';
 import CartMiniProduct from './CartMiniProduct';
 
-class CartMini extends React.PureComponent {
+class CartMini extends React.PureComponent { // setMiniCartProductChanged
   constructor(props) { 
     super(props);
     this.state = {
@@ -57,10 +57,10 @@ class CartMini extends React.PureComponent {
     })
     this.checkOut()
     
-    this.props.setMiniCartChanged('no')
+    this.props.setMiniCartProductChanged('no')
   }
 
-  componentDidUpdate() {    
+  componentDidUpdate() { // setMiniCartChanged('no')  
     if (!window.localStorage.getItem('cart')) return;
 
     if (this.props.miniCartChanged !== 'no') {
@@ -73,7 +73,7 @@ class CartMini extends React.PureComponent {
       
       this.checkOut()
 
-      this.props.setMiniCartChanged('no')           
+      this.props.setMiniCartProductChanged('no')           
     }
   }
 

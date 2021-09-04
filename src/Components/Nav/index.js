@@ -7,7 +7,7 @@ import OverallData from '../../Context';
 import NavCategories from './NavCategories';
 import NavCarrencyAndCart from './NavCurrencyAndCart';
 //import PopUp from '../../Elements/PopUp';
-class Nav extends React.PureComponent { //setPopUpPosition
+class Nav extends React.PureComponent { //startPage
   constructor(props) {
     super(props);
     this.popUpRef = React.createRef();    
@@ -51,13 +51,13 @@ class Nav extends React.PureComponent { //setPopUpPosition
 
   render() {
     const {category, popUp} = this.state
-    const {StartPage, changeCurrentCategory, savedCategory, changeCurrency, countCart, displayCountCart, savedHref, setMiniCartChanged, miniCartChanged, setSavedHref, miniCartProductChanged, setMiniCartProductChanged} = this.props 
+    const {changeCurrentCategory, savedCategory, changeCurrency, countCart, displayCountCart, savedHref, miniCartChanged, setSavedHref, miniCartProductChanged, setMiniCartProductChanged} = this.props 
     return (      
       <nav className={styles.nav}>
           <div className="container">
             <div className={styles.wrapper}>
 
-              <NavCategories category={category} markActive={this.markActive} startPage={StartPage} changeCurrentCategory={changeCurrentCategory} savedCategory={savedCategory}/>             
+              <NavCategories category={category} markActive={this.markActive} changeCurrentCategory={changeCurrentCategory} savedCategory={savedCategory}/>             
 
               <div className={styles.logo}>
                 <NavLink onClick={() => {changeCurrentCategory(''); this.markActive('')}} className={styles.linkHome} to="/">
@@ -66,18 +66,18 @@ class Nav extends React.PureComponent { //setPopUpPosition
                 </NavLink>
               </div>
 
-              <NavCarrencyAndCart changeCurrency={changeCurrency} countCart={countCart} displayCountCart={displayCountCart} savedHref={savedHref} setMiniCartChanged={setMiniCartChanged} category={category} showCartMini={this.showCartMini}/>              
+              <NavCarrencyAndCart changeCurrency={changeCurrency} countCart={countCart} displayCountCart={displayCountCart} savedHref={savedHref} category={category} showCartMini={this.showCartMini}/>              
             </div>
           </div>
 
-          {/* <PopUp inner={'cart-mini'}/> */}
+          {/* <PopUp inner={'cart-mini'}/> */} 
               
           <div onClick={(event) => this.hideCartMini_2(event)} className={popUp}>
-            <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={category} miniCartChanged={miniCartChanged} setSavedHref={setSavedHref} savedHref={savedHref} setMiniCartChanged={setMiniCartChanged} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={setMiniCartProductChanged}
+            <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={category} miniCartChanged={miniCartChanged} setSavedHref={setSavedHref} savedHref={savedHref} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={setMiniCartProductChanged}
             /></div>
           </div>
       </nav>
-    );
+    ); // setMiniCartChanged={setMiniCartChanged}
   } 
 }
 
