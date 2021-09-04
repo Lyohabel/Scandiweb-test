@@ -181,7 +181,7 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {categoriesList, currencySimbol, currencyNumber, currencies, changeCurrency, countCart, displayCountCart, startPage, currentCategory, savedCategory, savedHref, miniCartChanged, miniCartProductChanged, categoryChanged, displaySignIn, currentProduct, attributeOrders} = this.state
+    const {categoriesList, currencySimbol, currencyNumber, currencies, countCart, displayCountCart, startPage, currentCategory, savedCategory, savedHref, miniCartChanged, miniCartProductChanged, categoryChanged, displaySignIn, currentProduct, attributeOrders} = this.state
     return (
       <BrowserRouter >
           <OverallData.Provider value={{            
@@ -190,7 +190,7 @@ class App extends React.PureComponent {
             currencyNumber: currencyNumber,
             currencies: currencies}}>
 
-            <Nav changeCurrency={changeCurrency} countCart={countCart} displayCountCart={displayCountCart} currentCategory={currentCategory} changeCurrentCategory={this.changeCurrentCategory} savedCategory={savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={savedHref} miniCartChanged={miniCartChanged} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={this.setMiniCartProductChanged}/>
+            <Nav changeCurrency={this.changeCurrency} countCart={countCart} displayCountCart={displayCountCart} currentCategory={currentCategory} changeCurrentCategory={this.changeCurrentCategory} savedCategory={savedCategory} setCurrentProduct={this.setCurrentProduct} setSavedHref={this.setSavedHref} savedHref={savedHref} miniCartChanged={miniCartChanged} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={this.setMiniCartProductChanged}/>
 
             <Switch>
               <Route exact path='/'>

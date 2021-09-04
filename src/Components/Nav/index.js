@@ -6,8 +6,7 @@ import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
 import NavCategories from './NavCategories';
 import NavCarrencyAndCart from './NavCurrencyAndCart';
-//import PopUp from '../../Elements/PopUp';
-class Nav extends React.PureComponent { //startPage
+class Nav extends React.PureComponent { 
   constructor(props) {
     super(props);
     this.popUpRef = React.createRef();    
@@ -15,7 +14,7 @@ class Nav extends React.PureComponent { //startPage
     this.state = {
       category: '',           
       popUp: styles.hidden     
-    }    
+    }
 
     this.hideCartMini = this.hideCartMini.bind(this)
     this.markActive = this.markActive.bind(this)
@@ -69,15 +68,13 @@ class Nav extends React.PureComponent { //startPage
               <NavCarrencyAndCart changeCurrency={changeCurrency} countCart={countCart} displayCountCart={displayCountCart} savedHref={savedHref} category={category} showCartMini={this.showCartMini}/>              
             </div>
           </div>
-
-          {/* <PopUp inner={'cart-mini'}/> */} 
               
           <div onClick={(event) => this.hideCartMini_2(event)} className={popUp}>
             <div ref={this.popUpRef} className={styles.innerPopUp}><CartMini hideCartMini={this.hideCartMini} category={category} miniCartChanged={miniCartChanged} setSavedHref={setSavedHref} savedHref={savedHref} miniCartProductChanged={miniCartProductChanged} setMiniCartProductChanged={setMiniCartProductChanged}
             /></div>
           </div>
       </nav>
-    ); // setMiniCartChanged={setMiniCartChanged}
+    ); 
   } 
 }
 

@@ -2,24 +2,19 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import * as styles from './Nav.module.css';
 import OverallData from '../../Context';
-import linkOff from '../../Utils/LinkOff';
-import showCurrencySimbol from '../../Utils/ShowCurrencySimbol';
-
-class NavCarrencyAndCart extends React.PureComponent { // setMiniCartChanged
+import linkOff from './NavUtils/LinkOff';
+import creatCurrencyButtons from './NavUtils/CreatCurrencyButtons';
+import showCurrencySimbol from './NavUtils/ShowCurrencySimbol';
+class NavCarrencyAndCart extends React.PureComponent { 
   constructor(props) { // eslint-disable-line
     super(props);
   }
 
-  showCurrencySimbol = (index) => showCurrencySimbol.call(this, index)
-
   linkOff = (event) => linkOff.call(this, event)
 
-  creatCurrencyButtons() { // ????????????
-    const {currencies} = this.context
-    return currencies && currencies.map((item, index) => 
-      <li key={item} onClick={() => this.props.changeCurrency(this.showCurrencySimbol(index), currencies[index], index )}>{this.showCurrencySimbol(index)} {currencies[index]}</li>
-    )
-  }
+  showCurrencySimbol = (index) => showCurrencySimbol.call(this, index)  
+  
+  creatCurrencyButtons = () => creatCurrencyButtons.call(this)  
 
   render() {
     const {category, showCartMini, displayCountCart, countCart} = this.props
@@ -41,7 +36,7 @@ class NavCarrencyAndCart extends React.PureComponent { // setMiniCartChanged
         </div>
       </section>            
     );
-  } //; setMiniCartChanged('yes')
+  } 
 }
 
 NavCarrencyAndCart.contextType = OverallData;
