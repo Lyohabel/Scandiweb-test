@@ -21,8 +21,10 @@ class Product extends React.PureComponent {
     }    
   }
 
-  async componentDidMount() {      
-    const product = this.props.currentProduct !== '' ? this.props.currentProduct : this.props.match.params.id;   
+  async componentDidMount() { 
+    const {currentProduct} = this.props
+
+    const product = currentProduct !== '' ? currentProduct : this.props.match.params.id;   
 
     const result = await JSON.parse(JSON.stringify((await getProduct(product)).product))
 
@@ -41,14 +43,17 @@ class Product extends React.PureComponent {
   }  
 
   render() {
+    const {gallery, prices} = this.state
+    const {currentProduct, changeAttributes, addToCart, attributeOrders, changeAttributeOrders, setDisplaySignIn, displaySignIn} = this.props
+
     return (
       <section className="Product">
           <div className="container">                       
             <div className={styles.productItem}>
 
-              <ProductImages gallery={this.state.gallery} currentProduct={this.props.currentProduct} savedProduct={this.props.match.params.id}/>
+              <ProductImages gallery={gallery} currentProduct={currentProduct} savedProduct={this.props.match.params.id}/>
 
-              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} savedPrices={JSON.parse(JSON.stringify(this.state.prices))} changeAttributes={this.props.changeAttributes} addToCart={this.props.addToCart} attributeOrders={this.props.attributeOrders} changeAttributeOrders={this.props.changeAttributeOrders} setDisplaySignIn={this.props.setDisplaySignIn} displaySignIn={this.props.displaySignIn}/>
+              <ProductInf savedState={JSON.parse(JSON.stringify(this.state))} savedPrices={JSON.parse(JSON.stringify(prices))} changeAttributes={changeAttributes} addToCart={addToCart} attributeOrders={attributeOrders} changeAttributeOrders={changeAttributeOrders} setDisplaySignIn={setDisplaySignIn} displaySignIn={displaySignIn}/>
             </div>              
           </div>
       </section>

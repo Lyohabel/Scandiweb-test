@@ -1,6 +1,6 @@
 function creatAttributeNameList(arg) {
   if (!arg[0]) return '';
-  let list = [];
+  const list = [];
   arg.forEach(item => {
     list.push(item.id);
   });

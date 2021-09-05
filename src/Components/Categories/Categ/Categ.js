@@ -12,7 +12,7 @@ class Categ extends React.PureComponent {
     }   
   }
 
-  createList(data) { // ???   
+  createList(data) {    
     return data && data.map((item, index) =>
       <li className={styles.productItem} id={item.id} key={item.id}>
 
@@ -23,8 +23,9 @@ class Categ extends React.PureComponent {
   } 
   
   async componentDidMount() {
+    const {currentCategory, startPage, setSavedCategory} = this.props
     
-    if (this.props.startPage && this.props.startPage === 'yes') {
+    if (startPage && startPage === 'yes') {
 
       const resultAll = await JSON.parse(JSON.stringify((await getAllCategories())))  
       
@@ -33,9 +34,9 @@ class Categ extends React.PureComponent {
       });             
       
     } else {
-        const category = this.props.currentCategory === '' ? this.props.match.params.categ : this.props.currentCategory
+        const category = currentCategory === '' ? this.props.match.params.categ : currentCategory
         
-        this.props.setSavedCategory(category)
+        setSavedCategory(category)
 
         const resultCategory = await JSON.parse(JSON.stringify((await getCategory(category))))
         
@@ -45,17 +46,19 @@ class Categ extends React.PureComponent {
       }   
   }
 
-  async componentDidUpdate() {    
-    if (this.props.categoryChanged !== 'no') {
+  async componentDidUpdate() {
+    const {currentCategory, categoryChanged, setDefaultCategoryChanged} = this.props
 
-    const category = this.props.currentCategory
+    if (categoryChanged !== 'no') {
+
+    const category = currentCategory
 
     const resultCategory = await JSON.parse(JSON.stringify((await getCategory(category))))
        
       this.setState({       
         currentCategoryData: JSON.parse(JSON.stringify(resultCategory.category.products))
       });
-      this.props.setDefaultCategoryChanged()
+      setDefaultCategoryChanged()
     }
   }
   
