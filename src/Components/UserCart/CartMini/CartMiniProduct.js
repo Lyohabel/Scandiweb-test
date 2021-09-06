@@ -2,6 +2,7 @@ import React from 'react';
 import checkForInStock from '../../../Queries/CheckForInStock';
 import OverallData from '../../../Context';
 import * as styles from './CartMiniProduct.module.css';
+import showChosedAttribute from './CartMiniUtils/ShowChosedAttribute';
 class CartMiniProduct extends React.PureComponent { // 
   constructor(props) { 
     super(props);
@@ -51,20 +52,7 @@ class CartMiniProduct extends React.PureComponent { //
       } 
   }
 
-  showChosedAttribute() {
-    if (this.state.attrNames === "") return ""
-    else return (
-      <div className={styles.attrButtons}>
-        <button className={styles.firstBut}>
-            <span>{this.state.attributes_1[0].value}</span>
-            <span className={styles.butPrompt}>
-              To view and change the selected attributes, click on the button VIEW BAG below to go to the cart 
-            </span>
-          </button>
-          <button className={styles.choosedBut}>{this.state.attributes_1[1].value}</button>          
-        </div>
-    )
-  }
+  showChosedAttribute = () => showChosedAttribute.call(this)
 
   componentDidMount() {    
     const cart = window.localStorage.getItem('cart');
@@ -101,15 +89,17 @@ class CartMiniProduct extends React.PureComponent { //
         })
   } 
 
-  render() { 
+  render() {
+    const {prices, uniqueId, productAmount, gallery} = this.state
+    const {brand, prodName} = this.state.jsonCart
     return (
       <li className={styles.prodItem}>
         <div className={styles.prodInf}>
-          <h4>{this.state.jsonCart.brand}<br/>{this.state.jsonCart.prodName}</h4>
+          <h4>{brand}<br/>{prodName}</h4>
 
           <div className={styles.prodPrice}>
             <span>{this.context.currencySimbol}</span>
-            <span className={styles.priceNumber}>{this.state.prices[this.context.currencyNumber]}</span>
+            <span className={styles.priceNumber}>{prices[this.context.currencyNumber]}</span>
           </div>
 
           {this.showChosedAttribute()}
@@ -118,15 +108,15 @@ class CartMiniProduct extends React.PureComponent { //
 
         <div className={styles.prodImage}>
           <div className={styles.countButtons}>
-            <button onClick={() => this.changeProductAmount('plus', this.state.uniqueId)} className={styles.plusBut}>&#43;</button>
+            <button onClick={() => this.changeProductAmount('plus', uniqueId)} className={styles.plusBut}>&#43;</button>
 
-            <span>{this.state.productAmount}</span>
+            <span>{productAmount}</span>
             
-            <button onClick={() => this.changeProductAmount('minus', this.state.uniqueId)} className={styles.minusBut}>&#8722;</button>
+            <button onClick={() => this.changeProductAmount('minus', uniqueId)} className={styles.minusBut}>&#8722;</button>
           </div>
 
           <div className={styles.imgProd}>           
-              <img src={this.state.gallery[0]} alt="#"/>            
+              <img src={gallery[0]} alt="#"/>            
           </div>                
         </div>            
       </li>        

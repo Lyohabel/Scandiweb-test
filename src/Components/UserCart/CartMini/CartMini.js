@@ -2,9 +2,9 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import OverallData from '../../../Context';
 import * as styles from './CartMini.module.css';
-import CartMiniProduct from './CartMiniProduct';
+import createCartMiniList from './CartMiniUtils/CreateCartMiniLis';
 
-class CartMini extends React.PureComponent { // setMiniCartProductChanged
+class CartMini extends React.PureComponent {
   constructor(props) { 
     super(props);
     this.state = {
@@ -14,14 +14,7 @@ class CartMini extends React.PureComponent { // setMiniCartProductChanged
     }	
   }
 
-  createCartMiniList(data) {        
-    return data && data.map((item) =>
-      <CartMiniProduct key={item.uniqueId} id={item.uniqueId} name={item.name}
-      setMiniCartChanged={this.props.setMiniCartChanged}
-      miniCartProductChanged={this.props.miniCartProductChanged}           
-      setMiniCartProductChanged={this.props.setMiniCartProductChanged}/>
-    )
-  }
+  createCartMiniList = (data) => createCartMiniList.call(this, data)
 
   checkOut() {
     if (!window.localStorage.getItem('cart')) return;
@@ -60,7 +53,7 @@ class CartMini extends React.PureComponent { // setMiniCartProductChanged
     this.props.setMiniCartProductChanged('no')
   }
 
-  componentDidUpdate() { // setMiniCartChanged('no')  
+  componentDidUpdate() { 
     if (!window.localStorage.getItem('cart')) return;
 
     if (this.props.miniCartChanged !== 'no') {
@@ -78,20 +71,21 @@ class CartMini extends React.PureComponent { // setMiniCartProductChanged
   }
 
   render() {
+    const {jsonCart, currencySimbol, total} = this.state
     return (
       <div className={styles.cartMiniWrapper}>                                     
         <div className={styles.cartMini}>
-          <div className={styles.cartTitle}>My bag, <span>{this.state.jsonCart.length}</span><span> items</span></div>
+          <div className={styles.cartTitle}>My bag, <span>{jsonCart.length}</span><span> items</span></div>
 
           <div className={styles.cartMiniListWrapper}>
             <ul className={styles.productList}>
-              {this.createCartMiniList(this.state.jsonCart)}
+              {this.createCartMiniList(jsonCart)}
             </ul>
           </div>          
 
           <div className={styles.prodSumm}>
             <h4>Total</h4>
-            <div className={styles.prodSummNumber}><span className={styles.priceNumber}>{this.state.currencySimbol}{this.state.total}</span></div>
+            <div className={styles.prodSummNumber}><span className={styles.priceNumber}>{currencySimbol}{total}</span></div>
           </div>
 
           <div className={styles.prodButtons}>
